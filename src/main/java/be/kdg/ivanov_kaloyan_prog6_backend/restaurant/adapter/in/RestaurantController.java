@@ -6,9 +6,11 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.CreateRestaurantUs
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/api/restaurant")
+@RestController
+@RequestMapping("/api/restaurant")
 public class RestaurantController {
 
     private final CreateRestaurantUseCase  createRestaurantUseCase;
@@ -21,12 +23,12 @@ public class RestaurantController {
     public ResponseEntity<Void> create(@RequestBody CreateRestaurantRequest request) {
         final CreateRestaurantCommand command = new CreateRestaurantCommand(
                 request.ownerId(),
-                request.addressDTO(),
+                request.address(),
                 request.email(),
                 request.pictureURL(),
                 request.defaultPrepTime(),
                 request.cuisineType(),
-                request.openingHoursDTO());
+                request.openingHours());
 
         this.createRestaurantUseCase.createRestaurant(command);
 

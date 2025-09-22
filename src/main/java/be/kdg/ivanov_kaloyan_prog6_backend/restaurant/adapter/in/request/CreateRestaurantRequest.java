@@ -6,11 +6,11 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.CuisineType;
 
 public record CreateRestaurantRequest(
         String ownerId,
-        AddressDTO addressDTO,
+        AddressDTO address,
         String email,
         String pictureURL,
         Double defaultPrepTime,
         CuisineType cuisineType,
-        OpeningHoursDTO openingHoursDTO)
+        OpeningHoursDTO openingHours)
 {
 }

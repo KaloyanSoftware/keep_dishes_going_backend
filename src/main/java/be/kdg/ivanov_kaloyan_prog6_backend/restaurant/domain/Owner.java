@@ -5,7 +5,15 @@ public class Owner {
 
     private Restaurant restaurant;
 
+    public Owner() {
+        ownerId = OwnerId.create();
+    }
+
     void assignRestaurant(Restaurant restaurant){
         this.restaurant = restaurant;
+    }
+
+    public OwnerId getOwnerId() {
+        return ownerId;
     }
 }

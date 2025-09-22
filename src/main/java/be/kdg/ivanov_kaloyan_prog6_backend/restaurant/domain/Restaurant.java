@@ -34,4 +34,14 @@ public class Restaurant {
     public RestaurantId retrieveRestaurantId() {
         return restaurantId;
     }
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "restaurantId=" + restaurantId +
+                ", owner=" + owner +
+                ", address=" + address +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

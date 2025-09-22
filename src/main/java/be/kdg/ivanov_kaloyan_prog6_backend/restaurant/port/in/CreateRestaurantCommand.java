@@ -12,6 +12,6 @@ public record CreateRestaurantCommand(String ownerId,
                                       CuisineType cuisineType,
                                       OpeningHoursDTO openingHoursDTO) {
     public CreateRestaurantCommand{
-
+        //constraints, checks, etc.
     }
 }

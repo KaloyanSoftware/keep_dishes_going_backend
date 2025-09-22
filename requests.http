@@ -1,0 +1,29 @@
+### Create restaurant
+POST localhost:8080/api/restaurant
+Content-Type: application/json
+
+
+{
+  "ownerId": "1d241714-9fad-4842-be36-595f60840a2f",
+  "address": {
+    "street": "Main Street",
+    "number": 42,
+    "postalCode": "1000",
+    "city": "Brussels",
+    "country": "Belgium"
+  },
+  "email": "contact@myrestaurant.com",
+  "pictureURL": "randomURL",
+  "defaultPrepTime": 20.5,
+  "cuisineType": "ITALIAN",
+  "openingHours": {
+    "openingHours": {
+      "MONDAY": { "start": "10:00:00", "end": "22:00:00" },
+      "TUESDAY": { "start": "10:00:00", "end": "22:00:00" },
+      "FRIDAY": { "start": "12:00:00", "end": "23:00:00" }
+    }
+  }
+}
+
+
+###
