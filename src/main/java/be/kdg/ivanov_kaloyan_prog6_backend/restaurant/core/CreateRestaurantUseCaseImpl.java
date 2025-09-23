@@ -37,7 +37,7 @@ public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
         );
 
         final OpeningHours openingHours = new OpeningHours(
-                command.openingHoursDTO().openingHours().entrySet().stream()
+                command.openingHoursDTO().weeklySchedule().entrySet().stream()
                         .collect(Collectors.toMap(
                                 Map.Entry::getKey, // DayOfWeek
                                 e -> new DaySchedule(e.getValue().start(), e.getValue().end())

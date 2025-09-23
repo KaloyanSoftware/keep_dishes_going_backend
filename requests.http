@@ -4,7 +4,7 @@ Content-Type: application/json
 
 
 {
-  "ownerId": "1d241714-9fad-4842-be36-595f60840a2f",
+  "ownerId": "552cc380-fd95-478f-81c2-bd7d7e5a6598",
   "address": {
     "street": "Main Street",
     "number": 42,
@@ -17,10 +17,10 @@ Content-Type: application/json
   "defaultPrepTime": 20.5,
   "cuisineType": "ITALIAN",
   "openingHours": {
-    "openingHours": {
-      "MONDAY": { "start": "10:00:00", "end": "22:00:00" },
-      "TUESDAY": { "start": "10:00:00", "end": "22:00:00" },
-      "FRIDAY": { "start": "12:00:00", "end": "23:00:00" }
+    "weeklySchedule": {
+    "MONDAY": { "start": "10:00:00", "end": "22:00:00" },
+    "TUESDAY": { "start": "10:00:00", "end": "22:00:00" },
+    "FRIDAY": { "start": "12:00:00", "end": "23:00:00" }
     }
   }
 }
