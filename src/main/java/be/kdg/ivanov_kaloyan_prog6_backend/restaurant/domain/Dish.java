@@ -32,4 +32,8 @@ public class Dish {
         this.price = price;
         this.pictureURL = pictureURL;
     }
+
+    public void outOfStock(){
+       this.visibility = Visibility.OUT_OF_STOCK;
+    }
 }

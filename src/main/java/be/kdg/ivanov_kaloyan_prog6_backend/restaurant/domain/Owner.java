@@ -9,7 +9,7 @@ public class Owner {
         ownerId = OwnerId.create();
     }
 
-    void assignRestaurant(Restaurant restaurant){
+    public void assignRestaurant(Restaurant restaurant){
         this.restaurant = restaurant;
     }
 

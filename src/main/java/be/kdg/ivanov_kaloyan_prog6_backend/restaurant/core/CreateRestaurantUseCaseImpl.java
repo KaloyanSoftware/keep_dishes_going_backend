@@ -4,6 +4,7 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.CreateRestaurantCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.CreateRestaurantUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadOwnerPort;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveOwnerPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveRestaurantPort;
 import org.springframework.stereotype.Service;
 import java.util.Map;
@@ -17,16 +18,21 @@ public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
 
     private final SaveRestaurantPort saveRestaurantPort;
 
-    public CreateRestaurantUseCaseImpl(LoadOwnerPort loadOwnerPort, SaveRestaurantPort saveRestaurantPort) {
+    private final SaveOwnerPort saveOwnerPort;
+
+    public CreateRestaurantUseCaseImpl(LoadOwnerPort loadOwnerPort,
+                                       SaveRestaurantPort saveRestaurantPort,
+                                       SaveOwnerPort saveOwnerPort) {
         this.loadOwnerPort = loadOwnerPort;
         this.saveRestaurantPort = saveRestaurantPort;
+        this.saveOwnerPort = saveOwnerPort;
     }
 
     @Override
     public void createRestaurant(CreateRestaurantCommand command) {
-
         final Owner owner = loadOwnerPort.loadBy(UUID.fromString(command.ownerId()))
                 .orElseThrow();
+
 
         final Address address = new Address(
                 command.addressDTO().street(),
@@ -56,5 +62,6 @@ public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
         );
 
         saveRestaurantPort.save(restaurant);
+        saveOwnerPort.save(owner);
     }
 }

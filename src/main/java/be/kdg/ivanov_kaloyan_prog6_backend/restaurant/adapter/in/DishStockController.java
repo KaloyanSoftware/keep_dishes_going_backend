@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/restaurants/{restaurantId}/dishes/{dishId}")
+@RequestMapping("/api/restaurants/{restaurantId}/dishes")
 public class DishStockController {
 
     private final MarkDishOutOfStockUseCase markDishOutOfStockUseCase;
@@ -18,7 +18,7 @@ public class DishStockController {
         this.markDishOutOfStockUseCase = markDishOutOfStockUseCase;
     }
 
-    @PatchMapping("/outOfStock")
+    @PatchMapping("{dishId}/outOfStock")
     public ResponseEntity<Void> out(@PathVariable UUID restaurantId, @PathVariable UUID dishId) {
         this.markDishOutOfStockUseCase.markOutOfStock(restaurantId, dishId);
         return ResponseEntity.ok().build();
