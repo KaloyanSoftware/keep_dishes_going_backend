@@ -8,7 +8,7 @@ public class Restaurant {
     private RestaurantId restaurantId;
 
     //does the restaurant need to have access to the owner? (bi-directional?)
-    private Owner owner;
+    //private Owner owner;
 
     private Address address;
 
@@ -26,9 +26,7 @@ public class Restaurant {
 
     private static final int MAX_MENU_DISHES = 10;
 
-    public Restaurant(Owner owner, Address address, String email, String pictureURL, Double defaultPrepTime, CuisineType cuisineType, OpeningHours openingHours) {
-        this.owner = owner;
-        owner.assignRestaurant(this);
+    public Restaurant(Address address, String email, String pictureURL, Double defaultPrepTime, CuisineType cuisineType, OpeningHours openingHours) {
         this.restaurantId = RestaurantId.create();
         this.address = address;
         this.email = email;
@@ -46,7 +44,6 @@ public class Restaurant {
     public String toString() {
         return "Restaurant{" +
                 "restaurantId=" + restaurantId +
-                ", owner=" + owner +
                 ", address=" + address +
                 ", email='" + email + '\'' +
                 '}';

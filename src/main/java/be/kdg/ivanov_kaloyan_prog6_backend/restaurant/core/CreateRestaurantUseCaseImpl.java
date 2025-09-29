@@ -52,7 +52,6 @@ public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
 
 
         final Restaurant restaurant = new Restaurant(
-                owner,
                 address,
                 command.email(),
                 command.pictureURL(),
@@ -61,7 +60,9 @@ public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
                 openingHours
         );
 
-        saveRestaurantPort.save(restaurant);
+        owner.assignRestaurant(restaurant);
+
         saveOwnerPort.save(owner);
+        saveRestaurantPort.save(restaurant);
     }
 }
