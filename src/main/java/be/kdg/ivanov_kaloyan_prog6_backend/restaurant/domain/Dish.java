@@ -1,5 +1,6 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 public class Dish {
@@ -15,7 +16,7 @@ public class Dish {
 
    private String description;
 
-   private Double price;
+   private BigDecimal price;
 
    private String pictureURL;
 
@@ -24,7 +25,7 @@ public class Dish {
    }
 
     public Dish(String name, DishType type, String description,
-                Double price, String pictureURL) {
+                BigDecimal price, String pictureURL) {
         this.dishId = DishId.create();
         this.name = name;
         this.type = type;
