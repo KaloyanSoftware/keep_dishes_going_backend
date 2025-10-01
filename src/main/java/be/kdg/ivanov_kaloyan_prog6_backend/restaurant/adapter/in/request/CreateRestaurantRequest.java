@@ -10,7 +10,7 @@ public record CreateRestaurantRequest(
         AddressDTO address,
         String email,
         String pictureURL,
-        Double defaultPrepTime,
+        Integer defaultPrepTime,
         CuisineType cuisineType,
         OpeningHoursDTO openingHours)
 {

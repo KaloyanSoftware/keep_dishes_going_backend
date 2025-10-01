@@ -1,18 +1,22 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.CuisineType;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DayOfWeek;
 import jakarta.persistence.*;
-
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Entity
-@Table(name = "restaurantManagement", schema = "restaurant")
+@Table(name = "restaurant", schema = "restaurant")
 public class RestaurantJpaEntity {
     @Id
+    @Column(name = "uuid")
     private UUID id;
 
-    @Column(name = "owner_id", nullable = false, unique = true)
-    private UUID ownerId;
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "owner_id", referencedColumnName = "uuid", nullable = false, unique = true)
+    private OwnerJpaEntity ownerJpa;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -30,22 +34,80 @@ public class RestaurantJpaEntity {
     @Embedded
     private AddressEmbeddable address;
 
-    public RestaurantJpaEntity(UUID id,
-                               UUID ownerId,
-                               String email,
-                               String pictureUrl,
-                               Integer defaultPrepMinutes,
-                               CuisineType cuisineType,
-                               AddressEmbeddable address) {
+    @ElementCollection
+    @CollectionTable(
+            name = "opening_hours",
+            schema = "restaurant",
+            joinColumns = @JoinColumn(name = "restaurant_id", referencedColumnName = "uuid")
+    )
+    @MapKeyEnumerated(EnumType.STRING)     // store enum name
+    @MapKeyColumn(name = "day_of_week")    // column for the map key
+    private Map<DayOfWeek, DayScheduleEmbeddable> openingHours = new HashMap<>();
+
+    public RestaurantJpaEntity() {
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public AddressEmbeddable getAddress() {
+        return address;
+    }
+
+    public Map<DayOfWeek, DayScheduleEmbeddable> getOpeningHours() {
+        return openingHours;
+    }
+
+    public OwnerJpaEntity getOwner() {
+        return ownerJpa;
+    }
+
+    public void setOwner(OwnerJpaEntity owner) {
+        this.ownerJpa = owner;
+    }
+
+    public void setId(UUID id) {
         this.id = id;
-        this.ownerId = ownerId;
+    }
+
+    public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
+    }
+
+    public void setDefaultPrepMinutes(Integer defaultPrepMinutes) {
         this.defaultPrepMinutes = defaultPrepMinutes;
+    }
+
+    public void setCuisineType(CuisineType cuisineType) {
         this.cuisineType = cuisineType;
+    }
+
+    public void setAddress(AddressEmbeddable address) {
         this.address = address;
     }
 
-    public RestaurantJpaEntity() {
+    public void setOpeningHours(Map<DayOfWeek, DayScheduleEmbeddable> openingHours) {
+        this.openingHours = openingHours;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public Integer getDefaultPrepMinutes() {
+        return defaultPrepMinutes;
+    }
+
+    public CuisineType getCuisineType() {
+        return cuisineType;
     }
 }

@@ -5,7 +5,7 @@ import java.util.UUID;
 //aggregate
 public class Restaurant {
 
-    private RestaurantId restaurantId;
+    private RestaurantId id;
 
     private OwnerId ownerId;
 
@@ -15,7 +15,7 @@ public class Restaurant {
 
     private String pictureURL;
 
-    private Double defaultPrepTime;
+    private Integer defaultPrepTime;
 
     private CuisineType cuisineType;
 
@@ -27,9 +27,9 @@ public class Restaurant {
 
     public Restaurant(OwnerId ownerId,
                       Address address, String email,
-                      String pictureURL, Double defaultPrepTime,
+                      String pictureURL, Integer defaultPrepTime,
                       CuisineType cuisineType, OpeningHours openingHours) {
-        this.restaurantId = RestaurantId.create();
+        this.id = RestaurantId.create();
         this.ownerId = ownerId;
         this.address = address;
         this.email = email;
@@ -39,14 +39,14 @@ public class Restaurant {
         this.openingHours = openingHours;
     }
 
-    public RestaurantId retrieveRestaurantId() {
-        return restaurantId;
+    public RestaurantId getId() {
+        return id;
     }
 
     @Override
     public String toString() {
         return "Restaurant{" +
-                "restaurantId=" + restaurantId +
+                "restaurantId=" + id +
                 ", address=" + address +
                 ", email='" + email + '\'' +
                 '}';
@@ -54,5 +54,41 @@ public class Restaurant {
 
     public void markDishOutOfStock(UUID dishId){
        menu.markDishOutOfStock(dishId);
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public OpeningHours getOpeningHours() {
+        return openingHours;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Integer getDefaultPrepTime() {
+        return defaultPrepTime;
+    }
+
+    public CuisineType getCuisineType() {
+        return cuisineType;
+    }
+
+    public void setId(RestaurantId id) {
+        this.id = id;
+    }
+
+    public OwnerId getOwnerId() {
+        return ownerId;
+    }
+
+    public String getPictureURL() {
+        return pictureURL;
+    }
+
+    public Menu getMenu() {
+        return menu;
     }
 }

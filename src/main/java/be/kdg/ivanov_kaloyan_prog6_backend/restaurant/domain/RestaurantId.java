@@ -4,7 +4,16 @@ import java.util.UUID;
 
 public record RestaurantId(UUID id) {
 
+    public static RestaurantId of(UUID uuid) {
+        return new RestaurantId(uuid);
+    }
+
     public static RestaurantId create(){
         return new RestaurantId(UUID.randomUUID());
+    }
+
+    @Override
+    public UUID id() {
+        return id;
     }
 }

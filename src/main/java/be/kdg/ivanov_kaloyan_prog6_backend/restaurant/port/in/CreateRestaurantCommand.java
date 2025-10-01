@@ -9,7 +9,7 @@ public record CreateRestaurantCommand(UUID ownerId,
                                       AddressDTO addressDTO,
                                       String email,
                                       String pictureURL,
-                                      Double defaultPrepTime,
+                                      Integer defaultPrepTime,
                                       CuisineType cuisineType,
                                       OpeningHoursDTO openingHoursDTO) {
     public CreateRestaurantCommand{

@@ -1,7 +1,6 @@
 ### Create restaurant
-POST localhost:8080/api/restaurant
+POST localhost:8080/api/restaurants
 Content-Type: application/json
-
 
 {
   "ownerId": "552cc380-fd95-478f-81c2-bd7d7e5a6598",
@@ -14,7 +13,7 @@ Content-Type: application/json
   },
   "email": "contact@myrestaurant.com",
   "pictureURL": "randomURL",
-  "defaultPrepTime": 20.5,
+  "defaultPrepTime": 20,
   "cuisineType": "ITALIAN",
   "openingHours": {
     "weeklySchedule": {
