@@ -14,4 +14,8 @@ public class Menu {
                 .orElseThrow();
         dish.outOfStock();
     }
+
+    public Dish addDish(Dish dish){
+        return this.dishes.put(dish.getDishId().id(), dish);
+    }
 }

@@ -1,17 +1,18 @@
-package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in;
+package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.dto.AddressDTO;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.dto.OpeningHoursDTO;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Address;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.CuisineType;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.OpeningHours;
+
 import java.util.UUID;
 
 public record CreateRestaurantCommand(UUID ownerId,
-                                      AddressDTO addressDTO,
+                                      Address address,
                                       String email,
                                       String pictureURL,
                                       Integer defaultPrepTime,
                                       CuisineType cuisineType,
-                                      OpeningHoursDTO openingHoursDTO) {
+                                      OpeningHours openingHours) {
     public CreateRestaurantCommand{
         //constraints, checks, etc.
     }

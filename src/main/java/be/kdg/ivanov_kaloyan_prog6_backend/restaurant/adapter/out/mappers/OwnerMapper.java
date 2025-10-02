@@ -1,5 +1,6 @@
-package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out;
+package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.mappers;
 
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.entities.OwnerJpaEntity;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Owner;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.OwnerId;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.RestaurantId;

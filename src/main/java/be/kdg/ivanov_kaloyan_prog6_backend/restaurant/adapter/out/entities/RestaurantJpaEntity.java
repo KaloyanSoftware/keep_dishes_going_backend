@@ -1,5 +1,7 @@
-package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out;
+package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.entities;
 
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.embeddables.AddressEmbeddable;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.embeddables.DayScheduleEmbeddable;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.CuisineType;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DayOfWeek;
 import jakarta.persistence.*;

@@ -1,5 +1,8 @@
-package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out;
+package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.mappers;
 
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.embeddables.AddressEmbeddable;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.embeddables.DayScheduleEmbeddable;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.entities.RestaurantJpaEntity;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

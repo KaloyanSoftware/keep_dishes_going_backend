@@ -1,0 +1,37 @@
+package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.core;
+
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Dish;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Restaurant;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.CreateDishAsDraftCommand;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.CreateDishAsDraftUseCase;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadRestaurantPort;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveRestaurantPort;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CreateDishAsDraftUseCaseImpl implements CreateDishAsDraftUseCase {
+
+    private final LoadRestaurantPort loadRestaurantPort;
+
+    private final SaveRestaurantPort saveRestaurantPort;
+
+    public CreateDishAsDraftUseCaseImpl(final LoadRestaurantPort loadRestaurantPort,
+                                        final SaveRestaurantPort saveRestaurantPort) {
+        this.loadRestaurantPort = loadRestaurantPort;
+        this.saveRestaurantPort = saveRestaurantPort;
+    }
+
+    @Override
+    public void createDishAsDraft(CreateDishAsDraftCommand command) {
+        Restaurant restaurant =
+                loadRestaurantPort.loadBy(command.restaurantId()).orElseThrow(
+                        () -> new NullPointerException("Restaurant not found"));
+
+        Dish dish = restaurant.getMenu().addDish(new Dish(command.name(), command.type(),
+                command.description(), command.price(), command.pictureURL()));
+
+        dish.addAllFoodTags(command.tags());
+
+        saveRestaurantPort.save(restaurant);
+    }
+}

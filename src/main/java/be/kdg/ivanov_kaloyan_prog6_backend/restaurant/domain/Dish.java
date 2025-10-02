@@ -37,4 +37,12 @@ public class Dish {
     public void outOfStock(){
        this.visibility = Visibility.OUT_OF_STOCK;
     }
+
+    public void addAllFoodTags(Set<FoodTag> foodTags){
+       this.tags.addAll(foodTags);
+    }
+
+    public DishId getDishId() {
+        return dishId;
+    }
 }

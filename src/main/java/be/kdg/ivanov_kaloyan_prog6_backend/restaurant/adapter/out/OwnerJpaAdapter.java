@@ -1,9 +1,10 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out;
 
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.mappers.OwnerMapper;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.repositories.OwnerJpaRepository;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Owner;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadOwnerPort;
 import org.springframework.stereotype.Repository;
-
 import java.util.Optional;
 import java.util.UUID;
 

@@ -5,13 +5,13 @@ Content-Type: application/json
 {
   "ownerId": "552cc380-fd95-478f-81c2-bd7d7e5a6598",
   "address": {
-    "street": "Main Street",
-    "number": 42,
-    "postalCode": "1000",
+    "street": "Jump Street",
+    "number": 44,
+    "postalCode": "1020",
     "city": "Brussels",
     "country": "Belgium"
   },
-  "email": "contact@myrestaurant.com",
+  "email": "contact@myrestaurant1.com",
   "pictureURL": "randomURL",
   "defaultPrepTime": 20,
   "cuisineType": "ITALIAN",
@@ -19,7 +19,11 @@ Content-Type: application/json
     "weeklySchedule": {
     "MONDAY": { "start": "10:00:00", "end": "22:00:00" },
     "TUESDAY": { "start": "10:00:00", "end": "22:00:00" },
-    "FRIDAY": { "start": "12:00:00", "end": "23:00:00" }
+    "WEDNESDAY": { "start": "12:00:00", "end": "23:00:00" },
+      "THURSDAY": { "start": "12:00:00", "end": "23:00:00" },
+      "FRIDAY": { "start": "12:00:00", "end": "23:00:00" },
+      "SATURDAY": { "start": "12:00:00", "end": "23:00:00" },
+      "SUNDAY": { "start": "12:00:00", "end": "23:00:00" }
     }
   }
 }
