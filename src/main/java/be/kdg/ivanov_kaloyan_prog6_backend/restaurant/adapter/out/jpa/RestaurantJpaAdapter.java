@@ -1,10 +1,10 @@
-package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out;
+package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.entities.OwnerJpaEntity;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.entities.RestaurantJpaEntity;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.mappers.RestaurantMapper;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.repositories.OwnerJpaRepository;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.repositories.RestaurantJpaRepository;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.OwnerJpaEntity;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.RestaurantJpaEntity;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.mappers.RestaurantMapper;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.repositories.OwnerJpaRepository;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.repositories.RestaurantJpaRepository;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Restaurant;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadRestaurantPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveRestaurantPort;

@@ -1,14 +1,18 @@
-package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out;
+package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.mappers.OwnerMapper;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.repositories.OwnerJpaRepository;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.mappers.OwnerMapper;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.repositories.OwnerJpaRepository;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Owner;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadOwnerPort;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
+@Qualifier("jpa")
+@Profile("jpa")
 public class OwnerJpaAdapter implements LoadOwnerPort {
     private final OwnerJpaRepository owners;
 

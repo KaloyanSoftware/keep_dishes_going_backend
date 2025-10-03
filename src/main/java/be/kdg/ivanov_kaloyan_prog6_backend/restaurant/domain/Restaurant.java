@@ -1,8 +1,5 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 
-import java.util.UUID;
-
-//aggregate
 public class Restaurant {
 
     private RestaurantId id;
@@ -21,10 +18,6 @@ public class Restaurant {
 
     private OpeningHours openingHours;
 
-    private Menu menu = new Menu();
-
-    private static final int MAX_MENU_DISHES = 10;
-
     public Restaurant(OwnerId ownerId,
                       Address address, String email,
                       String pictureURL, Integer defaultPrepTime,
@@ -41,15 +34,6 @@ public class Restaurant {
 
     public RestaurantId getId() {
         return id;
-    }
-
-    @Override
-    public String toString() {
-        return "Restaurant{" +
-                "restaurantId=" + id +
-                ", address=" + address +
-                ", email='" + email + '\'' +
-                '}';
     }
 
     public Address getAddress() {
@@ -82,9 +66,5 @@ public class Restaurant {
 
     public String getPictureURL() {
         return pictureURL;
-    }
-
-    public Menu getMenu() {
-        return menu;
     }
 }

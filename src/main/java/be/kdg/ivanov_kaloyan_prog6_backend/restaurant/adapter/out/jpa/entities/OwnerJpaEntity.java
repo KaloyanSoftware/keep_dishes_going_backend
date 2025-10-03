@@ -1,4 +1,4 @@
-package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.entities;
+package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities;
 
 import jakarta.persistence.*;
 

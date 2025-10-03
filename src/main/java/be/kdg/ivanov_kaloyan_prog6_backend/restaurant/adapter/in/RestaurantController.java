@@ -6,8 +6,10 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.dto.RestaurantD
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.mappers.AddressMapper;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.mappers.OpeningHoursMapper;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.request.CreateRestaurantRequest;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Restaurant;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.CreateRestaurantCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.CreateRestaurantUseCase;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,7 +35,7 @@ public class RestaurantController {
     }
 
     @PostMapping
-    public ResponseEntity<RestaurantDTO> create(@RequestBody CreateRestaurantRequest request) {
+    public ResponseEntity<RestaurantDTO> post(@RequestBody CreateRestaurantRequest request) {
 
         final AddressDTO addressDTO = request.address();
 
@@ -48,8 +50,8 @@ public class RestaurantController {
                 request.cuisineType(),
                 openingHoursMapper.toDomain(openingHoursDTO));
 
-        return ResponseEntity.ok().body(RestaurantDTO.from(
-                this.createRestaurantUseCase.createRestaurant(command))
-        );
+        final Restaurant restaurant = this.createRestaurantUseCase.createRestaurant(command);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(RestaurantDTO.from(restaurant));
     }
 }

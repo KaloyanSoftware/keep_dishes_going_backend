@@ -30,3 +30,20 @@ Content-Type: application/json
 
 
 ###
+
+### Create dish as draft
+POST localhost:8080/api/restaurants/f6adce58-e086-4f73-8c9f-aaf38e701e81/menu/dishes
+Content-Type: application/json
+
+{
+  "name": "Spaghetti Bolognese",
+  "description": "Classic Italian pasta with rich beef tomato sauce.",
+  "price": 14.99,
+  "tags": ["CARNIVORE", "GLUTEN"],
+  "pictureURL": "randomURL",
+  "type": "MAIN"
+}
+
+
+
+###

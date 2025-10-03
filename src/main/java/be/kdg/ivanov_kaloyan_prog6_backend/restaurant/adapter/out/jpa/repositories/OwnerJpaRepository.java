@@ -1,6 +1,6 @@
-package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.repositories;
+package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.repositories;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.entities.OwnerJpaEntity;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.OwnerJpaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

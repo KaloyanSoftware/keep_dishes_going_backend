@@ -36,6 +36,8 @@ public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
                 command.openingHours()
         );
 
-        return saveRestaurantPort.save(restaurant);
+        saveRestaurantPort.save(restaurant);
+
+        return restaurant;
     }
 }

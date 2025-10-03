@@ -1,7 +1,7 @@
-package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.entities;
+package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.embeddables.AddressEmbeddable;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.embeddables.DayScheduleEmbeddable;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.embeddables.AddressEmbeddable;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.embeddables.DayScheduleEmbeddable;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.CuisineType;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DayOfWeek;
 import jakarta.persistence.*;
@@ -43,14 +43,6 @@ public class RestaurantJpaEntity {
     @MapKeyEnumerated(EnumType.STRING)
     @MapKeyColumn(name = "day_of_week")
     private Map<DayOfWeek, DayScheduleEmbeddable> openingHours = new HashMap<>();
-
-    @OneToMany(
-            mappedBy = "restaurant",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
-    private Set<DishJpaEntity> dishes = new HashSet<>();
 
     public RestaurantJpaEntity() {
     }

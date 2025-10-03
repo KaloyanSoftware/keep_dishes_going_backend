@@ -1,34 +1,26 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.core;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Dish;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DishSnapshot;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Restaurant;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DishDraft;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.RestaurantId;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.CreateDishAsDraftCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.CreateDishAsDraftUseCase;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadRestaurantPort;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveRestaurantPort;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveDishDraftPort;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CreateDishAsDraftUseCaseImpl implements CreateDishAsDraftUseCase {
 
-    private final LoadRestaurantPort loadRestaurantPort;
+    private final SaveDishDraftPort saveDishDraftPort;
 
-    private final SaveRestaurantPort saveRestaurantPort;
-
-    public CreateDishAsDraftUseCaseImpl(final LoadRestaurantPort loadRestaurantPort,
-                                        final SaveRestaurantPort saveRestaurantPort) {
-        this.loadRestaurantPort = loadRestaurantPort;
-        this.saveRestaurantPort = saveRestaurantPort;
+    public CreateDishAsDraftUseCaseImpl(final SaveDishDraftPort saveDishDraftPort) {
+        this.saveDishDraftPort = saveDishDraftPort;
     }
 
     @Override
-    public void createDishAsDraft(CreateDishAsDraftCommand command) {
-        Restaurant restaurant = loadRestaurantPort.loadBy(command.restaurantId())
-                .orElseThrow(() -> new NullPointerException("Restaurant not found"));
+    public DishDraft createDishAsDraft(CreateDishAsDraftCommand command) {
 
-        // Build the draft snapshot from the command
-        DishSnapshot draft = new DishSnapshot(
+        DishDraft draft = new DishDraft(
+                RestaurantId.of(command.restaurantId()),
                 command.name(),
                 command.type(),
                 command.tags(),
@@ -37,8 +29,6 @@ public class CreateDishAsDraftUseCaseImpl implements CreateDishAsDraftUseCase {
                 command.pictureURL()
         );
 
-        restaurant.getMenu().addDish(draft);
-
-        saveRestaurantPort.save(restaurant);
+        return saveDishDraftPort.save(draft);
     }
 }

@@ -8,7 +8,7 @@ CREATE TABLE restaurant.owner (
 
 CREATE TABLE restaurant.restaurant (
                             uuid UUID PRIMARY KEY,
-                            owner_id UUID NOT NULL UNIQUE REFERENCES restaurant.owner(uuid),              -- enforces 1:1
+                            owner_id UUID NOT NULL UNIQUE REFERENCES restaurant.owner(uuid),
                             email TEXT NOT NULL,
                             picture_url TEXT,
                             default_prep_min INTEGER NOT NULL,
@@ -20,6 +20,11 @@ CREATE TABLE restaurant.restaurant (
                             country TEXT NOT NULL
 );
 
+
+CREATE TABLE restaurant.menu (
+                                       uuid UUID PRIMARY KEY,
+                                       restaurant_id UUID NOT NULL UNIQUE REFERENCES restaurant.restaurant(uuid)
+);
 
 
 
@@ -34,42 +39,39 @@ CREATE TABLE restaurant.opening_hours (
 
 CREATE TABLE restaurant.dish (
                                  uuid             UUID PRIMARY KEY,
-                                 restaurant_id    UUID NOT NULL REFERENCES restaurant.restaurant(uuid) ON DELETE CASCADE,
-
+                                 menu_id          UUID NOT NULL REFERENCES restaurant.menu(uuid) ON DELETE CASCADE,
                                  visibility       TEXT NOT NULL,
-
-                                 live_name        TEXT,
-                                 live_type        TEXT,
-                                 live_description TEXT,
-                                 live_price INTEGER,
-                                 live_picture_url TEXT,
-
-                                 draft_name        TEXT NOT NULL,
-                                 draft_type        TEXT NOT NULL,
-                                 draft_description TEXT,
-                                 draft_price INTEGER NOT NULL,
-                                 draft_picture_url TEXT,
-
-                                 created_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
-                                 updated_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
-
-                                 CONSTRAINT ck_live_price_nonneg  CHECK (live_price  IS NULL OR live_price >= 0),
-                                 CONSTRAINT ck_draft_price_nonneg CHECK (draft_price >= 0)
+                                 name             TEXT,
+                                 type             TEXT,
+                                 description      TEXT,
+                                 price            FLOAT,
+                                 picture_url      TEXT
 );
 
--- Tags on the LIVE snapshot
-CREATE TABLE restaurant.dish_live_tag (
+CREATE TABLE restaurant.dish_draft (
+                                 uuid             UUID PRIMARY KEY,
+                                 restaurant_id    UUID NOT NULL REFERENCES restaurant.restaurant(uuid) ON DELETE CASCADE,
+                                 dish_id          UUID REFERENCES restaurant.dish(uuid),
+                                 name             TEXT,
+                                 type             TEXT,
+                                 description      TEXT,
+                                 price            FLOAT,
+                                 picture_url      TEXT
+);
+
+CREATE TABLE restaurant.dish_tag (
                                           dish_id UUID NOT NULL REFERENCES restaurant.dish(uuid) ON DELETE CASCADE,
                                           tag     TEXT NOT NULL,
                                           PRIMARY KEY (dish_id, tag)
 );
 
--- Tags on the DRAFT snapshot
-CREATE TABLE restaurant.dish_draft_tag (
-                                           dish_id UUID NOT NULL REFERENCES restaurant.dish(uuid) ON DELETE CASCADE,
-                                           tag     TEXT NOT NULL,
-                                           PRIMARY KEY (dish_id, tag)
+CREATE TABLE restaurant.draft_tag (
+                                           draft_id UUID NOT NULL REFERENCES restaurant.dish_draft(uuid) ON DELETE CASCADE,
+                                           draft_tag     TEXT NOT NULL,
+                                           PRIMARY KEY (draft_id, draft_tag)
 );
+
+
 
 
 CREATE TABLE IF NOT EXISTS event_publication
