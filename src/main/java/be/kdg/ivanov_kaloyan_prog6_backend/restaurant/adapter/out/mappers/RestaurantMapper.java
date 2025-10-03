@@ -17,7 +17,7 @@ public interface RestaurantMapper {
     @Mapping(target = "owner", ignore = true)
     @Mapping(target = "email", expression = "java(domain.getEmail())")
     @Mapping(target = "pictureUrl", expression = "java(domain.getPictureURL())")
-    @Mapping(target = "defaultPrepMinutes", expression = "java(domain.getDefaultPrepTime())") // adjust if you already use int
+    @Mapping(target = "defaultPrepMinutes", expression = "java(domain.getDefaultPrepTime())")
     @Mapping(target = "cuisineType", expression = "java(domain.getCuisineType())")
     @Mapping(target = "address", expression = "java(toJpaAddress(domain.getAddress()))")
     @Mapping(target = "openingHours", expression = "java(toJpaOpeningHours(domain.getOpeningHours()))")

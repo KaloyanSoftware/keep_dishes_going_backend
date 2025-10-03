@@ -2,20 +2,16 @@ package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 public class Menu {
-    private Map<UUID, Dish> dishes = new HashMap<>();
 
-    public void markDishOutOfStock(UUID id){
-        //implement custom exception
-        Dish dish = Optional.ofNullable(dishes.get(id))
-                .orElseThrow();
-        dish.outOfStock();
-    }
+    private final Map<UUID, Dish> dishes = new HashMap<>();
 
-    public Dish addDish(Dish dish){
-        return this.dishes.put(dish.getDishId().id(), dish);
+
+    public Dish addDish(DishSnapshot draft){
+        Dish dish = new Dish(draft, null);
+        dishes.put(dish.dishId().id(), dish);
+        return dish;
     }
 }

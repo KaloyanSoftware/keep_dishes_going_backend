@@ -25,12 +25,52 @@ CREATE TABLE restaurant.restaurant (
 
 CREATE TABLE restaurant.opening_hours (
                                restaurant_id UUID NOT NULL REFERENCES restaurant.restaurant(uuid) ON DELETE CASCADE,
-                               day_of_week   TEXT NOT NULL,     -- stores enum name: MONDAY..SUNDAY
+                               day_of_week   TEXT NOT NULL,
                                start_time    TIME NOT NULL,
                                end_time      TIME NOT NULL,
                                PRIMARY KEY (restaurant_id, day_of_week),
                                CONSTRAINT ck_time_range CHECK (start_time < end_time)
 );
+
+CREATE TABLE restaurant.dish (
+                                 uuid             UUID PRIMARY KEY,
+                                 restaurant_id    UUID NOT NULL REFERENCES restaurant.restaurant(uuid) ON DELETE CASCADE,
+
+                                 visibility       TEXT NOT NULL,
+
+                                 live_name        TEXT,
+                                 live_type        TEXT,
+                                 live_description TEXT,
+                                 live_price INTEGER,
+                                 live_picture_url TEXT,
+
+                                 draft_name        TEXT NOT NULL,
+                                 draft_type        TEXT NOT NULL,
+                                 draft_description TEXT,
+                                 draft_price INTEGER NOT NULL,
+                                 draft_picture_url TEXT,
+
+                                 created_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
+                                 updated_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
+
+                                 CONSTRAINT ck_live_price_nonneg  CHECK (live_price  IS NULL OR live_price >= 0),
+                                 CONSTRAINT ck_draft_price_nonneg CHECK (draft_price >= 0)
+);
+
+-- Tags on the LIVE snapshot
+CREATE TABLE restaurant.dish_live_tag (
+                                          dish_id UUID NOT NULL REFERENCES restaurant.dish(uuid) ON DELETE CASCADE,
+                                          tag     TEXT NOT NULL,
+                                          PRIMARY KEY (dish_id, tag)
+);
+
+-- Tags on the DRAFT snapshot
+CREATE TABLE restaurant.dish_draft_tag (
+                                           dish_id UUID NOT NULL REFERENCES restaurant.dish(uuid) ON DELETE CASCADE,
+                                           tag     TEXT NOT NULL,
+                                           PRIMARY KEY (dish_id, tag)
+);
+
 
 CREATE TABLE IF NOT EXISTS event_publication
 (

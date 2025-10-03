@@ -5,9 +5,7 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.embeddables.Da
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.CuisineType;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DayOfWeek;
 import jakarta.persistence.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "restaurant", schema = "restaurant")
@@ -42,9 +40,17 @@ public class RestaurantJpaEntity {
             schema = "restaurant",
             joinColumns = @JoinColumn(name = "restaurant_id", referencedColumnName = "uuid")
     )
-    @MapKeyEnumerated(EnumType.STRING)     // store enum name
-    @MapKeyColumn(name = "day_of_week")    // column for the map key
+    @MapKeyEnumerated(EnumType.STRING)
+    @MapKeyColumn(name = "day_of_week")
     private Map<DayOfWeek, DayScheduleEmbeddable> openingHours = new HashMap<>();
+
+    @OneToMany(
+            mappedBy = "restaurant",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private Set<DishJpaEntity> dishes = new HashSet<>();
 
     public RestaurantJpaEntity() {
     }

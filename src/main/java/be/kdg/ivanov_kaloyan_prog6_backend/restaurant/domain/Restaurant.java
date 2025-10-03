@@ -52,10 +52,6 @@ public class Restaurant {
                 '}';
     }
 
-    public void markDishOutOfStock(UUID dishId){
-       menu.markDishOutOfStock(dishId);
-    }
-
     public Address getAddress() {
         return address;
     }

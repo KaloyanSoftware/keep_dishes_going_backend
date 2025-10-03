@@ -11,7 +11,6 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveRestaurantPor
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
-
 import java.util.Optional;
 import java.util.UUID;
 

@@ -4,10 +4,10 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DishType;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.FoodTag;
 import org.springframework.util.Assert;
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.EnumSet;
 import java.util.UUID;
 
-public record CreateDishAsDraftCommand(UUID restaurantId, String name, DishType type, Set<FoodTag> tags,
+public record CreateDishAsDraftCommand(UUID restaurantId, String name, DishType type, EnumSet<FoodTag> tags,
                                        String description, BigDecimal price, String pictureURL){
 
     public CreateDishAsDraftCommand{

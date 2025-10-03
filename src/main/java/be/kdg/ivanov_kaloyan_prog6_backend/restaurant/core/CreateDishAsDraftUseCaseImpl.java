@@ -1,6 +1,7 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.core;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Dish;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DishSnapshot;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Restaurant;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.CreateDishAsDraftCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.CreateDishAsDraftUseCase;
@@ -23,14 +24,20 @@ public class CreateDishAsDraftUseCaseImpl implements CreateDishAsDraftUseCase {
 
     @Override
     public void createDishAsDraft(CreateDishAsDraftCommand command) {
-        Restaurant restaurant =
-                loadRestaurantPort.loadBy(command.restaurantId()).orElseThrow(
-                        () -> new NullPointerException("Restaurant not found"));
+        Restaurant restaurant = loadRestaurantPort.loadBy(command.restaurantId())
+                .orElseThrow(() -> new NullPointerException("Restaurant not found"));
 
-        Dish dish = restaurant.getMenu().addDish(new Dish(command.name(), command.type(),
-                command.description(), command.price(), command.pictureURL()));
+        // Build the draft snapshot from the command
+        DishSnapshot draft = new DishSnapshot(
+                command.name(),
+                command.type(),
+                command.tags(),
+                command.description(),
+                command.price(),
+                command.pictureURL()
+        );
 
-        dish.addAllFoodTags(command.tags());
+        restaurant.getMenu().addDish(draft);
 
         saveRestaurantPort.save(restaurant);
     }
