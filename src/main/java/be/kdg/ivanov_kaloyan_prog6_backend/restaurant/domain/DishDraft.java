@@ -1,7 +1,8 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 
 import java.math.BigDecimal;
-import java.util.EnumSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DishDraft {
 
@@ -15,7 +16,7 @@ public class DishDraft {
 
     private DishType type;
 
-    EnumSet<FoodTag> tags;
+    private List<FoodTag> tags;
 
     private String description;
 
@@ -24,7 +25,7 @@ public class DishDraft {
     private String pictureURL;
 
     public DishDraft(RestaurantId restaurantId, String name, DishType type,
-                     EnumSet<FoodTag> tags, String description,
+                     List<FoodTag> tags, String description,
                      BigDecimal price, String pictureURL) {
         this.id = DishDraftId.create();
         this.restaurantId = restaurantId;
@@ -76,11 +77,11 @@ public class DishDraft {
         this.type = type;
     }
 
-    public EnumSet<FoodTag> getTags() {
+    public List<FoodTag> getTags() {
         return tags;
     }
 
-    public void setTags(EnumSet<FoodTag> tags) {
+    public void setTags(List<FoodTag> tags) {
         this.tags = tags;
     }
 

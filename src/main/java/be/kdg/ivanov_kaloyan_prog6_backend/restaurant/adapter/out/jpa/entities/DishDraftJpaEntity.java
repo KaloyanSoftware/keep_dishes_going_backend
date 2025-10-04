@@ -3,8 +3,9 @@ package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DishType;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.FoodTag;
 import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -47,7 +48,7 @@ public class DishDraftJpaEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "draft_tag", nullable = false)
-    private Set<FoodTag> draft_tags = new HashSet<>();
+    private List<FoodTag> draft_tags = new ArrayList<>();
 
     public UUID getId() {
         return id;
@@ -105,11 +106,11 @@ public class DishDraftJpaEntity {
         this.pictureUrl = pictureUrl;
     }
 
-    public Set<FoodTag> getDraft_tags() {
+    public List<FoodTag> getDraft_tags() {
         return draft_tags;
     }
 
-    public void setDraft_tags(Set<FoodTag> draft_tags) {
+    public void setDraft_tags(List<FoodTag> draft_tags) {
         this.draft_tags = draft_tags;
     }
 

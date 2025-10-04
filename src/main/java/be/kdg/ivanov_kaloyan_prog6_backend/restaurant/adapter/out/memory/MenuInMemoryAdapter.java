@@ -19,15 +19,8 @@ public class MenuInMemoryAdapter implements SaveMenuPort, LoadMenuPort {
     private final Map<UUID, Menu> menus = new HashMap<>();
 
     @Override
-    public Menu save(Menu menu) {
-        return menus.put(menu.getId().id(), menu);
-    }
-
-    @Override
-    public Optional<Menu> loadBy(UUID restaurantId) {
-        return menus.values().stream()
-                .filter(m -> m.getRestaurantId().id().equals(restaurantId))
-                .findFirst();
+    public void save(Menu menu) {
+        menus.put(menu.getId().id(), menu);
     }
 
     @Override

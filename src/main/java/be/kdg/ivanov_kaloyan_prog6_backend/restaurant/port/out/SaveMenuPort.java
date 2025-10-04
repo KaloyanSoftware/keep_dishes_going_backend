@@ -4,5 +4,5 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Menu;
 
 public interface SaveMenuPort {
 
-    Menu save(Menu menu);
+    void save(Menu menu);
 }

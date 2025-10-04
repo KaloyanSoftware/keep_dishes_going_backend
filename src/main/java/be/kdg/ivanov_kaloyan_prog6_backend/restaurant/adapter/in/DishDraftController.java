@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/restaurants/{restaurantId}/menu/dishes")
+@RequestMapping("/api/restaurants/{restaurantId}/drafts")
 public class DishDraftController {
     private final CreateDishAsDraftUseCase createDishAsDraftUseCase;
 

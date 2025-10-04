@@ -7,6 +7,8 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.CreateDis
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveDishDraftPort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class CreateDishAsDraftUseCaseImpl implements CreateDishAsDraftUseCase {
 
@@ -25,7 +27,7 @@ public class CreateDishAsDraftUseCaseImpl implements CreateDishAsDraftUseCase {
                 command.type(),
                 command.tags(),
                 command.description(),
-                command.price(),
+                BigDecimal.valueOf(command.price()),
                 command.pictureURL()
         );
 

@@ -1,7 +1,8 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 
 import java.math.BigDecimal;
-import java.util.EnumSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class Dish {
 
@@ -15,13 +16,35 @@ public final class Dish {
 
     private DishType type;
 
-    EnumSet<FoodTag> tags;
+    private List<FoodTag> tags = new ArrayList<>();
 
     private String description;
 
     private BigDecimal price;
 
     private String pictureURL;
+
+    public static Dish rehydrate(
+            DishId id,
+            Visibility visibility,
+            String name,
+            DishType type,
+            List<FoodTag> tags,
+            String description,
+            BigDecimal price,
+            String pictureURL
+    ) {
+        Dish d = new Dish();
+        d.id = id;
+        d.visibility = visibility;
+        d.name = name;
+        d.type = type;
+        if (tags != null) d.tags = new ArrayList<>(tags);
+        d.description = description;
+        d.price = price;
+        d.pictureURL = pictureURL;
+        return d;
+    }
 
     public void publish(){
         setVisibility(Visibility.PUBLISHED);
@@ -37,5 +60,29 @@ public final class Dish {
 
     public DishId getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public DishType getType() {
+        return type;
+    }
+
+    public List<FoodTag> getTags() {
+        return tags;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public String getPictureURL() {
+        return pictureURL;
     }
 }

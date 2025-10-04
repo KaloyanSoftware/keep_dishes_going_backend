@@ -4,11 +4,11 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DishDraft;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DishType;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.FoodTag;
 import java.math.BigDecimal;
-import java.util.EnumSet;
+import java.util.List;
 import java.util.UUID;
 
 public record DishDraftDTO(UUID draftId, String name,
-                           DishType type, EnumSet<FoodTag>tags, String description,
+                           DishType type, List<FoodTag> tags, String description,
                            BigDecimal price, String pictureURL) {
 
     public static DishDraftDTO from(final DishDraft draft) {

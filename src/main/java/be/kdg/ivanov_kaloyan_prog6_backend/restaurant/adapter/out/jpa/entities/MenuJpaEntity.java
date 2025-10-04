@@ -17,4 +17,28 @@ public class MenuJpaEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<DishJpaEntity> dishes;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public RestaurantJpaEntity getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(RestaurantJpaEntity restaurant) {
+        this.restaurant = restaurant;
+    }
+
+    public List<DishJpaEntity> getDishes() {
+        return dishes;
+    }
+
+    public void setDishes(List<DishJpaEntity> dishes) {
+        this.dishes = dishes;
+    }
 }

@@ -4,6 +4,5 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.M
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
-public interface MenuRepository extends JpaRepository<MenuJpaEntity, UUID> {
-
+public interface MenuJpaRepository extends JpaRepository<MenuJpaEntity, UUID> {
 }

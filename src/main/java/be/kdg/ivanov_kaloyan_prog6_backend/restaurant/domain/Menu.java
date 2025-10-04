@@ -15,7 +15,7 @@ public class Menu {
 
     private final Map<UUID, Dish> dishes = new HashMap<>();
 
-    private static final int MAX_DISHES = 10;
+    private static final int MAX_PUBLISHED_DISHES = 10;
 
     public void publishDish(UUID dishId){
         Dish dish = dishes.get(dishId);
@@ -32,6 +32,14 @@ public class Menu {
         }
     }
 
+    public static Menu rehydrate(MenuId id, RestaurantId restaurantId, Map<UUID, Dish> dishes) {
+        Menu m = new Menu(restaurantId);
+        m.id = id;
+        m.dishes.clear();
+        if (dishes != null) m.dishes.putAll(dishes);
+        return m;
+    }
+
     public Menu(RestaurantId restaurantId) {
         this.id = MenuId.create();
         this.restaurantId = restaurantId;
@@ -46,6 +54,10 @@ public class Menu {
     }
 
     private boolean maxCapacityReached(){
-        return MAX_DISHES == dishes.size();
+        return MAX_PUBLISHED_DISHES == dishes.size();
+    }
+
+    public Map<UUID, Dish> getDishes() {
+        return dishes;
     }
 }
