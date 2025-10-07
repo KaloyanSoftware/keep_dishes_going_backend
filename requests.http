@@ -32,11 +32,12 @@ Content-Type: application/json
 ###
 
 ### Create dish as draft
-POST localhost:8080/api/restaurants/f6adce58-e086-4f73-8c9f-aaf38e701e81/drafts
+POST localhost:8080/api/drafts
 Content-Type: application/json
 Accept: application/json
 
 {
+  "restaurantId": "f6adce58-e086-4f73-8c9f-aaf38e701e81",
   "name": "Spaghetti Bolognese",
   "description": "Classic Italian pasta with rich beef tomato sauce.",
   "price": 14.99,
@@ -48,3 +49,19 @@ Accept: application/json
 
 
 ###
+
+### Publish a draft
+POST localhost:8080/api/dishes
+Content-Type: application/json
+Accept: application/json
+
+{
+  "restaurantId": "f6adce58-e086-4f73-8c9f-aaf38e701e81",
+  "draftId": "828fca7e-6328-4b70-913d-77a79570c1d5"
+}
+
+
+
+###
+
+

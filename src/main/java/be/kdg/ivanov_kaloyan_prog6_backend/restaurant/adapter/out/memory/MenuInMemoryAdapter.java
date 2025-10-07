@@ -27,4 +27,9 @@ public class MenuInMemoryAdapter implements SaveMenuPort, LoadMenuPort {
     public Optional<Menu> loadById(UUID id) {
         return Optional.empty();
     }
+
+    @Override
+    public Optional<Menu> loadByRestaurantId(UUID restaurantId) {
+        return Optional.empty();
+    }
 }

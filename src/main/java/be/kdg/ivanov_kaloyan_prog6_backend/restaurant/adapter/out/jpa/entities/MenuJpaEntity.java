@@ -15,7 +15,7 @@ public class MenuJpaEntity {
     @JoinColumn(name = "restaurant_id", referencedColumnName = "uuid", nullable = false)
     private RestaurantJpaEntity restaurant;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
     private List<DishJpaEntity> dishes;
 
     public UUID getId() {

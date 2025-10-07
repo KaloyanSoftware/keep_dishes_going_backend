@@ -3,13 +3,16 @@ package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.mappers;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.DishJpaEntity;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.MenuJpaEntity;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Dish;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DishId;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.MenuId;
 import org.mapstruct.*;
 import java.util.*;
 
-@Mapper(componentModel = "spring", uses = IdMoneyMapper.class)
+@Mapper(componentModel = "spring", uses = IdMoneyMapper.class, imports = {DishId.class, MenuId.class})
 public interface DishMapper {
 
-    @Mapping(target = "id", expression = "java(idMoney.toDishId(jpa.getId()))")
+    @Mapping(target = "id", expression = "java(DishId.of(jpa.getId()))")
+    @Mapping(target = "menuId", expression = "java(MenuId.of(jpa.getId()))")
     @Mapping(target = "visibility", source = "visibility")
     @Mapping(target = "name", source = "name")
     @Mapping(target = "type", source = "type")
@@ -19,7 +22,8 @@ public interface DishMapper {
     @Mapping(target = "pictureURL", source = "pictureUrl")
     default Dish toDomain(DishJpaEntity jpa, @Context IdMoneyMapper idMoney) {
         return Dish.rehydrate(
-                idMoney.toDishId(jpa.getId()),
+                DishId.of((jpa.getId())),
+                MenuId.of(jpa.getMenu().getId()),
                 jpa.getVisibility(),
                 jpa.getName(),
                 jpa.getType(),

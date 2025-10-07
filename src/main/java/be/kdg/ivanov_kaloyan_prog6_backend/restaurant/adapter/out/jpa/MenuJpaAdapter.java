@@ -11,6 +11,7 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.repositori
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Menu;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadMenuPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveMenuPort;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
@@ -23,39 +24,46 @@ import java.util.UUID;
 @Profile("jpa")
 public class MenuJpaAdapter implements LoadMenuPort, SaveMenuPort {
 
-    private final MenuJpaRepository menuJpaRepository;
-    private final RestaurantJpaRepository restaurantJpaRepository;
+    private final MenuJpaRepository menus;
+    private final RestaurantJpaRepository restaurants;
     private final MenuMapper menuMapper;
     private final IdMoneyMapper idMoneyMapper;
     private final DishMapper dishMapper;
 
-    public MenuJpaAdapter(final MenuJpaRepository menuJpaRepository,
+    public MenuJpaAdapter(final MenuJpaRepository menus,
                           final MenuMapper menuMapper,
                           final IdMoneyMapper idMoneyMapper,
                           final DishMapper dishMapper,
-                          final RestaurantJpaRepository restaurantJpaRepository) {
-        this.menuJpaRepository = menuJpaRepository;
+                          final RestaurantJpaRepository restaurants) {
+        this.menus = menus;
         this.menuMapper = menuMapper;
         this.idMoneyMapper = idMoneyMapper;
         this.dishMapper = dishMapper;
-        this.restaurantJpaRepository = restaurantJpaRepository;
+        this.restaurants = restaurants;
     }
 
     @Override
     public Optional<Menu> loadById(UUID id) {
-        return menuJpaRepository
+        return menus
                 .findById(id)
                 .map(jpa -> menuMapper.toDomain(jpa, idMoneyMapper, dishMapper));
     }
 
     @Override
+    public Optional<Menu> loadByRestaurantId(UUID restaurantId) {
+        return menus
+                .findByRestaurant_Id(restaurantId)
+                .map(jpa -> menuMapper.toDomain(jpa, idMoneyMapper, dishMapper));
+    }
+
+    @Override
     public void save(Menu menu) {
-        RestaurantJpaEntity restaurantJpa = restaurantJpaRepository.findById(menu.getRestaurantId().id()).orElseThrow(
+        RestaurantJpaEntity restaurantJpa = restaurants.findById(menu.getRestaurantId().id()).orElseThrow(
                 () -> new RestaurantNotFoundException("Can't find restaurant with id: " + menu.getRestaurantId())
         );
 
         MenuJpaEntity jpa = menuMapper.toJpa(menu, idMoneyMapper, dishMapper, restaurantJpa);
 
-        menuJpaRepository.save(jpa);
+        menus.save(jpa);
     }
 }

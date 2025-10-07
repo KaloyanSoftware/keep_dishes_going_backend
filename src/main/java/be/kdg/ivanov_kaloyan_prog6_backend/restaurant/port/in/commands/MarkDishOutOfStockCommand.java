@@ -4,10 +4,9 @@ import org.springframework.util.Assert;
 
 import java.util.UUID;
 
-public record UnpublishDishCommand(UUID dishId,
-                                   UUID menuId) {
+public record MarkDishOutOfStockCommand(UUID dishId, UUID menuId) {
 
-    public UnpublishDishCommand {
+    public MarkDishOutOfStockCommand {
         Assert.notNull(dishId, "dishId must not be null");
         Assert.notNull(menuId, "menuId must not be null");
     }

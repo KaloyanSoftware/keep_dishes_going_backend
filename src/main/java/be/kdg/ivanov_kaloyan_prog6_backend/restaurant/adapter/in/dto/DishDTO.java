@@ -1,4 +1,20 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.dto;
 
-public record DishDTO() {
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Dish;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DishType;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.FoodTag;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
+
+public record DishDTO(UUID dishId, UUID menuId, String name,
+                      DishType type, List<FoodTag> tags, String description,
+                      BigDecimal price, String pictureURL, Dish.Visibility visibility) {
+
+    public static DishDTO from(final Dish dish){
+        return new DishDTO(dish.getId().id(), dish.getMenuId().id(), dish.getName(),
+                dish.getType(),dish.getTags(),dish.getDescription(), dish.getPrice(),
+                dish.getPictureURL(), dish.getVisibility());
+    }
 }

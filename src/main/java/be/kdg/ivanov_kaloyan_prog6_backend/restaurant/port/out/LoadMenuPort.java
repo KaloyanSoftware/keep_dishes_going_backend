@@ -7,4 +7,6 @@ import java.util.UUID;
 public interface LoadMenuPort {
 
     Optional<Menu> loadById(UUID id);
+
+    Optional<Menu> loadByRestaurantId(UUID restaurantId);
 }
