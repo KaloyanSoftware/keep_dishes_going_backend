@@ -39,7 +39,7 @@ public class DishJpaEntity {
     @Column(name = "picture_url")
     private String pictureUrl;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "dish_tag",
             schema = "restaurant",

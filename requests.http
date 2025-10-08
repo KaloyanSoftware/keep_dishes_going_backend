@@ -57,9 +57,61 @@ Accept: application/json
 
 {
   "restaurantId": "f6adce58-e086-4f73-8c9f-aaf38e701e81",
-  "draftId": "828fca7e-6328-4b70-913d-77a79570c1d5"
+  "draftId": "b57ccdda-4cc4-4803-a844-1ad2e7eee074"
 }
 
+
+
+###
+
+### Unpublish a dish
+PATCH localhost:8080/api/dishes/:unpublish
+Content-Type: application/json
+Accept: application/json
+
+{
+  "dishId": "a661c813-0cd2-46cb-bed6-2cd6ecf053fc",
+  "menuId": "f6adce58-e086-4f56-8c9f-aaf38e701e81"
+}
+
+
+###
+
+### Publish a dish
+PATCH localhost:8080/api/dishes/:publish
+Content-Type: application/json
+Accept: application/json
+
+{
+  "dishId": "a661c813-0cd2-46cb-bed6-2cd6ecf053fc",
+  "menuId": "f6adce58-e086-4f56-8c9f-aaf38e701e81"
+}
+
+
+###
+
+### Mark Dish Out of Stock
+PATCH localhost:8080/api/dishes/:outOfStock
+Content-Type: application/json
+Accept: application/json
+
+{
+  "dishId": "a661c813-0cd2-46cb-bed6-2cd6ecf053fc",
+  "menuId": "f6adce58-e086-4f56-8c9f-aaf38e701e81"
+}
+
+
+###
+
+### Mark Dish Back In Stock
+PATCH localhost:8080/api/dishes/:backInStock
+Content-Type: application/json
+Accept: application/json
+
+{
+  "dishId": "a661c813-0cd2-46cb-bed6-2cd6ecf053fc",
+  "menuId": "f6adce58-e086-4f56-8c9f-aaf38e701e81"
+}
 
 
 ###

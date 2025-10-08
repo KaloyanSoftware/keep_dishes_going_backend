@@ -39,7 +39,7 @@ public class DishDraftJpaEntity {
     @Column(name = "picture_url")
     private String pictureUrl;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "draft_tag",
             schema = "restaurant",
