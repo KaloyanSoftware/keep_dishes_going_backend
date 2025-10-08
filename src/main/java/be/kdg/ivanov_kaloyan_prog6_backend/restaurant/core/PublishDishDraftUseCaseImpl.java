@@ -1,7 +1,7 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.core;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.exceptions.DraftNotFoundException;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.exceptions.MenuNotFoundException;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.exceptions.DraftNotFoundException;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.exceptions.MenuNotFoundException;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Dish;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DishDraft;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Menu;

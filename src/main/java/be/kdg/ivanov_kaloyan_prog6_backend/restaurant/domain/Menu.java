@@ -1,6 +1,6 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.exceptions.*;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.exceptions.*;
 
 import java.util.HashMap;
 import java.util.List;
