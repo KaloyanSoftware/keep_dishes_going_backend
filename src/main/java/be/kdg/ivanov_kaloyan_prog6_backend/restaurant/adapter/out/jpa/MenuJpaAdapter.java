@@ -1,6 +1,6 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.exceptions.RestaurantNotFoundException;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.exceptions.RestaurantNotFoundException;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.MenuJpaEntity;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.RestaurantJpaEntity;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.mappers.DishMapper;
@@ -11,7 +11,6 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.repositori
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Menu;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadMenuPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveMenuPort;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;

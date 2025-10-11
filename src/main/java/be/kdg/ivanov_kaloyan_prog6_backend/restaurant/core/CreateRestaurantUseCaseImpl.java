@@ -4,6 +4,7 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.CreateRestaurantCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.CreateRestaurantUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadOwnerPort;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveMenuPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveRestaurantPort;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,14 @@ public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
 
     private final LoadOwnerPort loadOwnerPort;
 
-    public CreateRestaurantUseCaseImpl(SaveRestaurantPort saveRestaurantPort,
-                                       LoadOwnerPort loadOwnerPort) {
+    private final SaveMenuPort saveMenuPort;
+
+    public CreateRestaurantUseCaseImpl(final SaveRestaurantPort saveRestaurantPort,
+                                       final LoadOwnerPort loadOwnerPort,
+                                       final SaveMenuPort saveMenuPort) {
         this.saveRestaurantPort = saveRestaurantPort;
         this.loadOwnerPort = loadOwnerPort;
+        this.saveMenuPort = saveMenuPort;
     }
 
     @Override
@@ -36,7 +41,11 @@ public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
                 command.openingHours()
         );
 
+        Menu menu = new Menu(restaurant.getId());
+
         saveRestaurantPort.save(restaurant);
+
+        saveMenuPort.save(menu);
 
         return restaurant;
     }

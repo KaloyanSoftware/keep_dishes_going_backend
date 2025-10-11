@@ -3,17 +3,17 @@ POST localhost:8080/api/restaurants
 Content-Type: application/json
 
 {
-  "ownerId": "552cc380-fd95-478f-81c2-bd7d7e5a6598",
+  "ownerId": "552cc380-fd95-478f-81c2-bd7d7e5a6588",
   "address": {
-    "street": "Jump Street",
-    "number": 44,
-    "postalCode": "1020",
-    "city": "Brussels",
-    "country": "Belgium"
+    "street": "Fellow St.",
+    "number": 56,
+    "postalCode": "2020",
+    "city": "Berlin",
+    "country": "Germany"
   },
-  "email": "contact@myrestaurant1.com",
+  "email": "contact@myrestaurant2.com",
   "pictureURL": "randomURL",
-  "defaultPrepTime": 20,
+  "defaultPrepTime": 30,
   "cuisineType": "ITALIAN",
   "openingHours": {
     "weeklySchedule": {
@@ -37,12 +37,12 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "restaurantId": "f6adce58-e086-4f73-8c9f-aaf38e701e81",
-  "name": "Spaghetti Bolognese",
-  "description": "Classic Italian pasta with rich beef tomato sauce.",
-  "price": 14.99,
+  "restaurantId": "190a8e83-3585-4255-b6d2-d7d34b36c3e0",
+  "name": "Pizza Margaritta",
+  "description": "Classic Italian pizza",
+  "price": 18,
   "tags": ["CARNIVORE"],
-  "pictureURL": "randomURL",
+  "pictureURL": "someURL",
   "type": "MAIN"
 }
 
@@ -56,8 +56,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "restaurantId": "f6adce58-e086-4f73-8c9f-aaf38e701e81",
-  "draftId": "b57ccdda-4cc4-4803-a844-1ad2e7eee074"
+  "restaurantId": "190a8e83-3585-4255-b6d2-d7d34b36c3e0",
+  "draftId": "bd67bb46-a0d5-42ed-9a58-ba92be82e444"
 }
 
 
@@ -113,6 +113,30 @@ Accept: application/json
   "menuId": "f6adce58-e086-4f56-8c9f-aaf38e701e81"
 }
 
+
+###
+
+###Add Item to basket
+POST localhost:8080/api/basket/items
+Content-Type: application/json
+Accept: application/json
+
+{
+  "restaurantId": "190a8e83-3585-4255-b6d2-d7d34b36c3e0",
+  "dishId": "f0748129-7173-41f9-97df-a520f7995ac9",
+  "ownerId": "552cc380-fd95-478f-81c2-bd7d7e5a6598"
+}
+
+###
+
+###Remove item from basket
+DELETE localhost:8080/api/basket/items
+Content-Type: application/json
+
+{
+  "dishId": "bf2831a6-5993-4380-9120-eb65aa5254b8",
+  "basketId": "d7c305b0-ec42-48fd-af1a-874772290d65"
+}
 
 ###
 

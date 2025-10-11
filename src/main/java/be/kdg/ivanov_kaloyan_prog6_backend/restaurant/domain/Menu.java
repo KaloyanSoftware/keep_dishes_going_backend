@@ -1,11 +1,8 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.exceptions.*;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.exceptions.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 //aggregate
 public class Menu {
@@ -104,6 +101,19 @@ public class Menu {
         return dish;
     }
 
+    public Optional<Dish> findPublishedDish(UUID dishId){
+        Dish dish = dishes.get(dishId);
+        if(dish == null){
+            return Optional.empty();
+        }
+
+        if(dish.getVisibility() != Dish.Visibility.PUBLISHED){
+            throw new DishNotPublishedException("Dish with id " + dishId + " is not published or already out of stock!");
+        }
+
+        return Optional.of(dishes.get(dishId));
+    }
+
 
 
     public static Menu rehydrate(MenuId id, RestaurantId restaurantId, Map<UUID, Dish> dishes) {
@@ -137,4 +147,5 @@ public class Menu {
     public Map<UUID, Dish> getDishes() {
         return dishes;
     }
+
 }
