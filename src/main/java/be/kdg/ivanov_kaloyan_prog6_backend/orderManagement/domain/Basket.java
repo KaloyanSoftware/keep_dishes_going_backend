@@ -5,17 +5,21 @@ import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.InvalidBas
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class Basket {
     private BasketId id;
 
     private UUID restaurantId;
 
+    private UUID ownerId;
+
     private Map<UUID, Item> items = new HashMap<>();
 
-    public Basket(UUID restaurantId) {
+    public Basket(UUID restaurantId, UUID ownerId) {
         this.id = BasketId.create();
         this.restaurantId = restaurantId;
+        this.ownerId = ownerId;
     }
 
     public void addItem(Item newItem) {
@@ -44,5 +48,21 @@ public class Basket {
 
     public Map<UUID, Item> getItems() {
         return items;
+    }
+
+    public UUID getOwnerId() {
+        return ownerId;
+    }
+
+    @Override
+    public String toString() {
+        String itemsString = items.values().stream()
+                .map(Item::toString)
+                .collect(Collectors.joining(",\n    "));
+
+        return String.format(
+                "Basket{id=%s, restaurantId=%s, items=[\n    %s\n]}",
+                id.id(), restaurantId, itemsString.isEmpty() ? "no items" : itemsString
+        );
     }
 }

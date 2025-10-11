@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public record BasketDTO(Map<UUID, ItemDTO> items) {
+public record BasketDTO(UUID basketId, Map<UUID, ItemDTO> items) {
 
     public static BasketDTO from(final Basket basket) {
         Map<UUID, ItemDTO> itemDTOs = basket.getItems().entrySet().stream()
@@ -14,6 +14,6 @@ public record BasketDTO(Map<UUID, ItemDTO> items) {
                         entry -> ItemDTO.from(entry.getValue())
                 ));
 
-        return new BasketDTO(itemDTOs);
+        return new BasketDTO(basket.getId().id(),itemDTOs);
     }
 }

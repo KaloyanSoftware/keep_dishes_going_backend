@@ -10,4 +10,12 @@ public record Item(UUID restaurantId,
                    Integer quantity,
                    String pictureURL,
                    boolean outOfStock) {
+
+    @Override
+    public String toString() {
+        return String.format(
+                "Item{name='%s', price=%.2f, quantity=%d, outOfStock=%s, dishId=%s}",
+                name, price, quantity, outOfStock, dishId
+        );
+    }
 }

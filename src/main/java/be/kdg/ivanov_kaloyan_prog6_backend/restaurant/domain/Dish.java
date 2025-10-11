@@ -123,4 +123,8 @@ public final class Dish {
     private DishId saveDishId(DishId id){
         return Objects.requireNonNullElseGet(id, DishId::create);
     }
+
+    public boolean outOfStock(){
+        return this.visibility == Visibility.OUT_OF_STOCK;
+    }
 }

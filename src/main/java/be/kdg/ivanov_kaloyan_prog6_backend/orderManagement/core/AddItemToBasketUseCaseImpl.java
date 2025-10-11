@@ -1,13 +1,18 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.core;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.exceptions.BasketNotFoundException;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.BasketNotFoundException;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.ItemNotFoundException;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.ItemResponseError;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.Basket;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.Item;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.AddNewItemToBasketCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.useCases.AddItemToBasketUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.LoadBasketPort;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.PublishedDishCatalog;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.SaveBasketPort;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AddItemToBasketUseCaseImpl implements AddItemToBasketUseCase {
@@ -16,30 +21,30 @@ public class AddItemToBasketUseCaseImpl implements AddItemToBasketUseCase {
 
     private final LoadBasketPort loadBasketPort;
 
-    public AddItemToBasketUseCaseImpl(SaveBasketPort saveBasketPort, LoadBasketPort loadBasketPort) {
+    private final PublishedDishCatalog catalog;
+
+    public AddItemToBasketUseCaseImpl(final SaveBasketPort saveBasketPort,
+                                      final LoadBasketPort loadBasketPort,
+                                      final PublishedDishCatalog catalog) {
         this.saveBasketPort = saveBasketPort;
         this.loadBasketPort = loadBasketPort;
+        this.catalog = catalog;
     }
 
     @Override
     public Basket add(AddNewItemToBasketCommand command) {
-        Basket basket;
-        if(command.basketId() == null){
-            basket = new Basket(command.restaurantId());
-        }else{
-            basket = loadBasketPort.loadBy(command.basketId()).orElseThrow(
-                    () -> new BasketNotFoundException("Can't find basket with id: " + command.basketId()));
-        }
-        Item item;
 
-        //TODO:
-        //send a command to restaurant BC to get the dish
-        //or add a request body for item dto in request (less likely)
+        final Basket basket = loadBasketPort.loadBy(command.ownerId())
+                .orElseGet(() -> new Basket(command.restaurantId(), command.ownerId()));
 
-        //TODO:
-        //increase dish quantity if item is added to the basket a second time
+        var dish = catalog.findPublishedDish(command.restaurantId(), command.dishId())
+                .orElseThrow(() -> new ItemNotFoundException("Dish not available"));
 
-        //basket.addItem(item);
+        Item item = new Item(dish.restaurantId(), dish.dishId(), dish.name(),
+                dish.price(), 1,dish.pictureURL(), dish.outOfStock());
+
+
+        basket.addItem(item);
         saveBasketPort.save(basket);
 
         return basket;
