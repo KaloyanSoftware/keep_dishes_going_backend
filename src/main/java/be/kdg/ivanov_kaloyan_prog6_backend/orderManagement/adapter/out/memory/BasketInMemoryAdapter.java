@@ -6,7 +6,6 @@ import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.SaveBasketPo
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -18,10 +17,15 @@ public class BasketInMemoryAdapter implements LoadBasketPort, SaveBasketPort {
     private final Map<UUID, Basket> baskets = new HashMap<>();
 
     @Override
-    public Optional<Basket> loadBy(UUID ownerId) {
+    public Optional<Basket> loadByOwner(UUID ownerId) {
         return baskets.values().stream()
                 .filter(basket -> basket.getOwnerId().equals(ownerId))
                 .findFirst();
+    }
+
+    @Override
+    public Optional<Basket> loadByBasketId(UUID basketId) {
+        return Optional.ofNullable(baskets.get(basketId));
     }
 
     @Override

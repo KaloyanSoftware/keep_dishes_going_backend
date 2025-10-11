@@ -6,5 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface LoadBasketPort {
-    Optional<Basket> loadBy(UUID ownerId);
+    Optional<Basket> loadByOwner(UUID ownerId);
+
+    Optional<Basket> loadByBasketId(UUID basketId);
 }

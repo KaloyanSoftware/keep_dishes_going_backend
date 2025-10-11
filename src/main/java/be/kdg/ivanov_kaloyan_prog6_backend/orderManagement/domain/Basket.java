@@ -34,6 +34,10 @@ public class Basket {
 
     }
 
+    public void removeItem(UUID dishId) {
+        items.remove(dishId);
+    }
+
     private boolean sameRestaurantCheck(Item item){
         return item.restaurantId().equals(restaurantId);
     }

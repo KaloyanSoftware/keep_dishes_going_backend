@@ -2,20 +2,18 @@ package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.core;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.BasketNotFoundException;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.ItemNotFoundException;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.ItemResponseError;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.Basket;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.Item;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.AddNewItemToBasketCommand;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.useCases.AddItemToBasketUseCase;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.RemoveBasketItemCommand;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.useCases.ManageBasketItemsUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.LoadBasketPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.PublishedDishCatalog;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.SaveBasketPort;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
-public class AddItemToBasketUseCaseImpl implements AddItemToBasketUseCase {
+public class ManageBasketItemsItemsUseCaseImpl implements ManageBasketItemsUseCase {
 
     private final SaveBasketPort saveBasketPort;
 
@@ -23,9 +21,9 @@ public class AddItemToBasketUseCaseImpl implements AddItemToBasketUseCase {
 
     private final PublishedDishCatalog catalog;
 
-    public AddItemToBasketUseCaseImpl(final SaveBasketPort saveBasketPort,
-                                      final LoadBasketPort loadBasketPort,
-                                      final PublishedDishCatalog catalog) {
+    public ManageBasketItemsItemsUseCaseImpl(final SaveBasketPort saveBasketPort,
+                                             final LoadBasketPort loadBasketPort,
+                                             final PublishedDishCatalog catalog) {
         this.saveBasketPort = saveBasketPort;
         this.loadBasketPort = loadBasketPort;
         this.catalog = catalog;
@@ -34,7 +32,7 @@ public class AddItemToBasketUseCaseImpl implements AddItemToBasketUseCase {
     @Override
     public Basket add(AddNewItemToBasketCommand command) {
 
-        final Basket basket = loadBasketPort.loadBy(command.ownerId())
+        final Basket basket = loadBasketPort.loadByOwner(command.ownerId())
                 .orElseGet(() -> new Basket(command.restaurantId(), command.ownerId()));
 
         var dish = catalog.findPublishedDish(command.restaurantId(), command.dishId())
@@ -49,4 +47,16 @@ public class AddItemToBasketUseCaseImpl implements AddItemToBasketUseCase {
 
         return basket;
     }
+
+    @Override
+    public void remove(RemoveBasketItemCommand command) {
+        final Basket basket = loadBasketPort.loadByBasketId(command.basketId()).orElseThrow(
+                () -> new BasketNotFoundException("Can't find basket with id: " + command.basketId())
+        );
+
+        basket.removeItem(command.dishId());
+        saveBasketPort.save(basket);
+    }
+
+
 }
