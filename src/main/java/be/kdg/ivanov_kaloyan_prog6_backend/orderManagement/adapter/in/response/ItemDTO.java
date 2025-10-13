@@ -10,11 +10,10 @@ public record ItemDTO(UUID dishId,
                       String name,
                       BigDecimal price,
                       Integer quantity,
-                      String pictureURL,
-                      boolean outOfStock) {
+                      String pictureURL) {
 
     public static ItemDTO from(final Item item){
         return new ItemDTO(item.dishId(), item.restaurantId(), item.name(),
-                item.price(), item.quantity(), item.pictureURL(), item.outOfStock());
+                item.price(), item.quantity(), item.pictureURL());
     }
 }

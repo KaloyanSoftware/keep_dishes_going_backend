@@ -10,8 +10,9 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.PublishDi
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.DeleteDishDraftPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadDishDraftPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadMenuPort;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveMenuPort;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateMenuPort;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class PublishDishDraftUseCaseImpl implements PublishDishDraftUseCase {
@@ -20,17 +21,17 @@ public class PublishDishDraftUseCaseImpl implements PublishDishDraftUseCase {
 
     private final LoadMenuPort loadMenuPort;
 
-    private final SaveMenuPort saveMenuPort;
+    private final List<UpdateMenuPort> updateMenuPorts;
 
     private final DeleteDishDraftPort deleteDishDraftPort;
 
     public PublishDishDraftUseCaseImpl(final LoadDishDraftPort loadDishDraftPort,
                                        final LoadMenuPort loadMenuPort,
-                                       final SaveMenuPort saveMenuPort,
+                                       final List<UpdateMenuPort> updateMenuPorts,
                                        final DeleteDishDraftPort deleteDishDraftPort) {
         this.loadDishDraftPort = loadDishDraftPort;
         this.loadMenuPort = loadMenuPort;
-        this.saveMenuPort = saveMenuPort;
+        this.updateMenuPorts = updateMenuPorts;
         this.deleteDishDraftPort = deleteDishDraftPort;
     }
 
@@ -48,7 +49,7 @@ public class PublishDishDraftUseCaseImpl implements PublishDishDraftUseCase {
 
         deleteDishDraftPort.delete(draft.getId().id());
 
-        saveMenuPort.save(menu);
+        this.updateMenuPorts.forEach(port -> port.update(menu));
 
         return dish;
     }

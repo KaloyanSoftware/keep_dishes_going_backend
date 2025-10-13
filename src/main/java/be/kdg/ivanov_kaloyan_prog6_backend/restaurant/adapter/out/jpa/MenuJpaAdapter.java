@@ -10,18 +10,18 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.repositori
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.repositories.RestaurantJpaRepository;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Menu;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadMenuPort;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveMenuPort;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateMenuPort;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import java.util.UUID;
 
-// MenuJpaAdapter.java
+
 @Repository
 @Qualifier("jpa")
 @Profile("jpa")
-public class MenuJpaAdapter implements LoadMenuPort, SaveMenuPort {
+public class MenuJpaAdapter implements LoadMenuPort, UpdateMenuPort {
 
     private final MenuJpaRepository menus;
     private final RestaurantJpaRepository restaurants;
@@ -56,7 +56,7 @@ public class MenuJpaAdapter implements LoadMenuPort, SaveMenuPort {
     }
 
     @Override
-    public void save(Menu menu) {
+    public Menu update(Menu menu) {
         RestaurantJpaEntity restaurantJpa = restaurants.findById(menu.getRestaurantId().id()).orElseThrow(
                 () -> new RestaurantNotFoundException("Can't find restaurant with id: " + menu.getRestaurantId())
         );
@@ -64,5 +64,7 @@ public class MenuJpaAdapter implements LoadMenuPort, SaveMenuPort {
         MenuJpaEntity jpa = menuMapper.toJpa(menu, idMoneyMapper, dishMapper, restaurantJpa);
 
         menus.save(jpa);
+
+        return menuMapper.toDomain(jpa, idMoneyMapper, dishMapper);
     }
 }

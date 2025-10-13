@@ -1,5 +1,7 @@
 CREATE SCHEMA restaurant;
 
+CREATE SCHEMA order_management;
+
 CREATE TABLE restaurant.owner (
                        uuid UUID PRIMARY KEY,
                        first_name TEXT NOT NULL,
@@ -70,6 +72,16 @@ CREATE TABLE restaurant.draft_tag (
                                            draft_tag     TEXT NOT NULL,
                                            PRIMARY KEY (draft_id, draft_tag)
 );
+
+
+CREATE TABLE order_management.item_availability (
+                                 dish_id UUID PRIMARY KEY NOT NULL,
+                                 restaurant_id UUID NOT NULL,
+                                 published BOOLEAN NOT NULL,
+                                 in_stock BOOLEAN NOT NULL
+);
+
+
 
 
 

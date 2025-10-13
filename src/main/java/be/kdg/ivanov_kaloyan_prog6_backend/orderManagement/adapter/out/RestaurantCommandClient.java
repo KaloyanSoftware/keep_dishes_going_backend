@@ -44,7 +44,6 @@ public class RestaurantCommandClient implements PublishedDishCatalog {
         var responseBody = resp.getBody();
         return Optional.of(new PublishedItemSnapshot(
                 responseBody.dishId(), responseBody.restaurantId(), responseBody.name(),
-                responseBody.priceCents(), responseBody.pictureUrl(), responseBody.outOfStock()
-        ));
+                responseBody.priceCents(), responseBody.pictureUrl()));
     }
 }

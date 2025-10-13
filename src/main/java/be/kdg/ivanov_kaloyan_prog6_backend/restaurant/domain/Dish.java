@@ -125,6 +125,10 @@ public final class Dish {
     }
 
     public boolean outOfStock(){
-        return this.visibility == Visibility.OUT_OF_STOCK;
+        return this.visibility.equals(Visibility.OUT_OF_STOCK);
+    }
+
+    public boolean published(){
+        return this.visibility.equals(Visibility.PUBLISHED);
     }
 }

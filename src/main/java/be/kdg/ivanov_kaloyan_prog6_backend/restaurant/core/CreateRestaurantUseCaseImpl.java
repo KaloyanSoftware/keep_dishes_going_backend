@@ -4,8 +4,9 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.CreateRestaurantCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.CreateRestaurantUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadOwnerPort;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveMenuPort;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateMenuPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveRestaurantPort;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,14 +16,14 @@ public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
 
     private final LoadOwnerPort loadOwnerPort;
 
-    private final SaveMenuPort saveMenuPort;
+    private final UpdateMenuPort updateMenuPort;
 
     public CreateRestaurantUseCaseImpl(final SaveRestaurantPort saveRestaurantPort,
                                        final LoadOwnerPort loadOwnerPort,
-                                       final SaveMenuPort saveMenuPort) {
+                                       final @Qualifier("jpa") UpdateMenuPort updateMenuPort) {
         this.saveRestaurantPort = saveRestaurantPort;
         this.loadOwnerPort = loadOwnerPort;
-        this.saveMenuPort = saveMenuPort;
+        this.updateMenuPort = updateMenuPort;
     }
 
     @Override
@@ -45,7 +46,7 @@ public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
 
         saveRestaurantPort.save(restaurant);
 
-        saveMenuPort.save(menu);
+        updateMenuPort.update(menu);
 
         return restaurant;
     }

@@ -25,7 +25,7 @@ public class BasketController {
     public ResponseEntity<BasketDTO> addItem(@RequestBody AddItemToBasketRequest request) {
         AddNewItemToBasketCommand command =
                 new AddNewItemToBasketCommand(request.restaurantId(),
-                        request.dishId(), request.ownerId());
+                        request.dishId(), request.customerId());
 
         Basket basket = this.manageBasketItemsUseCase.add(command);
 

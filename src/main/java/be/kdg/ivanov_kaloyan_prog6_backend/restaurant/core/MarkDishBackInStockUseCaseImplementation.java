@@ -6,29 +6,32 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Menu;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.MarkDishBackInStockCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.MarkDishBackInStockUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadMenuPort;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveMenuPort;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateMenuPort;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class MarkDishBackInStockUseCaseImplementation implements MarkDishBackInStockUseCase {
 
     private final LoadMenuPort loadMenuPort;
 
-    private final SaveMenuPort saveMenuPort;
+    private final List<UpdateMenuPort> updateMenuPorts;
 
     public MarkDishBackInStockUseCaseImplementation(final LoadMenuPort loadMenuPort,
-                                                    final SaveMenuPort saveMenuPort) {
+                                                    final List<UpdateMenuPort> updateMenuPorts){
         this.loadMenuPort = loadMenuPort;
-        this.saveMenuPort = saveMenuPort;
+        this.updateMenuPorts = updateMenuPorts;
     }
 
     @Override
+    @Transactional
     public Dish markBackInStock(MarkDishBackInStockCommand command) {
         Menu menu = loadMenuPort.loadById(command.menuId()).orElseThrow(() -> new MenuNotFoundException("Menu not found"));
 
         Dish dish = menu.markDishBackInStock(command.dishId());
 
-        saveMenuPort.save(menu);
+        this.updateMenuPorts.forEach(port -> port.update(menu));
 
         return dish;
     }

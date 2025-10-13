@@ -27,7 +27,7 @@ public class RestaurantCommandController {
         final Dish dish = dishQueryUseCase.findPublishedDish(command.restaurantId(), command.dishId());
 
         var dishResponse = new PublishedDishResponse(command.dishId(), command.restaurantId(),
-                dish.getName(), dish.getPrice(), dish.getPictureURL(), dish.outOfStock());
+                dish.getName(), dish.getPrice(), dish.getPictureURL());
 
         return ResponseEntity.ok(dishResponse);
     }
