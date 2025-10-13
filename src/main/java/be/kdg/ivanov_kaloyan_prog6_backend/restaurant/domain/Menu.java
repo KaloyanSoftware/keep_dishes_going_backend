@@ -72,6 +72,7 @@ public class Menu {
             dishes.put(dish.getId().id(), dish);
         }
 
+        this.events.add(new DishDraftPublishEvent(dish.getId().id(), restaurantId.id()));
         return dish;
     }
 

@@ -7,6 +7,5 @@ public record PublishedItemSnapshot(UUID dishId,
                                     UUID restaurantId,
                                     String name,
                                     BigDecimal price,
-                                    String pictureURL,
-                                    boolean outOfStock) {
+                                    String pictureURL) {
 }

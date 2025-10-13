@@ -8,14 +8,13 @@ public record Item(UUID restaurantId,
                    String name,
                    BigDecimal price,
                    Integer quantity,
-                   String pictureURL,
-                   boolean outOfStock) {
+                   String pictureURL) {
 
     @Override
     public String toString() {
         return String.format(
-                "Item{name='%s', price=%.2f, quantity=%d, outOfStock=%s, dishId=%s}",
-                name, price, quantity, outOfStock, dishId
+                "Item{name='%s', price=%.2f, quantity=%d, dishId=%s}",
+                name, price, quantity, dishId
         );
     }
 }

@@ -30,7 +30,7 @@ public class Basket {
         items.merge(newItem.dishId(), newItem, (existing, incoming) ->
                 new Item(existing.restaurantId(),existing.dishId(), existing.name(),
                         existing.price(), existing.quantity() + incoming.quantity(),
-                        existing.pictureURL(),existing.outOfStock()));
+                        existing.pictureURL()));
 
     }
 

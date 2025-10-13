@@ -4,38 +4,52 @@ import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DishBackInStockEvent;
 import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DishOutOfStockEvent;
 import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DishPublishedEvent;
 import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DishUnpublishedEvent;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.ItemAvailabilityChangedProjector;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.ItemPublishStatusChangedProjectionCommand;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.ItemStockStatusChangedProjectionCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ItemAvailabilityChangeListener {
+public class ItemAvailabilityProjectionListener {
 
-    private static final Logger log = LoggerFactory.getLogger(ItemAvailabilityChangeListener.class);
+    private static final Logger log = LoggerFactory.getLogger(ItemAvailabilityProjectionListener.class);
 
+    private final ItemAvailabilityChangedProjector projector;
+
+    public ItemAvailabilityProjectionListener(ItemAvailabilityChangedProjector projector) {
+        this.projector = projector;
+    }
 
     @EventListener(DishOutOfStockEvent.class)
     public void itemAvailabilityChanged(DishOutOfStockEvent event) {
         log.error("Item out of stock event received");
-
+        this.projector.project(new ItemStockStatusChangedProjectionCommand(
+                event.restaurantId(), event.dishId(), true));
     }
 
     @EventListener(DishBackInStockEvent.class)
     public void itemAvailabilityChanged(DishBackInStockEvent event) {
         log.error("Item back in stock event received");
-
+        this.projector.project(new ItemStockStatusChangedProjectionCommand(
+                event.restaurantId(), event.dishId(), true));
     }
 
     @EventListener(DishUnpublishedEvent.class)
     public void itemAvailabilityChanged(DishUnpublishedEvent event) {
         log.error("Item unpublished event received");
-
+        this.projector.project(new ItemPublishStatusChangedProjectionCommand(
+                event.restaurantId(), event.dishId(), false
+        ));
     }
 
     @EventListener(DishPublishedEvent.class)
     public void itemAvailabilityChanged(DishPublishedEvent event) {
         log.error("Item published event received");
-
+        this.projector.project(new ItemPublishStatusChangedProjectionCommand(
+                event.restaurantId(), event.dishId(), true
+        ));
     }
 }

@@ -39,7 +39,7 @@ public class ManageBasketItemsItemsUseCaseImpl implements ManageBasketItemsUseCa
                 .orElseThrow(() -> new ItemNotFoundException("Dish not available"));
 
         Item item = new Item(dish.restaurantId(), dish.dishId(), dish.name(),
-                dish.price(), 1,dish.pictureURL(), dish.outOfStock());
+                dish.price(), 1,dish.pictureURL());
 
 
         basket.addItem(item);
