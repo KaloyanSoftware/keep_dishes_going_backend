@@ -30,7 +30,7 @@ public class Menu {
                 dishes.put(dishId, dish);
             }
         }
-        this.events.add(new DishPublishedEvent(dishId, restaurantId.id()));
+        this.events.add(new DishPublishedEvent(dishId, restaurantId.id(), dish.published(), !dish.outOfStock()));
         return dish;
     }
 
@@ -44,7 +44,7 @@ public class Menu {
             dishes.put(dishId, dish);
         }
 
-        this.events.add(new DishUnpublishedEvent(dishId, restaurantId.id()));
+        this.events.add(new DishUnpublishedEvent(dishId, restaurantId.id(), dish.published(), !dish.outOfStock()));
         return dish;
     }
 
@@ -71,8 +71,6 @@ public class Menu {
             dish.publish();
             dishes.put(dish.getId().id(), dish);
         }
-
-        this.events.add(new DishDraftPublishEvent(dish.getId().id(), restaurantId.id()));
         return dish;
     }
 
@@ -86,7 +84,7 @@ public class Menu {
             dishes.put(dishId, dish);
         }
 
-        this.events.add(new DishOutOfStockEvent(dishId, restaurantId.id()));
+        this.events.add(new DishOutOfStockEvent(dishId, restaurantId.id(),dish.published(), !dish.outOfStock()));
         return dish;
     }
 
@@ -106,7 +104,7 @@ public class Menu {
                 dishes.put(dishId, dish);
             }
         }
-        this.events.add(new DishBackInStockEvent(dishId, restaurantId.id()));
+        this.events.add(new DishBackInStockEvent(dishId, restaurantId.id(), dish.published(), !dish.outOfStock()));
         return dish;
     }
 

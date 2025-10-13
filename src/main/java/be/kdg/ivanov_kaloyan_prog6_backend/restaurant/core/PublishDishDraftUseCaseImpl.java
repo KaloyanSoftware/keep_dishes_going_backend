@@ -11,8 +11,8 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.DeleteDishDraftPo
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadDishDraftPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadMenuPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateMenuPort;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class PublishDishDraftUseCaseImpl implements PublishDishDraftUseCase {
@@ -21,17 +21,17 @@ public class PublishDishDraftUseCaseImpl implements PublishDishDraftUseCase {
 
     private final LoadMenuPort loadMenuPort;
 
-    private final UpdateMenuPort updateMenuPort;
+    private final List<UpdateMenuPort> updateMenuPorts;
 
     private final DeleteDishDraftPort deleteDishDraftPort;
 
     public PublishDishDraftUseCaseImpl(final LoadDishDraftPort loadDishDraftPort,
                                        final LoadMenuPort loadMenuPort,
-                                       final @Qualifier("jpa") UpdateMenuPort updateMenuPort,
+                                       final List<UpdateMenuPort> updateMenuPorts,
                                        final DeleteDishDraftPort deleteDishDraftPort) {
         this.loadDishDraftPort = loadDishDraftPort;
         this.loadMenuPort = loadMenuPort;
-        this.updateMenuPort = updateMenuPort;
+        this.updateMenuPorts = updateMenuPorts;
         this.deleteDishDraftPort = deleteDishDraftPort;
     }
 
@@ -49,7 +49,7 @@ public class PublishDishDraftUseCaseImpl implements PublishDishDraftUseCase {
 
         deleteDishDraftPort.delete(draft.getId().id());
 
-        updateMenuPort.update(menu);
+        this.updateMenuPorts.forEach(port -> port.update(menu));
 
         return dish;
     }
