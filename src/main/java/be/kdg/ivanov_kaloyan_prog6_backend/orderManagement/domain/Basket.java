@@ -12,14 +12,14 @@ public class Basket {
 
     private UUID restaurantId;
 
-    private UUID ownerId;
+    private UUID customerId;
 
     private Map<UUID, Item> items = new HashMap<>();
 
-    public Basket(UUID restaurantId, UUID ownerId) {
+    public Basket(UUID restaurantId, UUID customerId) {
         this.id = BasketId.create();
         this.restaurantId = restaurantId;
-        this.ownerId = ownerId;
+        this.customerId = customerId;
     }
 
     public void addItem(Item newItem) {
@@ -54,8 +54,8 @@ public class Basket {
         return items;
     }
 
-    public UUID getOwnerId() {
-        return ownerId;
+    public UUID getCustomerId() {
+        return customerId;
     }
 
     @Override

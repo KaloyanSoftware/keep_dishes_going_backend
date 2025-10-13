@@ -1,7 +1,7 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 
+import be.kdg.ivanov_kaloyan_prog6_backend.common.events.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.exceptions.*;
-
 import java.util.*;
 
 //aggregate
@@ -12,6 +12,8 @@ public class Menu {
     private RestaurantId restaurantId;
 
     private final Map<UUID, Dish> dishes = new HashMap<>();
+
+    private List<DomainEvent> events = new ArrayList<>();
 
     private static final int MAX_PUBLISHED_DISHES = 10;
 
@@ -28,6 +30,7 @@ public class Menu {
                 dishes.put(dishId, dish);
             }
         }
+        this.events.add(new DishPublishedEvent(dishId, restaurantId.id()));
         return dish;
     }
 
@@ -40,6 +43,8 @@ public class Menu {
             dish.unpublish();
             dishes.put(dishId, dish);
         }
+
+        this.events.add(new DishUnpublishedEvent(dishId, restaurantId.id()));
         return dish;
     }
 
@@ -79,6 +84,8 @@ public class Menu {
             dish.markOutOfStock();
             dishes.put(dishId, dish);
         }
+
+        this.events.add(new DishOutOfStockEvent(dishId, restaurantId.id()));
         return dish;
     }
 
@@ -98,6 +105,7 @@ public class Menu {
                 dishes.put(dishId, dish);
             }
         }
+        this.events.add(new DishBackInStockEvent(dishId, restaurantId.id()));
         return dish;
     }
 
@@ -127,6 +135,10 @@ public class Menu {
     public Menu(RestaurantId restaurantId) {
         this.id = MenuId.create();
         this.restaurantId = restaurantId;
+    }
+
+    public List<DomainEvent> getEvents() {
+        return events;
     }
 
     public MenuId getId() {
