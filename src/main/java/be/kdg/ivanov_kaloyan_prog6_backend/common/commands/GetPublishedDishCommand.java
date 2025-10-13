@@ -11,4 +11,5 @@ public record GetPublishedDishCommand(UUID restaurantId,
         Assert.notNull(restaurantId, "Restaurant id can't be null");
         Assert.notNull(dishId, "Dish id can't be null");
     }
+    //
 }
