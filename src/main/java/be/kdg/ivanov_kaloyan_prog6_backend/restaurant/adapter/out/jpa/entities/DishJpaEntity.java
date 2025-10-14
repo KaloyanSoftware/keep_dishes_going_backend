@@ -20,8 +20,12 @@ public class DishJpaEntity {
     private MenuJpaEntity menu;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "visibility", nullable = false)
-    private Dish.Visibility visibility;
+    @Column(name = "state", nullable = false)
+    private Dish.State state;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "stock_status", nullable = false)
+    private Dish.StockStatus stockStatus;
 
     @Column(name = "name")
     private String name;
@@ -66,12 +70,12 @@ public class DishJpaEntity {
         this.menu = menu;
     }
 
-    public Dish.Visibility getVisibility() {
-        return visibility;
+    public Dish.State getState() {
+        return state;
     }
 
-    public void setVisibility(Dish.Visibility visibility) {
-        this.visibility = visibility;
+    public void setState(Dish.State state) {
+        this.state = state;
     }
 
     public String getName() {
@@ -120,6 +124,14 @@ public class DishJpaEntity {
 
     public void setTags(List<FoodTag> tags) {
         this.tags = tags;
+    }
+
+    public Dish.StockStatus getStockStatus() {
+        return stockStatus;
+    }
+
+    public void setStockStatus(Dish.StockStatus stockStaus) {
+        this.stockStatus = stockStaus;
     }
 }
 

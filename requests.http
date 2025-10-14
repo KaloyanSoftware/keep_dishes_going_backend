@@ -37,7 +37,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "restaurantId": "cf5959fd-b410-4a33-b634-67125964a4aa",
+  "restaurantId": "9eeec569-d99e-4c03-93bc-f1e152363874",
   "name": "Pizza Margaritta",
   "description": "Classic Italian pizza",
   "price": 18,
@@ -56,8 +56,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "restaurantId": "cf5959fd-b410-4a33-b634-67125964a4aa",
-  "draftId": "c2454c3c-1a16-48bc-8b79-881ed09f5fdf"
+  "restaurantId": "9eeec569-d99e-4c03-93bc-f1e152363874",
+  "draftId": "08e0fbc2-f3a3-48cd-aa97-8aabd5663982"
 }
 
 
@@ -70,8 +70,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "dishId": "f2b245e4-70af-46c5-af0c-164444d46187",
-  "menuId": "bde4baf6-9c23-424a-bec8-5f8ce3e51ecb"
+  "dishId": "2107c228-8577-4048-8406-a30ba8c92944",
+  "menuId": "e93a419b-d125-42af-bc10-d224c71ea6c9"
 }
 
 
@@ -83,8 +83,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "dishId": "f2b245e4-70af-46c5-af0c-164444d46187",
-  "menuId": "bde4baf6-9c23-424a-bec8-5f8ce3e51ecb"
+  "dishId": "2107c228-8577-4048-8406-a30ba8c92944",
+  "menuId": "e93a419b-d125-42af-bc10-d224c71ea6c9"
 }
 
 
@@ -96,8 +96,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "dishId": "f2b245e4-70af-46c5-af0c-164444d46187",
-  "menuId": "bde4baf6-9c23-424a-bec8-5f8ce3e51ecb"
+  "dishId": "2107c228-8577-4048-8406-a30ba8c92944",
+  "menuId": "e93a419b-d125-42af-bc10-d224c71ea6c9"
 }
 
 
@@ -109,8 +109,34 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "dishId": "f2b245e4-70af-46c5-af0c-164444d46187",
-  "menuId": "bde4baf6-9c23-424a-bec8-5f8ce3e51ecb"
+  "dishId": "2107c228-8577-4048-8406-a30ba8c92944",
+  "menuId": "e93a419b-d125-42af-bc10-d224c71ea6c9"
+}
+
+
+###
+
+### Add item to basket
+POST localhost:8080/api/basket/items
+Content-Type: application/json
+Accept: application/json
+
+{
+  "dishId": "2107c228-8577-4048-8406-a30ba8c92944",
+  "restaurantId": "9eeec569-d99e-4c03-93bc-f1e152363874",
+  "customerSessionId": "9eeec569-d99e-4c03-93bc-f1e152363873"
+}
+
+
+###
+
+### Remove item from basket
+DELETE localhost:8080/api/basket/items
+Content-Type: application/json
+
+{
+  "dishId": "2107c228-8577-4048-8406-a30ba8c92944",
+  "basketId": "b961c808-7134-4600-b104-e37bbc716be2"
 }
 
 

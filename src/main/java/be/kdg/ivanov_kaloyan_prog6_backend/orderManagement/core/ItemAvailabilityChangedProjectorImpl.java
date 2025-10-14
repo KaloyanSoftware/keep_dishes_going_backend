@@ -27,11 +27,10 @@ public class ItemAvailabilityChangedProjectorImpl implements ItemAvailabilityCha
     @Override
     public void project(ItemAvailabilityChangedProjectionCommand command) {
         final ItemAvailability itemAvailability = loadItemAvailabilityPort.loadBy(command.dishId()).orElse(
-                new ItemAvailability(command.restaurantId(), command.dishId(), command.published(), command.inStock())
+                new ItemAvailability(command.restaurantId(), command.dishId(), command.orderable())
         );
 
-        itemAvailability.setInStock(command.inStock());
-        itemAvailability.setPublished(command.published());
+        itemAvailability.makeOrderable(command.orderable());
 
         ItemAvailability updatedItemAvailability = updateItemAvailabilityPort.update(itemAvailability);
 

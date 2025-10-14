@@ -22,19 +22,18 @@ public class ItemAvailabilityProjectionJpaAdapter implements UpdateItemAvailabil
     @Override
     public ItemAvailability update(ItemAvailability itemAvailability) {
         final ItemAvailabilityProjectionJpaEntity entity = new ItemAvailabilityProjectionJpaEntity(
-                itemAvailability.getDishId(), itemAvailability.getRestaurantId(),
-                itemAvailability.isPublished(), itemAvailability.isInStock()
+                itemAvailability.getDishId(), itemAvailability.getRestaurantId(),itemAvailability.isOrderable()
         );
 
         final ItemAvailabilityProjectionJpaEntity saved = repository.save(entity);
 
         return new ItemAvailability(saved.getRestaurantId(), saved.getDishId(),
-                saved.isPublished(), saved.isInStock());
+                saved.isOrderable());
     }
 
     @Override
     public Optional<ItemAvailability> loadBy(UUID dishId) {
         return repository.findById(dishId).map(jpa -> new  ItemAvailability(
-                jpa.getRestaurantId(), jpa.getDishId(), jpa.isPublished(), jpa.isInStock()));
+                jpa.getRestaurantId(), jpa.getDishId(), jpa.isOrderable()));
     }
 }

@@ -7,13 +7,23 @@ import java.util.Objects;
 
 public final class Dish {
 
-    public enum Visibility { UNPUBLISHED, PUBLISHED, OUT_OF_STOCK }
+    public enum State {
+        UNPUBLISHED,
+        PUBLISHED
+    }
+
+    public enum StockStatus {
+        IN_STOCK,
+        OUT_OF_STOCK
+    }
 
     private DishId id;
 
     private MenuId menuId;
 
-    private Visibility visibility;
+    private State state;
+
+    private StockStatus stockStatus;
 
     private String name;
 
@@ -30,7 +40,8 @@ public final class Dish {
     public static Dish rehydrate(
             DishId id,
             MenuId menuId,
-            Visibility visibility,
+            State state,
+            StockStatus stockStatus,
             String name,
             DishType type,
             List<FoodTag> tags,
@@ -41,7 +52,8 @@ public final class Dish {
         Dish d = new Dish();
         d.id = id;
         d.menuId = menuId;
-        d.visibility = visibility;
+        d.state = state;
+        d.stockStatus = stockStatus;
         d.name = name;
         d.type = type;
         if (tags != null) d.tags = new ArrayList<>(tags);
@@ -65,23 +77,35 @@ public final class Dish {
     }
 
     public void publish(){
-        setVisibility(Visibility.PUBLISHED);
+        setState(State.PUBLISHED);
     }
 
     public void unpublish(){
-        setVisibility(Visibility.UNPUBLISHED);
+        setState(State.UNPUBLISHED);
     }
 
     public void markOutOfStock(){
-        setVisibility(Visibility.OUT_OF_STOCK);
+        setStockStatus(StockStatus.OUT_OF_STOCK);
     }
 
-    public Visibility getVisibility() {
-        return visibility;
+    public void markInStock(){
+        setStockStatus(StockStatus.IN_STOCK);
     }
 
-    public void setVisibility(Visibility visibility) {
-        this.visibility = visibility;
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public StockStatus getStockStatus() {
+        return stockStatus;
+    }
+
+    public void setStockStatus(StockStatus stockStatus) {
+        this.stockStatus = stockStatus;
     }
 
     public DishId getId() {
@@ -125,10 +149,14 @@ public final class Dish {
     }
 
     public boolean outOfStock(){
-        return this.visibility.equals(Visibility.OUT_OF_STOCK);
+        return this.stockStatus.equals(StockStatus.OUT_OF_STOCK);
     }
 
     public boolean published(){
-        return this.visibility.equals(Visibility.PUBLISHED);
+        return this.state.equals(State.PUBLISHED);
+    }
+
+    public boolean orderable(){
+        return state.equals(State.PUBLISHED) && stockStatus.equals(StockStatus.IN_STOCK);
     }
 }

@@ -20,8 +20,8 @@ public class Menu {
     public Dish publishDish(UUID dishId){
         Dish dish = dishes.get(dishId);
 
-        if(dish == null || dish.getVisibility() != Dish.Visibility.UNPUBLISHED) {
-            throw new InvalidPublishDishException("Dish is already published, out of stock or doesn't exist!");
+        if(dish == null || dish.published()) {
+            throw new InvalidPublishDishException("Dish is already published or doesn't exist!");
         }else{
             if(maxCapacityReached()){
                 throw new MenuCapacityException("Can't make more dishes available, max capacity reached: 10!");
@@ -30,21 +30,22 @@ public class Menu {
                 dishes.put(dishId, dish);
             }
         }
-        this.events.add(new DishPublishedEvent(dishId, restaurantId.id(), dish.published(), !dish.outOfStock()));
+
+        this.events.add(new DishPublishedEvent(dishId, restaurantId.id(), dish.orderable()));
         return dish;
     }
 
     public Dish unpublishDish(UUID dishId){
         Dish dish = dishes.get(dishId);
 
-        if(dish == null || dish.getVisibility() != Dish.Visibility.PUBLISHED) {
-            throw new InvalidPublishDishException("Dish is already unpublished, out of stock or doesn't exist!");
+        if(dish == null || !dish.published()) {
+            throw new InvalidPublishDishException("Dish is already unpublished or doesn't exist!");
         }else{
             dish.unpublish();
             dishes.put(dishId, dish);
         }
 
-        this.events.add(new DishUnpublishedEvent(dishId, restaurantId.id(), dish.published(), !dish.outOfStock()));
+        this.events.add(new DishUnpublishedEvent(dishId, restaurantId.id(), dish.orderable()));
         return dish;
     }
 
@@ -53,10 +54,10 @@ public class Menu {
         if(draft.getDishId() != null){
             Dish dish = dishes.get(draft.getDishId().id());
 
-            if(dish == null || dish.getVisibility() != Dish.Visibility.UNPUBLISHED){
+            if(dish == null || dish.published()) {
                 throw new InvalidPublishDraftException("""
-                        The dish for this draft is still on the live menu or out of stock!
-                        Remove the dish from the live menu or re-stock to publish this draft!
+                        The dish for this draft is still on the live menu!
+                        Remove the dish from the live menu to publish this draft!
                         """);
             }else{
                 dishes.remove(draft.getDishId().id());
@@ -69,6 +70,7 @@ public class Menu {
             throw new MenuCapacityException("Can't publish more dishes, max capacity reached!");
         }else{
             dish.publish();
+            dish.markInStock();
             dishes.put(dish.getId().id(), dish);
         }
         return dish;
@@ -77,21 +79,21 @@ public class Menu {
     public Dish markDishOutOfStock(UUID dishId){
         Dish dish = dishes.get(dishId);
 
-        if(dish == null || dish.getVisibility() == Dish.Visibility.OUT_OF_STOCK) {
+        if(dish == null || dish.outOfStock()) {
             throw new InvalidMarkDishOutOfStockException("Dish is already out of stock or doesn't exist!");
         }else{
             dish.markOutOfStock();
             dishes.put(dishId, dish);
         }
 
-        this.events.add(new DishOutOfStockEvent(dishId, restaurantId.id(),dish.published(), !dish.outOfStock()));
+        this.events.add(new DishOutOfStockEvent(dishId, restaurantId.id(), dish.orderable()));
         return dish;
     }
 
     public Dish markDishBackInStock(UUID dishId){
         Dish dish = dishes.get(dishId);
 
-        if(dish == null || dish.getVisibility() != Dish.Visibility.OUT_OF_STOCK) {
+        if(dish == null || !dish.outOfStock()) {
             throw new InvalidMarkDishBackInStockException("Dish is already in stock or doesn't exist!");
         }else{
             if(maxCapacityReached()){
@@ -100,25 +102,26 @@ public class Menu {
                         Take a dish off the live menu to make this one available!
                         """);
             }else{
-                dish.publish();
+                dish.markInStock();
                 dishes.put(dishId, dish);
             }
         }
-        this.events.add(new DishBackInStockEvent(dishId, restaurantId.id(), dish.published(), !dish.outOfStock()));
+        this.events.add(new DishBackInStockEvent(dishId, restaurantId.id(), dish.orderable()));
         return dish;
     }
 
-    public Optional<Dish> findPublishedDish(UUID dishId){
+    public Dish findOrderableDish(UUID dishId){
         Dish dish = dishes.get(dishId);
+
         if(dish == null){
-            return Optional.empty();
+            throw new DishNotFoundException("Dish with id: " + dishId + " does not exist!");
         }
 
-        if(dish.getVisibility() != Dish.Visibility.PUBLISHED){
-            throw new DishNotPublishedException("Dish with id " + dishId + " is not published or already out of stock!");
+        if(!dish.orderable()){
+            throw new DishNotOrderableException("Dish with id " + dishId + " cannot be ordered because it's unpublished and/or out of stock!");
         }
 
-        return Optional.of(dishes.get(dishId));
+        return dish;
     }
 
 
@@ -150,7 +153,7 @@ public class Menu {
 
     private boolean maxCapacityReached(){
         List<Dish> availableDishes = dishes.values().stream().
-                filter(dish -> dish.getVisibility() != Dish.Visibility.PUBLISHED).toList();
+                filter(dish -> dish.getState() != Dish.State.PUBLISHED).toList();
 
         return MAX_PUBLISHED_DISHES == availableDishes.size();
     }

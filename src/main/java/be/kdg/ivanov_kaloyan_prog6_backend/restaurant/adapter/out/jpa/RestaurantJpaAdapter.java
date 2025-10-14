@@ -43,9 +43,9 @@ public class RestaurantJpaAdapter implements SaveRestaurantPort, LoadRestaurantP
 
         restaurantJpa.setOwner(ownerJpa);
 
-        RestaurantJpaEntity restaurantJpa1 = restaurants.save(restaurantJpa);
+        RestaurantJpaEntity saved = restaurants.save(restaurantJpa);
 
-        return mapper.toDomain(restaurantJpa1);
+        return mapper.toDomain(saved);
     }
 
     @Override

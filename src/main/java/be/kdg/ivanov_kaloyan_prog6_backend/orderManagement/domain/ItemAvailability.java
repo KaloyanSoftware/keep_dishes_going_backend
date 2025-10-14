@@ -7,15 +7,12 @@ public class ItemAvailability {
 
     private UUID dishId;
 
-    private boolean published;
+    private boolean orderable;
 
-    private boolean inStock;
-
-    public ItemAvailability(UUID restaurantId, UUID dishId, boolean published, boolean inStock) {
+    public ItemAvailability(UUID restaurantId, UUID dishId, boolean orderable) {
         this.restaurantId = restaurantId;
         this.dishId = dishId;
-        this.published = published;
-        this.inStock = inStock;
+        this.orderable = orderable;
     }
 
     public UUID getRestaurantId() {
@@ -26,29 +23,24 @@ public class ItemAvailability {
         return dishId;
     }
 
-    public boolean isPublished() {
-        return published;
-    }
-
-    public boolean isInStock() {
-        return inStock;
-    }
-
-    public void setPublished(boolean published) {
-        this.published = published;
-    }
-
-    public void setInStock(boolean inStock) {
-        this.inStock = inStock;
-    }
-
     @Override
     public String toString() {
         return "ItemAvailability{" +
                 "restaurantId=" + restaurantId +
                 ", dishId=" + dishId +
-                ", published=" + published +
-                ", inStock=" + inStock +
+                ", orderable=" + orderable +
                 '}';
+    }
+
+    public boolean isOrderable() {
+        return orderable;
+    }
+
+    private void setOrderable(boolean orderable) {
+        this.orderable = orderable;
+    }
+
+    public void makeOrderable(boolean orderable){
+        setOrderable(orderable);
     }
 }

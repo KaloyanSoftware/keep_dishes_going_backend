@@ -5,7 +5,7 @@ import org.springframework.util.Assert;
 import java.util.UUID;
 
 public record ItemAvailabilityChangedProjectionCommand(UUID dishId, UUID restaurantId,
-                                                       boolean published, boolean inStock) {
+                                                       boolean orderable) {
 
     public ItemAvailabilityChangedProjectionCommand{
         Assert.notNull(dishId, "dishId cannot be null");

@@ -14,27 +14,20 @@ public class ItemAvailabilityProjectionJpaEntity {
     @Column(name = "restaurant_id", nullable = false)
     private UUID restaurantId;
 
-    @Column(name = "published", nullable = false)
-    private boolean published;
-
-    @Column(name = "in_stock", nullable = false)
-    private boolean inStock;
+    @Column(name = "orderable", nullable = false)
+    private boolean orderable;
 
     protected ItemAvailabilityProjectionJpaEntity() { }
 
-    public ItemAvailabilityProjectionJpaEntity(UUID dishId, UUID restaurantId,
-                                               boolean published, boolean inStock) {
+    public ItemAvailabilityProjectionJpaEntity(UUID dishId, UUID restaurantId,boolean orderable) {
         this.dishId = dishId;
         this.restaurantId = restaurantId;
-        this.published = published;
-        this.inStock = inStock;
+        this.orderable = orderable;
     }
 
     public UUID getDishId() { return dishId; }
     public UUID getRestaurantId() { return restaurantId; }
-    public boolean isPublished() { return published; }
-    public boolean isInStock() { return inStock; }
+    public boolean isOrderable() { return orderable; }
 
-    public void setPublished(boolean published) { this.published = published; }
-    public void setInStock(boolean outOfStock) { this.inStock = outOfStock; }
+    public void setOrderable(boolean published) { this.orderable = published; }
 }

@@ -13,7 +13,8 @@ public interface DishMapper {
 
     @Mapping(target = "id", expression = "java(DishId.of(jpa.getId()))")
     @Mapping(target = "menuId", expression = "java(MenuId.of(jpa.getId()))")
-    @Mapping(target = "visibility", source = "visibility")
+    @Mapping(target = "state", source = "state")
+    @Mapping(target = "stockStatus", source = "stockStatus")
     @Mapping(target = "name", source = "name")
     @Mapping(target = "type", source = "type")
     @Mapping(target = "tags", source = "tags")
@@ -24,7 +25,8 @@ public interface DishMapper {
         return Dish.rehydrate(
                 DishId.of((jpa.getId())),
                 MenuId.of(jpa.getMenu().getId()),
-                jpa.getVisibility(),
+                jpa.getState(),
+                jpa.getStockStatus(),
                 jpa.getName(),
                 jpa.getType(),
                 jpa.getTags(),
@@ -36,7 +38,8 @@ public interface DishMapper {
 
 
     @Mapping(target = "id", expression = "java(idMoney.toUUID(domain.getId()))")
-    @Mapping(target = "visibility", source = "visibility")
+    @Mapping(target = "state", source = "state")
+    @Mapping(target = "stockStatus", source = "stockStatus")
     @Mapping(target = "name", source = "name")
     @Mapping(target = "type", source = "type")
     @Mapping(target = "tags", source = "tags")

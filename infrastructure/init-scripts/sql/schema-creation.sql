@@ -42,7 +42,8 @@ CREATE TABLE restaurant.opening_hours (
 CREATE TABLE restaurant.dish (
                                  uuid             UUID PRIMARY KEY,
                                  menu_id          UUID NOT NULL REFERENCES restaurant.menu(uuid) ON DELETE CASCADE,
-                                 visibility       TEXT NOT NULL,
+                                 state            TEXT NOT NULL,
+                                 stock_status     TEXT NOT NULL,
                                  name             TEXT,
                                  type             TEXT,
                                  description      TEXT,
@@ -77,8 +78,7 @@ CREATE TABLE restaurant.draft_tag (
 CREATE TABLE order_management.item_availability (
                                  dish_id UUID PRIMARY KEY NOT NULL,
                                  restaurant_id UUID NOT NULL,
-                                 published BOOLEAN NOT NULL,
-                                 in_stock BOOLEAN NOT NULL
+                                 orderable BOOLEAN NOT NULL
 );
 
 

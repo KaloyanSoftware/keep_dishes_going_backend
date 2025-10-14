@@ -23,29 +23,27 @@ public class ItemAvailabilityProjectionListener {
     public void itemAvailabilityChanged(DishOutOfStockEvent event) {
         log.error("Item out of stock event received");
         this.projector.project(new ItemAvailabilityChangedProjectionCommand(event.dishId(),
-                event.restaurantId(), event.published(), event.inStock()));
+                event.restaurantId(), event.orderable()));
     }
 
     @EventListener(DishBackInStockEvent.class)
     public void itemAvailabilityChanged(DishBackInStockEvent event) {
         log.error("Item back in stock event received");
         this.projector.project(new ItemAvailabilityChangedProjectionCommand(event.dishId(),
-                event.restaurantId(), event.published(), event.inStock()));
+                event.restaurantId(), event.orderable()));
     }
 
     @EventListener(DishUnpublishedEvent.class)
     public void itemAvailabilityChanged(DishUnpublishedEvent event) {
         log.error("Item unpublished event received");
         this.projector.project(new ItemAvailabilityChangedProjectionCommand(event.dishId()
-                ,event.restaurantId(), event.published(), event.inStock()
-        ));
+                ,event.restaurantId(), event.orderable()));
     }
 
     @EventListener(DishPublishedEvent.class)
     public void itemAvailabilityChanged(DishPublishedEvent event) {
         log.error("Item published event received");
         this.projector.project(new ItemAvailabilityChangedProjectionCommand(event.dishId()
-                ,event.restaurantId(), event.published(), event.inStock()
-        ));
+                ,event.restaurantId(), event.orderable()));
     }
 }

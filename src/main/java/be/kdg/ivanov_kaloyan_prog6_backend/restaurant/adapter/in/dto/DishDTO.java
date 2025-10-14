@@ -10,11 +10,11 @@ import java.util.UUID;
 
 public record DishDTO(UUID dishId, UUID menuId, String name,
                       DishType type, List<FoodTag> tags, String description,
-                      BigDecimal price, String pictureURL, Dish.Visibility visibility) {
+                      BigDecimal price, String pictureURL, Dish.State state, Dish.StockStatus stockStatus) {
 
     public static DishDTO from(final Dish dish){
         return new DishDTO(dish.getId().id(), dish.getMenuId().id(), dish.getName(),
                 dish.getType(),dish.getTags(),dish.getDescription(), dish.getPrice(),
-                dish.getPictureURL(), dish.getVisibility());
+                dish.getPictureURL(), dish.getState(), dish.getStockStatus());
     }
 }
