@@ -4,5 +4,5 @@ import java.util.UUID;
 
 public record AddItemToBasketRequest(UUID restaurantId,
                                      UUID dishId,
-                                     UUID customerId) {
+                                     UUID customerSessionId) {
 }

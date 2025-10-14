@@ -4,10 +4,10 @@ import java.util.UUID;
 import org.springframework.util.Assert;
 
 public record AddNewItemToBasketCommand(UUID restaurantId, UUID dishId,
-                                         UUID customerId) {
+                                         UUID customerSessionId) {
     public AddNewItemToBasketCommand {
         Assert.notNull(restaurantId, "restaurantId cannot be null");
         Assert.notNull(dishId, "dishId cannot be null");
-        Assert.notNull(customerId, "customerId cannot be null");
+        Assert.notNull(customerSessionId, "customerSessionId cannot be null");
     }
 }

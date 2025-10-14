@@ -3,8 +3,8 @@ package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.entities.ItemAvailabilityProjectionJpaEntity;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.repositories.ItemAvailabilityJpaRepository;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.ItemAvailability;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.useCases.LoadItemAvailabilityPort;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.useCases.UpdateItemAvailabilityPort;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.LoadItemAvailabilityPort;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.UpdateItemAvailabilityPort;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

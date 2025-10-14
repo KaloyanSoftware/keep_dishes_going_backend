@@ -17,9 +17,9 @@ public class BasketInMemoryAdapter implements LoadBasketPort, SaveBasketPort {
     private final Map<UUID, Basket> baskets = new HashMap<>();
 
     @Override
-    public Optional<Basket> loadByCustomer(UUID ownerId) {
+    public Optional<Basket> loadBy(UUID customerSessionId) {
         return baskets.values().stream()
-                .filter(basket -> basket.getCustomerId().equals(ownerId))
+                .filter(basket -> basket.getCustomerSessionId().equals(customerSessionId))
                 .findFirst();
     }
 

@@ -116,28 +116,4 @@ Accept: application/json
 
 ###
 
-###Add Item to basket
-POST localhost:8080/api/basket/items
-Content-Type: application/json
-Accept: application/json
-
-{
-  "restaurantId": "190a8e83-3585-4255-b6d2-d7d34b36c3e0",
-  "dishId": "f0748129-7173-41f9-97df-a520f7995ac9",
-  "ownerId": "552cc380-fd95-478f-81c2-bd7d7e5a6598"
-}
-
-###
-
-###Remove item from basket
-DELETE localhost:8080/api/basket/items
-Content-Type: application/json
-
-{
-  "dishId": "bf2831a6-5993-4380-9120-eb65aa5254b8",
-  "basketId": "d7c305b0-ec42-48fd-af1a-874772290d65"
-}
-
-###
-
 
