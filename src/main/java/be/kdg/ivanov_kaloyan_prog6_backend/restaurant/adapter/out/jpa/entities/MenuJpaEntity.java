@@ -11,12 +11,25 @@ public class MenuJpaEntity {
     @Column(name = "uuid")
     private UUID id;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "restaurant_id", referencedColumnName = "uuid", nullable = false)
-    private RestaurantJpaEntity restaurant;
+    @Column(name = "restaurant_id", nullable = false)
+    private UUID restaurantId;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}
+    )
+    @JoinColumn(name = "menu_id", referencedColumnName = "uuid")
     private List<DishJpaEntity> dishes;
+
+    public MenuJpaEntity(UUID id, UUID restaurantId, List<DishJpaEntity> dishes) {
+        setId(id);
+        setRestaurantId(restaurantId);
+        setDishes(dishes);
+    }
+
+    public MenuJpaEntity() {
+
+    }
 
     public UUID getId() {
         return id;
@@ -26,12 +39,12 @@ public class MenuJpaEntity {
         this.id = id;
     }
 
-    public RestaurantJpaEntity getRestaurant() {
-        return restaurant;
+    public UUID getRestaurantId() {
+        return restaurantId;
     }
 
-    public void setRestaurant(RestaurantJpaEntity restaurant) {
-        this.restaurant = restaurant;
+    public void setRestaurantId(UUID restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public List<DishJpaEntity> getDishes() {

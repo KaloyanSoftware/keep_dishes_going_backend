@@ -15,9 +15,8 @@ public class DishJpaEntity {
     @Column(name = "uuid", nullable = false)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "menu_id", referencedColumnName = "uuid", nullable = false)
-    private MenuJpaEntity menu;
+    @Column(name = "menu_id", nullable = false)
+    private UUID menuId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
@@ -52,7 +51,27 @@ public class DishJpaEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tag", nullable = false)
-    private List<FoodTag> tags = new ArrayList<>();
+    private List<FoodTag> tags;
+
+    public DishJpaEntity(UUID id, UUID menuId, Dish.State state,
+                         Dish.StockStatus stockStatus, String name,
+                         DishType type, String description, Double price,
+                         String pictureUrl, List<FoodTag> tags) {
+        setId(id);
+        setMenuId(menuId);
+        setState(state);
+        setStockStatus(stockStatus);
+        setName(name);
+        setType(type);
+        setDescription(description);
+        setPrice(price);
+        setPictureUrl(pictureUrl);
+        setTags(tags);
+    }
+
+    public DishJpaEntity() {
+
+    }
 
     public UUID getId() {
         return id;
@@ -62,12 +81,12 @@ public class DishJpaEntity {
         this.id = id;
     }
 
-    public MenuJpaEntity getMenu() {
-        return menu;
+    public UUID getMenuId() {
+        return menuId;
     }
 
-    public void setMenu(MenuJpaEntity menu) {
-        this.menu = menu;
+    public void setMenuId(UUID menuId) {
+        this.menuId = menuId;
     }
 
     public Dish.State getState() {
@@ -76,6 +95,14 @@ public class DishJpaEntity {
 
     public void setState(Dish.State state) {
         this.state = state;
+    }
+
+    public Dish.StockStatus getStockStatus() {
+        return stockStatus;
+    }
+
+    public void setStockStatus(Dish.StockStatus stockStatus) {
+        this.stockStatus = stockStatus;
     }
 
     public String getName() {
@@ -124,14 +151,6 @@ public class DishJpaEntity {
 
     public void setTags(List<FoodTag> tags) {
         this.tags = tags;
-    }
-
-    public Dish.StockStatus getStockStatus() {
-        return stockStatus;
-    }
-
-    public void setStockStatus(Dish.StockStatus stockStaus) {
-        this.stockStatus = stockStaus;
     }
 }
 

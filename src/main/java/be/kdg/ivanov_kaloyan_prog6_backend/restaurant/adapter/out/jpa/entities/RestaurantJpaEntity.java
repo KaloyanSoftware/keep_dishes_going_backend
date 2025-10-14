@@ -14,9 +14,8 @@ public class RestaurantJpaEntity {
     @Column(name = "uuid")
     private UUID id;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "owner_id", referencedColumnName = "uuid", nullable = false, unique = true)
-    private OwnerJpaEntity ownerJpa;
+    @Column(name = "owner_id", nullable = false)
+    private UUID ownerId;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -47,67 +46,81 @@ public class RestaurantJpaEntity {
     public RestaurantJpaEntity() {
     }
 
+    public RestaurantJpaEntity(UUID id, UUID ownerId, String email, String pictureUrl,
+                               Integer defaultPrepMinutes, CuisineType cuisineType,
+                               AddressEmbeddable address,
+                               Map<DayOfWeek, DayScheduleEmbeddable> openingHours) {
+        setId(id);
+        setOwnerId(ownerId);
+        setEmail(email);
+        setPictureUrl(pictureUrl);
+        setDefaultPrepMinutes(defaultPrepMinutes);
+        setCuisineType(cuisineType);
+        setAddress(address);
+        setOpeningHours(openingHours);
+    }
+
     public UUID getId() {
         return id;
-    }
-
-    public AddressEmbeddable getAddress() {
-        return address;
-    }
-
-    public Map<DayOfWeek, DayScheduleEmbeddable> getOpeningHours() {
-        return openingHours;
-    }
-
-    public OwnerJpaEntity getOwner() {
-        return ownerJpa;
-    }
-
-    public void setOwner(OwnerJpaEntity owner) {
-        this.ownerJpa = owner;
     }
 
     public void setId(UUID id) {
         this.id = id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public UUID getOwnerId() {
+        return ownerId;
     }
 
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
-    }
-
-    public void setDefaultPrepMinutes(Integer defaultPrepMinutes) {
-        this.defaultPrepMinutes = defaultPrepMinutes;
-    }
-
-    public void setCuisineType(CuisineType cuisineType) {
-        this.cuisineType = cuisineType;
-    }
-
-    public void setAddress(AddressEmbeddable address) {
-        this.address = address;
-    }
-
-    public void setOpeningHours(Map<DayOfWeek, DayScheduleEmbeddable> openingHours) {
-        this.openingHours = openingHours;
+    public void setOwnerId(UUID owner_id) {
+        this.ownerId = owner_id;
     }
 
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPictureUrl() {
         return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 
     public Integer getDefaultPrepMinutes() {
         return defaultPrepMinutes;
     }
 
+    public void setDefaultPrepMinutes(Integer defaultPrepMinutes) {
+        this.defaultPrepMinutes = defaultPrepMinutes;
+    }
+
     public CuisineType getCuisineType() {
         return cuisineType;
+    }
+
+    public void setCuisineType(CuisineType cuisineType) {
+        this.cuisineType = cuisineType;
+    }
+
+    public AddressEmbeddable getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressEmbeddable address) {
+        this.address = address;
+    }
+
+    public Map<DayOfWeek, DayScheduleEmbeddable> getOpeningHours() {
+        return openingHours;
+    }
+
+    public void setOpeningHours(Map<DayOfWeek, DayScheduleEmbeddable> openingHours) {
+        this.openingHours = openingHours;
     }
 }

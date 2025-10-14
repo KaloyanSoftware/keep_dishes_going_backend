@@ -1,6 +1,7 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.InvalidBasketItemException;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.ItemNotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +36,20 @@ public class Basket {
     }
 
     public void removeItem(UUID dishId) {
-        items.remove(dishId);
+
+        Item item = items.get(dishId);
+
+        if(item == null){
+            throw new ItemNotFoundException("Item with id: " + dishId + " does not exist!");
+        }
+
+        if(item.quantity() - 1 == 0 ){
+            items.remove(dishId);
+        }else{
+            items.put(item.dishId(), new Item(item.restaurantId(),item.dishId(), item.name(),
+                    item.price(), item.quantity() - 1,
+                    item.pictureURL()));
+        }
     }
 
     private boolean sameRestaurantCheck(Item item){

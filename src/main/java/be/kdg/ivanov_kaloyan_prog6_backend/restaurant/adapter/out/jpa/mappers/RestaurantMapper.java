@@ -12,29 +12,26 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring", imports = { RestaurantId.class, OwnerId.class })
 public interface RestaurantMapper {
 
-    // Domain -> JPA (owner is set in adapter; ignore here)
     @Mapping(target = "id", expression = "java(domain.getId().id())")
-    @Mapping(target = "owner", ignore = true)
-    @Mapping(target = "email", expression = "java(domain.getEmail())")
-    @Mapping(target = "pictureUrl", expression = "java(domain.getPictureURL())")
-    @Mapping(target = "defaultPrepMinutes", expression = "java(domain.getDefaultPrepTime())")
-    @Mapping(target = "cuisineType", expression = "java(domain.getCuisineType())")
+    @Mapping(target = "ownerId", expression = "java(domain.getOwnerId().id())")
+    @Mapping(target = "email", source = "email")
+    @Mapping(target = "pictureUrl", source = "pictureURL")
+    @Mapping(target = "defaultPrepMinutes", source = "defaultPrepTime")
+    @Mapping(target = "cuisineType", source = "cuisineType")
     @Mapping(target = "address", expression = "java(toJpaAddress(domain.getAddress()))")
     @Mapping(target = "openingHours", expression = "java(toJpaOpeningHours(domain.getOpeningHours()))")
     RestaurantJpaEntity toJpa(Restaurant domain);
 
-    // JPA -> Domain
     @Mapping(target = "id", expression = "java(RestaurantId.of(jpa.getId()))")
-    @Mapping(target = "ownerId", expression = "java(OwnerId.of(jpa.getOwner().getId()))")
+    @Mapping(target = "ownerId", expression = "java(OwnerId.of(jpa.getOwnerId()))")
     @Mapping(target = "address", expression = "java(toDomainAddress(jpa.getAddress()))")
-    @Mapping(target = "email", expression = "java(jpa.getEmail())")
-    @Mapping(target = "pictureURL", expression = "java(jpa.getPictureUrl())")
-    @Mapping(target = "defaultPrepTime", expression = "java(jpa.getDefaultPrepMinutes())")
-    @Mapping(target = "cuisineType", expression = "java(jpa.getCuisineType())")
+    @Mapping(target = "email", source = "email")
+    @Mapping(target = "pictureURL", source = "pictureUrl")
+    @Mapping(target = "defaultPrepTime", source = "defaultPrepMinutes")
+    @Mapping(target = "cuisineType", source = "cuisineType")
     @Mapping(target = "openingHours", expression = "java(toDomainOpeningHours(jpa.getOpeningHours()))")
     Restaurant toDomain(RestaurantJpaEntity jpa);
 
-    // ---- Address VO mappings
     default AddressEmbeddable toJpaAddress(Address address) {
         return new AddressEmbeddable(
                 address.street(),
@@ -55,7 +52,6 @@ public interface RestaurantMapper {
         );
     }
 
-    // ---- OpeningHours VO mappings
     default Map<DayOfWeek, DayScheduleEmbeddable> toJpaOpeningHours(OpeningHours domain) {
         return domain.openingHours().entrySet().stream()
                 .collect(Collectors.toMap(

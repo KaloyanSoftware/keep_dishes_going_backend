@@ -6,5 +6,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface MenuJpaRepository extends JpaRepository<MenuJpaEntity, UUID> {
-    Optional<MenuJpaEntity> findByRestaurant_Id(UUID restaurantId);
+    Optional<MenuJpaEntity> getByRestaurantId(UUID restaurantId);
 }

@@ -1,6 +1,5 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.OwnerJpaEntity;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.RestaurantJpaEntity;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.mappers.RestaurantMapper;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.repositories.OwnerJpaRepository;
@@ -21,27 +20,19 @@ public class RestaurantJpaAdapter implements SaveRestaurantPort, LoadRestaurantP
 
     private final RestaurantJpaRepository restaurants;
 
-    private final OwnerJpaRepository owners;
-
     private final RestaurantMapper mapper;
 
 
 
     public RestaurantJpaAdapter(final RestaurantJpaRepository restaurants,
-                                final RestaurantMapper mapper,
-                                final OwnerJpaRepository owners) {
+                                final RestaurantMapper mapper) {
         this.restaurants = restaurants;
         this.mapper = mapper;
-        this.owners = owners;
     }
 
     @Override
     public Restaurant save(Restaurant restaurant) {
         RestaurantJpaEntity restaurantJpa = mapper.toJpa(restaurant);
-
-        OwnerJpaEntity ownerJpa = owners.getReferenceById(restaurant.getOwnerId().id());
-
-        restaurantJpa.setOwner(ownerJpa);
 
         RestaurantJpaEntity saved = restaurants.save(restaurantJpa);
 

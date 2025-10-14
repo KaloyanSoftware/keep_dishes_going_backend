@@ -10,15 +10,13 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", imports = { RestaurantId.class, OwnerId.class })
 public interface OwnerMapper {
 
-    // Domain -> JPA
     @Mapping(target = "id", expression = "java(domain.getId().id())")
-    @Mapping(target = "firstName", expression = "java(domain.getFirstName())")
-    @Mapping(target = "lastName", expression = "java(domain.getLastName())")
+    @Mapping(target = "firstName", source = "firstName")
+    @Mapping(target = "lastName", source = "lastName")
     OwnerJpaEntity toJpa(Owner domain);
 
-    // JPA -> Domain
     @Mapping(target = "id", expression = "java(OwnerId.of(jpa.getId()))")
-    @Mapping(target = "firstName", expression = "java(jpa.getFirstName())")
-    @Mapping(target = "lastName", expression = "java(jpa.getLastName())")
+    @Mapping(target = "firstName", source = "firstName")
+    @Mapping(target = "lastName", source = "lastName")
     Owner toDomain(OwnerJpaEntity jpa);
 }

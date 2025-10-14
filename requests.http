@@ -37,7 +37,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "restaurantId": "9eeec569-d99e-4c03-93bc-f1e152363874",
+  "restaurantId": "0c8bf7b5-7330-4d3d-b8f1-2d067b0a6ebc",
   "name": "Pizza Margaritta",
   "description": "Classic Italian pizza",
   "price": 18,
@@ -56,8 +56,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "restaurantId": "9eeec569-d99e-4c03-93bc-f1e152363874",
-  "draftId": "08e0fbc2-f3a3-48cd-aa97-8aabd5663982"
+  "restaurantId": "0c8bf7b5-7330-4d3d-b8f1-2d067b0a6ebc",
+  "draftId": "cd9cb445-0b8e-4519-a5c6-b74c56412fa7"
 }
 
 
@@ -70,8 +70,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "dishId": "2107c228-8577-4048-8406-a30ba8c92944",
-  "menuId": "e93a419b-d125-42af-bc10-d224c71ea6c9"
+  "dishId": "f53317ab-163b-4c4b-8fd1-c75eb8c404b2",
+  "menuId": "8b8545b6-fe97-4682-acc8-80b695767b44"
 }
 
 
@@ -83,8 +83,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "dishId": "2107c228-8577-4048-8406-a30ba8c92944",
-  "menuId": "e93a419b-d125-42af-bc10-d224c71ea6c9"
+  "dishId": "f53317ab-163b-4c4b-8fd1-c75eb8c404b2",
+  "menuId": "8b8545b6-fe97-4682-acc8-80b695767b44"
 }
 
 
@@ -96,8 +96,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "dishId": "2107c228-8577-4048-8406-a30ba8c92944",
-  "menuId": "e93a419b-d125-42af-bc10-d224c71ea6c9"
+  "dishId": "f53317ab-163b-4c4b-8fd1-c75eb8c404b2",
+  "menuId": "8b8545b6-fe97-4682-acc8-80b695767b44"
 }
 
 
@@ -109,8 +109,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "dishId": "2107c228-8577-4048-8406-a30ba8c92944",
-  "menuId": "e93a419b-d125-42af-bc10-d224c71ea6c9"
+  "dishId": "f53317ab-163b-4c4b-8fd1-c75eb8c404b2",
+  "menuId": "8b8545b6-fe97-4682-acc8-80b695767b44"
 }
 
 

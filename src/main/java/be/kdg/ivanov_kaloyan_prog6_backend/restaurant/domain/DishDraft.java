@@ -1,7 +1,6 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DishDraft {

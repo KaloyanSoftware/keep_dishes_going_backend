@@ -37,32 +37,6 @@ public final class Dish {
 
     private String pictureURL;
 
-    public static Dish rehydrate(
-            DishId id,
-            MenuId menuId,
-            State state,
-            StockStatus stockStatus,
-            String name,
-            DishType type,
-            List<FoodTag> tags,
-            String description,
-            BigDecimal price,
-            String pictureURL
-    ) {
-        Dish d = new Dish();
-        d.id = id;
-        d.menuId = menuId;
-        d.state = state;
-        d.stockStatus = stockStatus;
-        d.name = name;
-        d.type = type;
-        if (tags != null) d.tags = new ArrayList<>(tags);
-        d.description = description;
-        d.price = price;
-        d.pictureURL = pictureURL;
-        return d;
-    }
-
     public Dish() {}
 
     public Dish(DishDraft draft, MenuId menuId) {
@@ -159,4 +133,30 @@ public final class Dish {
     public boolean orderable(){
         return state.equals(State.PUBLISHED) && stockStatus.equals(StockStatus.IN_STOCK);
     }
+
+    public void setId(DishId id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(DishType type) {
+        this.type = type;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public void setPictureURL(String pictureURL) {
+        this.pictureURL = pictureURL;
+    }
+
+
 }
