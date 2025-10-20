@@ -26,13 +26,12 @@ public class MarkDishBackInStockUseCaseImplementation implements MarkDishBackInS
 
     @Override
     @Transactional
-    public Dish markBackInStock(MarkDishBackInStockCommand command) {
+    public void markBackInStock(MarkDishBackInStockCommand command) {
         Menu menu = loadMenuPort.loadById(command.menuId()).orElseThrow(() -> new MenuNotFoundException("Menu not found"));
 
         Dish dish = menu.markDishBackInStock(command.dishId());
 
         this.updateMenuPorts.forEach(port -> port.update(menu));
 
-        return dish;
     }
 }

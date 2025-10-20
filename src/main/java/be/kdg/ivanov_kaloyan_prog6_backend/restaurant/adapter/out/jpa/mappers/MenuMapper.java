@@ -19,7 +19,7 @@ public interface MenuMapper {
         Map<UUID, Dish> dishes =
                 dishMapper.toDomainMap(jpa.getDishes(), moneyMapper);
         MenuId mid = MenuId.of(jpa.getId());
-        return Menu.rehydrate(mid, restaurantId, dishes);
+        return Menu.rehydrate(mid, restaurantId, dishes, jpa.getPublishedCount());
     }
 
     default Menu toDomain(MenuJpaEntity jpa, @Context MoneyMapper moneyMapper, @Context DishMapper dishMapper) {
@@ -29,6 +29,7 @@ public interface MenuMapper {
     @Mapping(target = "id", expression = "java(domain.getId().id())")
     @Mapping(target = "dishes", ignore = true)
     @Mapping(target = "restaurantId", expression = "java(domain.getRestaurantId().id())")
+    @Mapping(target = "publishedCount", source = "publishedCount")
     MenuJpaEntity toJpa(Menu domain, @Context MoneyMapper moneyMapper, @Context DishMapper dishMapper);
 
     @AfterMapping

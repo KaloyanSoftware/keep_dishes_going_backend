@@ -5,49 +5,44 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.CreateRes
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.CreateRestaurantUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadOwnerPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateMenuPort;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveRestaurantPort;
-import org.springframework.beans.factory.annotation.Qualifier;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateRestaurantPort;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
 
-    private final SaveRestaurantPort saveRestaurantPort;
-
     private final LoadOwnerPort loadOwnerPort;
 
-    private final UpdateMenuPort updateMenuPort;
+    private final List<UpdateMenuPort> updateMenuPorts;
 
-    public CreateRestaurantUseCaseImpl(final SaveRestaurantPort saveRestaurantPort,
-                                       final LoadOwnerPort loadOwnerPort,
-                                       final @Qualifier("jpa") UpdateMenuPort updateMenuPort) {
-        this.saveRestaurantPort = saveRestaurantPort;
+    private final List<UpdateRestaurantPort> updateRestaurantPorts;
+
+    public CreateRestaurantUseCaseImpl(final LoadOwnerPort loadOwnerPort,
+                                       final  List<UpdateMenuPort> updateMenuPorts,
+                                       final List<UpdateRestaurantPort> updateRestaurantPorts) {
         this.loadOwnerPort = loadOwnerPort;
-        this.updateMenuPort = updateMenuPort;
+        this.updateMenuPorts = updateMenuPorts;
+        this.updateRestaurantPorts = updateRestaurantPorts;
     }
 
     @Override
-    public Restaurant createRestaurant(CreateRestaurantCommand command) {
+    @Transactional
+    public void createRestaurant(CreateRestaurantCommand command) {
 
         loadOwnerPort.loadBy(command.ownerId())
                 .orElseThrow(() -> new NullPointerException("Owner not found: " + command.ownerId()));
 
-        final Restaurant restaurant = new Restaurant(
-                OwnerId.of(command.ownerId()),
-                command.address(),
-                command.email(),
-                command.pictureURL(),
-                command.defaultPrepTime(),
-                command.cuisineType(),
-                command.openingHours()
-        );
 
-        Menu menu = new Menu(restaurant.getId());
+        final Restaurant restaurant = Restaurant.create(command.ownerId(), command.address(),
+                command.email(), command.pictureURL(), command.defaultPrepTime(), command.cuisineType(),
+        command.openingHours());
 
-        saveRestaurantPort.save(restaurant);
+        Menu menu = Menu.create(restaurant.getId().id());
 
-        updateMenuPort.update(menu);
+        this.updateRestaurantPorts.forEach(port -> port.update(restaurant));
 
-        return restaurant;
+        this.updateMenuPorts.forEach(port -> port.update(menu));
     }
 }

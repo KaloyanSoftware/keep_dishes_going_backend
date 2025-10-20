@@ -7,11 +7,15 @@ public class Owner {
 
     private String lastName;
 
-    public Owner(String firstName, String lastName) {
-        id = OwnerId.create();
-        this.firstName = firstName;
-        this.lastName = lastName;
+    private String email;
+
+    public Owner(OwnerId ownerId, String firstName, String lastName, String email) {
+        setId(ownerId);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setEmail(email);
     }
+
 
     public OwnerId getId() {
         return id;
@@ -35,5 +39,13 @@ public class Owner {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

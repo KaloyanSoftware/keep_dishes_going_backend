@@ -17,11 +17,8 @@ public class OwnerJpaEntity {
     @Column(name="last_name", nullable=false)
     private String lastName;
 
-    public OwnerJpaEntity(UUID id, String firstName, String lastName) {
-        setId(id);
-        setFirstName(firstName);
-        setLastName(lastName);
-    }
+    @Column(name="email", nullable=false)
+    private String email;
 
     public OwnerJpaEntity() {
 
@@ -49,5 +46,13 @@ public class OwnerJpaEntity {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

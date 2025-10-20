@@ -1,39 +1,60 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.dto.DishDTO;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.dto.DishDraftDTO;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.request.CreateDishAsDraftRequest;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.request.PublishDishDraftRequest;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.request.PublishDishRequest;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DishDraft;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.CreateDishAsDraftCommand;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.PublishDishCommand;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.CreateDishAsDraftUseCase;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.PublishDishDraftUseCase;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.PublishDishUseCase;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.request.CreateDishDraftRequest;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.FoodTag;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.CreateDishDraftCommand;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.GetDishDraftsForRestaurantCommand;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.CreateDishDraftUseCase;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.GetDishDraftsByRestaurantUseCase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/api/drafts")
-public class DishDraftController {
-    private final CreateDishAsDraftUseCase createDishAsDraftUseCase;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
-    public DishDraftController(final CreateDishAsDraftUseCase createDishAsDraftUseCase) {
-        this.createDishAsDraftUseCase = createDishAsDraftUseCase;
+@RestController
+@RequestMapping("/api")
+public class DishDraftController {
+    private static final Logger log = LoggerFactory.getLogger(DishDraftController.class);
+    private final CreateDishDraftUseCase createDishDraftUseCase;
+
+    private final GetDishDraftsByRestaurantUseCase getDishDraftsByRestaurantUseCase;
+
+
+
+    public DishDraftController(final CreateDishDraftUseCase createDishDraftUseCase,
+                               final GetDishDraftsByRestaurantUseCase getDishDraftsByRestaurantUseCase) {
+        this.createDishDraftUseCase = createDishDraftUseCase;
+        this.getDishDraftsByRestaurantUseCase = getDishDraftsByRestaurantUseCase;
     }
 
-    @PostMapping
-    public ResponseEntity<DishDraftDTO> post(@RequestBody CreateDishAsDraftRequest request){
+    @PostMapping("/drafts")
+    public ResponseEntity<DishDraftDTO> post(@RequestBody CreateDishDraftRequest request){
 
-        final CreateDishAsDraftCommand command =  new CreateDishAsDraftCommand(
-                request.restaurantId(), request.name(), request.type(), request.tags(),
+        final CreateDishDraftCommand command =  new CreateDishDraftCommand(
+                request.restaurantId(), request.dishId(),request.name(), request.type(),
+                Arrays.stream(request.foodTags()).map(FoodTag::valueOf).toList(),
                 request.description(), request.price(), request.pictureURL()
         );
 
-        DishDraft dishDraft = this.createDishAsDraftUseCase.createDishAsDraft(command);
+        return  ResponseEntity.status(HttpStatus.CREATED).body(DishDraftDTO.from(this.createDishDraftUseCase.create(command)));
+    }
 
-        return  ResponseEntity.status(HttpStatus.CREATED).body(DishDraftDTO.from(dishDraft));
+    @GetMapping("/owner/restaurant/{restaurantId}/drafts")
+    public ResponseEntity<List<DishDraftDTO>> getDrafts(@PathVariable UUID restaurantId){
+
+        log.error(restaurantId.toString());
+
+        final GetDishDraftsForRestaurantCommand command = new GetDishDraftsForRestaurantCommand(restaurantId);
+
+        final List<DishDraftDTO> drafts = getDishDraftsByRestaurantUseCase.getDishDrafts(command)
+                .stream().map(DishDraftDTO::from).toList();
+
+        return ResponseEntity.ok().body(drafts);
     }
 }

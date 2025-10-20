@@ -10,6 +10,7 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveDishDraftPort
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,6 +41,11 @@ public class DishDraftJpaAdapter implements SaveDishDraftPort, LoadDishDraftPort
     @Override
     public Optional<DishDraft> loadBy(UUID id) {
         return this.drafts.findById(id).map(dishDraftMapper::toDomain);
+    }
+
+    @Override
+    public List<DishDraft> loadByRestaurant(UUID id) {
+        return drafts.getAllByRestaurantId(id).stream().map(dishDraftMapper::toDomain).toList();
     }
 
     @Override

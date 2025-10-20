@@ -7,6 +7,6 @@ import java.util.UUID;
 public record MarkDishBackInStockCommand(UUID dishId, UUID menuId) {
     public MarkDishBackInStockCommand {
         Assert.notNull(dishId, "dishId must not be null");
-        Assert.notNull(menuId, "menuId must not be null");
+        Assert.notNull(menuId, "restaurantId must not be null");
     }
 }

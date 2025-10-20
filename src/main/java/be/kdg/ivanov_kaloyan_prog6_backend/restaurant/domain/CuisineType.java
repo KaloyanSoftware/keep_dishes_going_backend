@@ -1,5 +1,5 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 
 public enum CuisineType {
-ITALIAN, FRENCH, ENGLISH
+ITALIAN, CHINESE, JAPANESE, MEXICAN, INDIAN, GREEK
 }

@@ -2,7 +2,7 @@ package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Restaurant;
 
-public interface SaveRestaurantPort {
+public interface UpdateRestaurantPort {
 
-    Restaurant save(Restaurant restaurant);
+    Restaurant update(Restaurant restaurant);
 }

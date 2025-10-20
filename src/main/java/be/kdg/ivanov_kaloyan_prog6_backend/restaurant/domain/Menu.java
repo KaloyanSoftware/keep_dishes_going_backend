@@ -2,6 +2,8 @@ package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.common.events.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.exceptions.*;
+
+import java.math.BigDecimal;
 import java.util.*;
 
 //aggregate
@@ -17,21 +19,34 @@ public class Menu {
 
     private static final int MAX_PUBLISHED_DISHES = 10;
 
+    private int publishedCount = 0;
+
+    public static Menu create(UUID restaurantId) {
+        Menu menu = new Menu(MenuId.create(), RestaurantId.of(restaurantId));
+        menu.events.add(new SaveMenuEvent(menu.id.id(), restaurantId));
+        return menu;
+    }
+
     public Dish publishDish(UUID dishId){
         Dish dish = dishes.get(dishId);
 
         if(dish == null || dish.published()) {
             throw new InvalidPublishDishException("Dish is already published or doesn't exist!");
-        }else{
-            if(maxCapacityReached()){
-                throw new MenuCapacityException("Can't make more dishes available, max capacity reached: 10!");
-            }else{
-                dish.publish();
-                dishes.put(dishId, dish);
-            }
         }
 
-        this.events.add(new DishPublishedEvent(dishId, restaurantId.id(), dish.orderable()));
+        if(publishedCapacityReached()){
+            throw new MenuCapacityException("Can't make more dishes available, max capacity reached: 10!");
+        }
+
+        dish.publish();
+        dishes.put(dishId, dish);
+        publishedCount++;
+
+        final List<String> tags = dish.getTags().stream()
+                .map(FoodTag::name).toList();
+
+        this.events.add(new DishPublishedEvent(dishId, restaurantId.id(),dish.getStockStatus().name(), dish.getName(),
+                dish.getType().name(), tags, dish.getDescription(), dish.getPrice(), dish.getPictureURL()));
         return dish;
     }
 
@@ -40,10 +55,11 @@ public class Menu {
 
         if(dish == null || !dish.published()) {
             throw new InvalidPublishDishException("Dish is already unpublished or doesn't exist!");
-        }else{
-            dish.unpublish();
-            dishes.put(dishId, dish);
         }
+
+        dish.unpublish();
+        dishes.put(dishId, dish);
+        publishedCount--;
 
         this.events.add(new DishUnpublishedEvent(dishId, restaurantId.id(), dish.orderable()));
         return dish;
@@ -59,20 +75,27 @@ public class Menu {
                         The dish for this draft is still on the live menu!
                         Remove the dish from the live menu to publish this draft!
                         """);
-            }else{
-                dishes.remove(draft.getDishId().id());
             }
+
+            dishes.remove(dish.getId().id());
         }
 
         Dish dish = new Dish(draft, this.id);
 
-        if(maxCapacityReached()){
+        if(publishedCapacityReached()){
             throw new MenuCapacityException("Can't publish more dishes, max capacity reached!");
-        }else{
-            dish.publish();
-            dish.markInStock();
-            dishes.put(dish.getId().id(), dish);
         }
+
+        dish.publish();
+        dish.markInStock();
+        dishes.put(dish.getId().id(), dish);
+        publishedCount++;
+
+        final List<String> tags = dish.getTags().stream()
+                .map(FoodTag::name).toList();
+
+        this.events.add(new DishPublishedEvent(dish.getId().id(), restaurantId.id(),dish.getStockStatus().name(), dish.getName(),
+                dish.getType().name(), tags, dish.getDescription(), dish.getPrice(), dish.getPictureURL()));
         return dish;
     }
 
@@ -81,10 +104,10 @@ public class Menu {
 
         if(dish == null || dish.outOfStock()) {
             throw new InvalidMarkDishOutOfStockException("Dish is already out of stock or doesn't exist!");
-        }else{
-            dish.markOutOfStock();
-            dishes.put(dishId, dish);
         }
+
+        dish.markOutOfStock();
+        dishes.put(dishId, dish);
 
         this.events.add(new DishOutOfStockEvent(dishId, restaurantId.id(), dish.orderable()));
         return dish;
@@ -95,17 +118,18 @@ public class Menu {
 
         if(dish == null || !dish.outOfStock()) {
             throw new InvalidMarkDishBackInStockException("Dish is already in stock or doesn't exist!");
-        }else{
-            if(maxCapacityReached()){
-                throw new MenuCapacityException("""
+        }
+
+        if(publishedCapacityReached()){
+            throw new MenuCapacityException("""
                         Can't make more dishes available, max capacity reached: 10!
                         Take a dish off the live menu to make this one available!
                         """);
-            }else{
-                dish.markInStock();
-                dishes.put(dishId, dish);
-            }
         }
+
+        dish.markInStock();
+        dishes.put(dishId, dish);
+
         this.events.add(new DishBackInStockEvent(dishId, restaurantId.id(), dish.orderable()));
         return dish;
     }
@@ -126,17 +150,17 @@ public class Menu {
 
 
 
-    public static Menu rehydrate(MenuId id, RestaurantId restaurantId, Map<UUID, Dish> dishes) {
-        Menu m = new Menu(restaurantId);
-        m.id = id;
+    public static Menu rehydrate(MenuId id, RestaurantId restaurantId, Map<UUID, Dish> dishes, int publishedCount) {
+        Menu m = new Menu(id, restaurantId);
         m.dishes.clear();
         if (dishes != null) m.dishes.putAll(dishes);
+        m.publishedCount = publishedCount;
         return m;
     }
 
-    public Menu(RestaurantId restaurantId) {
-        this.id = MenuId.create();
-        this.restaurantId = restaurantId;
+    public Menu(MenuId menuId, RestaurantId restaurantId) {
+        setId(menuId);
+        setRestaurantId(restaurantId);
     }
 
     public List<DomainEvent> getEvents() {
@@ -151,15 +175,23 @@ public class Menu {
         return restaurantId;
     }
 
-    private boolean maxCapacityReached(){
-        List<Dish> availableDishes = dishes.values().stream().
-                filter(dish -> dish.getState() != Dish.State.PUBLISHED).toList();
-
-        return MAX_PUBLISHED_DISHES == availableDishes.size();
+    private boolean publishedCapacityReached(){
+        return publishedCount == MAX_PUBLISHED_DISHES;
     }
 
     public Map<UUID, Dish> getDishes() {
         return dishes;
     }
 
+    public int getPublishedCount() {
+        return publishedCount;
+    }
+
+    public void setId(MenuId id) {
+        this.id = id;
+    }
+
+    public void setRestaurantId(RestaurantId restaurantId) {
+        this.restaurantId = restaurantId;
+    }
 }

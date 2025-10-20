@@ -5,10 +5,10 @@ import org.springframework.util.Assert;
 import java.util.UUID;
 
 public record UnpublishDishCommand(UUID dishId,
-                                   UUID menuId) {
+                                   UUID restaurantId) {
 
     public UnpublishDishCommand {
         Assert.notNull(dishId, "dishId must not be null");
-        Assert.notNull(menuId, "menuId must not be null");
+        Assert.notNull(restaurantId, "restaurantId must not be null");
     }
 }

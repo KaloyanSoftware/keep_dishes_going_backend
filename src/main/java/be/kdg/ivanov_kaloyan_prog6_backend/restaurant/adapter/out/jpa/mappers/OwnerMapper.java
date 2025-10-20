@@ -13,10 +13,12 @@ public interface OwnerMapper {
     @Mapping(target = "id", expression = "java(domain.getId().id())")
     @Mapping(target = "firstName", source = "firstName")
     @Mapping(target = "lastName", source = "lastName")
+    @Mapping(target = "email", source = "email")
     OwnerJpaEntity toJpa(Owner domain);
 
     @Mapping(target = "id", expression = "java(OwnerId.of(jpa.getId()))")
     @Mapping(target = "firstName", source = "firstName")
     @Mapping(target = "lastName", source = "lastName")
+    @Mapping(target = "email", source = "email")
     Owner toDomain(OwnerJpaEntity jpa);
 }

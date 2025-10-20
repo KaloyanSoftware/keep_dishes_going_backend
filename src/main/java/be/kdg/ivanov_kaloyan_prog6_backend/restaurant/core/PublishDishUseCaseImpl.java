@@ -26,13 +26,11 @@ public class PublishDishUseCaseImpl implements PublishDishUseCase {
 
     @Override
     @Transactional
-    public Dish publish(PublishDishCommand command) {
+    public void publish(PublishDishCommand command) {
         Menu menu = loadMenuPort.loadById(command.menuId()).orElseThrow(() -> new MenuNotFoundException("Menu not found"));
 
         Dish dish = menu.publishDish(command.dishId());
 
         this.updateMenuPorts.forEach(port -> port.update(menu));
-
-        return dish;
     }
 }

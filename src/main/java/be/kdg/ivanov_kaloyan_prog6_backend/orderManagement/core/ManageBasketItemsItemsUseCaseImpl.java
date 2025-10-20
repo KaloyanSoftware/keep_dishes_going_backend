@@ -32,11 +32,10 @@ public class ManageBasketItemsItemsUseCaseImpl implements ManageBasketItemsUseCa
     @Override
     public Basket add(AddNewItemToBasketCommand command) {
 
-        //TODO: check whether the customerSessionId from the command is valid
-
         final Basket basket = loadBasketPort.loadBy(command.customerSessionId())
                 .orElseGet(() -> new Basket(command.restaurantId(), command.customerSessionId()));
 
+        //not like this, used the saved projection!
         var dish = catalog.findPublishedDish(command.restaurantId(), command.dishId())
                 .orElseThrow(() -> new ItemNotFoundException("Dish not available"));
 

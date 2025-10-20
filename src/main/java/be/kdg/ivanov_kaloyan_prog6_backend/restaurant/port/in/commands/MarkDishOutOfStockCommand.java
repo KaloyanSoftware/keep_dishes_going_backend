@@ -8,6 +8,6 @@ public record MarkDishOutOfStockCommand(UUID dishId, UUID menuId) {
 
     public MarkDishOutOfStockCommand {
         Assert.notNull(dishId, "dishId must not be null");
-        Assert.notNull(menuId, "menuId must not be null");
+        Assert.notNull(menuId, "restaurantId must not be null");
     }
 }

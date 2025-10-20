@@ -27,13 +27,12 @@ public class MarkDishOutOfStockUseCaseImpl implements MarkDishOutOfStockUseCase 
 
     @Override
     @Transactional
-    public Dish markOutOfStock(MarkDishOutOfStockCommand command) {
+    public void markOutOfStock(MarkDishOutOfStockCommand command) {
         Menu menu = loadMenuPort.loadById(command.menuId()).orElseThrow(() -> new MenuNotFoundException("Menu not found"));
 
         Dish dish = menu.markDishOutOfStock(command.dishId());
 
         this.updateMenuPorts.forEach(port -> port.update(menu));
 
-        return dish;
     }
 }

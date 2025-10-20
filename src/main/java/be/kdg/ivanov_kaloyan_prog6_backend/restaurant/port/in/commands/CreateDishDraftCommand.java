@@ -6,18 +6,11 @@ import org.springframework.util.Assert;
 import java.util.List;
 import java.util.UUID;
 
-public record CreateDishAsDraftCommand(UUID restaurantId, String name, DishType type, List<FoodTag> tags,
-                                       String description, Double price, String pictureURL){
+public record CreateDishDraftCommand(UUID restaurantId, UUID dishId,String name, DishType type, List<FoodTag> tags,
+                                     String description, Double price, String pictureURL){
 
-    public CreateDishAsDraftCommand{
+    public CreateDishDraftCommand {
         Assert.notNull(restaurantId, "restaurantId must not be null");
-        Assert.notNull(type, "type must not be null");
-        Assert.notNull(tags, "tags must not be null");
-        Assert.notEmpty(tags, "tags must not be empty");
-        Assert.notNull(description, "description must not be null");
-        Assert.notNull(price, "price must not be null");
-        Assert.isTrue(price > 0, "price must be greater than zero");
-        Assert.notNull(pictureURL, "pictureURL must not be null");
     }
 }
 

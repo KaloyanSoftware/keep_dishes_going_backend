@@ -8,6 +8,6 @@ public record PublishDishCommand(UUID dishId,
                                  UUID menuId){
     public PublishDishCommand {
         Assert.notNull(dishId, "dishId must not be null");
-        Assert.notNull(menuId, "menuId must not be null");
+        Assert.notNull(menuId, "restaurantId must not be null");
     }
 }

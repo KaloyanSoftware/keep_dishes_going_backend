@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-public record DishDTO(UUID dishId, UUID menuId, String name,
+public record DishDTO(UUID dishId, UUID restaurantId, String name,
                       DishType type, List<FoodTag> tags, String description,
                       BigDecimal price, String pictureURL, Dish.State state, Dish.StockStatus stockStatus) {
 

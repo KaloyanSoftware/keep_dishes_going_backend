@@ -5,7 +5,8 @@ CREATE SCHEMA order_management;
 CREATE TABLE restaurant.owner (
                        uuid UUID PRIMARY KEY,
                        first_name TEXT NOT NULL,
-                       last_name TEXT NOT NULL
+                       last_name TEXT NOT NULL,
+                       email TEXT NOT NULL
 );
 
 CREATE TABLE restaurant.restaurant (
@@ -25,7 +26,8 @@ CREATE TABLE restaurant.restaurant (
 
 CREATE TABLE restaurant.menu (
                                        uuid UUID PRIMARY KEY,
-                                       restaurant_id UUID NOT NULL UNIQUE REFERENCES restaurant.restaurant(uuid)
+                                       restaurant_id UUID NOT NULL UNIQUE REFERENCES restaurant.restaurant(uuid),
+                                       published_count INTEGER
 );
 
 
@@ -44,22 +46,22 @@ CREATE TABLE restaurant.dish (
                                  menu_id          UUID NOT NULL REFERENCES restaurant.menu(uuid) ON DELETE CASCADE,
                                  state            TEXT NOT NULL,
                                  stock_status     TEXT NOT NULL,
-                                 name             TEXT,
-                                 type             TEXT,
-                                 description      TEXT,
-                                 price            FLOAT,
-                                 picture_url      TEXT
+                                 name             TEXT NOT NULL ,
+                                 type             TEXT NOT NULL ,
+                                 description      TEXT NOT NULL ,
+                                 price            FLOAT NOT NULL ,
+                                 picture_url      TEXT NOT NULL
 );
 
 CREATE TABLE restaurant.dish_draft (
                                  uuid             UUID PRIMARY KEY,
                                  restaurant_id    UUID NOT NULL REFERENCES restaurant.restaurant(uuid) ON DELETE CASCADE,
                                  dish_id          UUID REFERENCES restaurant.dish(uuid),
-                                 name             TEXT,
-                                 type             TEXT,
-                                 description      TEXT,
-                                 price            FLOAT,
-                                 picture_url      TEXT
+                                 name             TEXT NOT NULL ,
+                                 type             TEXT NOT NULL ,
+                                 description      TEXT NOT NULL ,
+                                 price            FLOAT NOT NULL ,
+                                 picture_url      TEXT NOT NULL
 );
 
 CREATE TABLE restaurant.dish_tag (
@@ -81,6 +83,35 @@ CREATE TABLE order_management.item_availability (
                                  orderable BOOLEAN NOT NULL
 );
 
+CREATE TABLE order_management.restaurant_projection (
+                                       uuid UUID PRIMARY KEY,
+                                       email TEXT NOT NULL,
+                                       picture_url TEXT,
+                                       default_prep_min INTEGER NOT NULL,
+                                       cuisine_type TEXT NOT NULL,
+                                       street TEXT NOT NULL,
+                                       house_number INTEGER NOT NULL,
+                                       postal_code TEXT NOT NULL,
+                                       city TEXT NOT NULL,
+                                       country TEXT NOT NULL
+);
+
+CREATE TABLE order_management.dish_projection (
+                                 uuid             UUID PRIMARY KEY,
+                                 restaurant_id    UUID NOT NULL REFERENCES order_management.restaurant_projection(uuid) ON DELETE CASCADE,
+                                 stock_status     TEXT NOT NULL,
+                                 name             TEXT NOT NULL,
+                                 type             TEXT NOT NULL,
+                                 description      TEXT NOT NULL,
+                                 price            FLOAT NOT NULL,
+                                 picture_url      TEXT NOT NULL
+);
+
+CREATE TABLE order_management.dish_projection_tag (
+                                     dish_id UUID NOT NULL REFERENCES order_management.dish_projection(uuid) ON DELETE CASCADE,
+                                     tag     TEXT NOT NULL,
+                                     PRIMARY KEY (dish_id, tag)
+);
 
 
 

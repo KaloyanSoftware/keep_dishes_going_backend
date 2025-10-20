@@ -14,17 +14,19 @@ public class MenuJpaEntity {
     @Column(name = "restaurant_id", nullable = false)
     private UUID restaurantId;
 
-    @OneToMany(
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}
     )
     @JoinColumn(name = "menu_id", referencedColumnName = "uuid")
     private List<DishJpaEntity> dishes;
 
-    public MenuJpaEntity(UUID id, UUID restaurantId, List<DishJpaEntity> dishes) {
+    @Column(name = "published_count")
+    private Integer publishedCount;
+
+    public MenuJpaEntity(UUID id, UUID restaurantId, List<DishJpaEntity> dishes,  Integer publishedCount) {
         setId(id);
         setRestaurantId(restaurantId);
         setDishes(dishes);
+        setPublishedCount(publishedCount);
     }
 
     public MenuJpaEntity() {
@@ -53,5 +55,13 @@ public class MenuJpaEntity {
 
     public void setDishes(List<DishJpaEntity> dishes) {
         this.dishes = dishes;
+    }
+
+    public Integer getPublishedCount() {
+        return publishedCount;
+    }
+
+    public void setPublishedCount(Integer publishedCount) {
+        this.publishedCount = publishedCount;
     }
 }

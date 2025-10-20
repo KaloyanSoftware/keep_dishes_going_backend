@@ -31,19 +31,20 @@ Content-Type: application/json
 
 ###
 
-### Create dish as draft
+### Create dish draft
 POST localhost:8080/api/drafts
 Content-Type: application/json
 Accept: application/json
 
 {
-  "restaurantId": "0c8bf7b5-7330-4d3d-b8f1-2d067b0a6ebc",
+  "restaurantId": "e3382dfe-114f-42d3-838c-7733f12b8533",
+  "dishId": "f53317ab-163b-4c4b-8fd1-c75eb8c404b2",
   "name": "Pizza Margaritta",
-  "description": "Classic Italian pizza",
-  "price": 18,
+  "description": "Tiramissu",
+  "price": 20,
   "tags": ["CARNIVORE"],
   "pictureURL": "someURL",
-  "type": "MAIN"
+  "type": "DESSERT"
 }
 
 
@@ -57,7 +58,7 @@ Accept: application/json
 
 {
   "restaurantId": "0c8bf7b5-7330-4d3d-b8f1-2d067b0a6ebc",
-  "draftId": "cd9cb445-0b8e-4519-a5c6-b74c56412fa7"
+  "draftId": "e887c099-262c-4fef-b507-36bd901d67ac"
 }
 
 
@@ -122,8 +123,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "dishId": "2107c228-8577-4048-8406-a30ba8c92944",
-  "restaurantId": "9eeec569-d99e-4c03-93bc-f1e152363874",
+  "dishId": "f53317ab-163b-4c4b-8fd1-c75eb8c404b2",
+  "restaurantId": "0c8bf7b5-7330-4d3d-b8f1-2d067b0a6ebc",
   "customerSessionId": "9eeec569-d99e-4c03-93bc-f1e152363873"
 }
 
@@ -135,8 +136,8 @@ DELETE localhost:8080/api/basket/items
 Content-Type: application/json
 
 {
-  "dishId": "2107c228-8577-4048-8406-a30ba8c92944",
-  "basketId": "b961c808-7134-4600-b104-e37bbc716be2"
+  "dishId": "f53317ab-163b-4c4b-8fd1-c75eb8c404b2",
+  "basketId": "efcae5bc-678b-40ae-a1c8-a9988bf35c4e"
 }
 
 

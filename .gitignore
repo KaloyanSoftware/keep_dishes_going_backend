@@ -37,3 +37,6 @@ out/
 .vscode/
 
 .zencoder
+
+infrastructure/idp_mysql_data/*
+

@@ -15,6 +15,7 @@ public final class Dish {
     public enum StockStatus {
         IN_STOCK,
         OUT_OF_STOCK
+
     }
 
     private DishId id;
@@ -40,7 +41,7 @@ public final class Dish {
     public Dish() {}
 
     public Dish(DishDraft draft, MenuId menuId) {
-        this.id = saveDishId(draft.getDishId());
+        this.id = setDishId(draft.getDishId());
         this.menuId = menuId;
         this.name = draft.getName();
         this.type = draft.getType();
@@ -118,7 +119,7 @@ public final class Dish {
         this.menuId = menuId;
     }
 
-    private DishId saveDishId(DishId id){
+    private DishId setDishId(DishId id){
         return Objects.requireNonNullElseGet(id, DishId::create);
     }
 

@@ -23,17 +23,18 @@ public class DishDraft {
 
     private String pictureURL;
 
-    public DishDraft(RestaurantId restaurantId, String name, DishType type,
+    public DishDraft(RestaurantId restaurantId, DishId dishId, String name, DishType type,
                      List<FoodTag> tags, String description,
                      BigDecimal price, String pictureURL) {
-        this.id = DishDraftId.create();
-        this.restaurantId = restaurantId;
-        this.name = name;
-        this.type = type;
-        this.tags = tags;
-        this.description = description;
-        this.price = price;
-        this.pictureURL = pictureURL;
+        setId(DishDraftId.create());
+        setDishId(dishId);
+        setRestaurantId(restaurantId);
+        setName(name);
+        setType(type);
+        setTags(tags);
+        setDescription(description);
+        setPrice(price);
+        setPictureURL(pictureURL);
     }
 
     public DishDraftId getId() {
