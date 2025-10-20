@@ -57,10 +57,10 @@ public class DishController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(":unpublish")
+    @PostMapping("/unpublish")
     public ResponseEntity<Void> unpublish(@RequestBody UnpublishDishRequest request,
                                           @PathVariable String restaurantId){
-        final UnpublishDishCommand command =  new UnpublishDishCommand(request.dishId(), UUID.fromString(restaurantId));
+        final UnpublishDishCommand command =  new UnpublishDishCommand(UUID.fromString(request.id()), UUID.fromString(restaurantId));
 
         this.unpublishDishUseCase.unpublish(command);
 
