@@ -40,7 +40,7 @@ public class RestaurantController {
     }
 
     @PostMapping("/restaurants")
-    public ResponseEntity<Void> post(@RequestBody CreateRestaurantRequest request) {
+    public ResponseEntity<RestaurantDTO> post(@RequestBody CreateRestaurantRequest request) {
 
         final CreateRestaurantCommand command = new CreateRestaurantCommand(
                 request.ownerId(),
@@ -51,9 +51,7 @@ public class RestaurantController {
                 request.cuisineType(),
                 openingHoursMapper.toDomain(request.openingHours()));
 
-        this.createRestaurantUseCase.createRestaurant(command);
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(RestaurantDTO.from(this.createRestaurantUseCase.createRestaurant(command)));
     }
 
     @GetMapping("/owners/{ownerId}/restaurant")

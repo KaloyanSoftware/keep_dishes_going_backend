@@ -41,7 +41,7 @@ public final class Dish {
     public Dish() {}
 
     public Dish(DishDraft draft, MenuId menuId) {
-        this.id = setDishId(draft.getDishId());
+        this.id = Objects.requireNonNullElseGet(draft.getDishId(), DishId::create);
         this.menuId = menuId;
         this.name = draft.getName();
         this.type = draft.getType();
@@ -51,27 +51,41 @@ public final class Dish {
         this.pictureURL = draft.getPictureURL();
     }
 
+    public Dish(DishId id, MenuId menuId, State state, StockStatus stockStatus, String name, DishType type,
+                List<FoodTag> tags, String description, BigDecimal price, String pictureURL) {
+        this.id = id;
+        this.menuId = menuId;
+        this.state = state;
+        this.stockStatus = stockStatus;
+        this.name = name;
+        this.type = type;
+        this.tags = tags;
+        this.description = description;
+        this.price = price;
+        this.pictureURL = pictureURL;
+    }
+
     public void publish(){
-        setState(State.PUBLISHED);
+        changeState(State.PUBLISHED);
     }
 
     public void unpublish(){
-        setState(State.UNPUBLISHED);
+        changeState(State.UNPUBLISHED);
     }
 
     public void markOutOfStock(){
-        setStockStatus(StockStatus.OUT_OF_STOCK);
+        changeStockStatus(StockStatus.OUT_OF_STOCK);
     }
 
     public void markInStock(){
-        setStockStatus(StockStatus.IN_STOCK);
+        changeStockStatus(StockStatus.IN_STOCK);
     }
 
     public State getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public void changeState(State state) {
         this.state = state;
     }
 
@@ -79,7 +93,7 @@ public final class Dish {
         return stockStatus;
     }
 
-    public void setStockStatus(StockStatus stockStatus) {
+    public void changeStockStatus(StockStatus stockStatus) {
         this.stockStatus = stockStatus;
     }
 
@@ -115,14 +129,6 @@ public final class Dish {
         return menuId;
     }
 
-    public void setMenuId(MenuId menuId) {
-        this.menuId = menuId;
-    }
-
-    private DishId setDishId(DishId id){
-        return Objects.requireNonNullElseGet(id, DishId::create);
-    }
-
     public boolean outOfStock(){
         return this.stockStatus.equals(StockStatus.OUT_OF_STOCK);
     }
@@ -134,30 +140,4 @@ public final class Dish {
     public boolean orderable(){
         return state.equals(State.PUBLISHED) && stockStatus.equals(StockStatus.IN_STOCK);
     }
-
-    public void setId(DishId id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setType(DishType type) {
-        this.type = type;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public void setPictureURL(String pictureURL) {
-        this.pictureURL = pictureURL;
-    }
-
-
 }

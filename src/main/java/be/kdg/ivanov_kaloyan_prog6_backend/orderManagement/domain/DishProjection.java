@@ -6,9 +6,9 @@ import java.util.UUID;
 
 public class DishProjection {
 
-    private DishProjectionId id;
+    private UUID id;
 
-    private RestaurantProjectionId restaurantId;
+    private UUID restaurantId;
 
     private StockStatus stockStatus;
 
@@ -34,7 +34,7 @@ public class DishProjection {
         STARTER, MAIN, DESSERT
     }
 
-    public DishProjection(DishProjectionId id, RestaurantProjectionId restaurantId, StockStatus stockStatus, String name, DishType type,
+    public DishProjection(UUID id, UUID restaurantId, StockStatus stockStatus, String name, DishType type,
                           List<FoodTagProjection> tags, String description, BigDecimal price, String pictureURL) {
         this.id = id;
         this.restaurantId = restaurantId;
@@ -49,16 +49,8 @@ public class DishProjection {
 
     public static DishProjection create(UUID id, UUID restaurantId, StockStatus stockStatus, String name, DishType type,
                                         List<FoodTagProjection> tags, String description, BigDecimal price, String pictureURL){
-        return new DishProjection(DishProjectionId.of(id),  RestaurantProjectionId.of(restaurantId), stockStatus, name, type,
+        return new DishProjection(id,  restaurantId, stockStatus, name, type,
                 tags, description, price, pictureURL);
-    }
-
-    public DishProjectionId getId() {
-        return id;
-    }
-
-    public RestaurantProjectionId getRestaurantId() {
-        return restaurantId;
     }
 
     public StockStatus getStockStatus() {
@@ -87,5 +79,13 @@ public class DishProjection {
 
     public String getPictureURL() {
         return pictureURL;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public UUID getRestaurantId() {
+        return restaurantId;
     }
 }

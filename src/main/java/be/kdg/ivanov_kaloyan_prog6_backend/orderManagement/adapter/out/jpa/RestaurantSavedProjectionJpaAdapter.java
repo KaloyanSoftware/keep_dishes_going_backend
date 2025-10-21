@@ -23,7 +23,7 @@ public class RestaurantSavedProjectionJpaAdapter implements UpdateRestaurantProj
                 restaurant.getLocation().postalCode(), restaurant.getLocation().city(),
                 restaurant.getLocation().country());
 
-        final RestaurantProjectionJpaEntity jpa = new RestaurantProjectionJpaEntity(restaurant.getRestaurantId().id(), restaurant.getEmail(),
+        final RestaurantProjectionJpaEntity jpa = new RestaurantProjectionJpaEntity(restaurant.getRestaurantId(), restaurant.getEmail(),
                 restaurant.getPictureURL(), restaurant.getDefaultPrepTime(), restaurant.getCuisine() ,location);
 
         restaurantProjections.save(jpa);

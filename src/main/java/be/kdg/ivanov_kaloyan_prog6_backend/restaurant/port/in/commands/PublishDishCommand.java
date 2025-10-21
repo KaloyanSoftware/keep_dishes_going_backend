@@ -5,9 +5,9 @@ import org.springframework.util.Assert;
 import java.util.UUID;
 
 public record PublishDishCommand(UUID dishId,
-                                 UUID menuId){
+                                 UUID restaurantId){
     public PublishDishCommand {
         Assert.notNull(dishId, "dishId must not be null");
-        Assert.notNull(menuId, "restaurantId must not be null");
+        Assert.notNull(restaurantId, "restaurantId must not be null");
     }
 }

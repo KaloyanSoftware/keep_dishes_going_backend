@@ -32,11 +32,4 @@ public class ItemAvailabilityProjectionListener {
         this.projector.project(new ItemAvailabilityChangedProjectionCommand(event.dishId(),
                 event.restaurantId(), event.orderable()));
     }
-
-    @EventListener(DishUnpublishedEvent.class)
-    public void itemAvailabilityChanged(DishUnpublishedEvent event) {
-        log.error("Item unpublished event received");
-        this.projector.project(new ItemAvailabilityChangedProjectionCommand(event.dishId()
-                ,event.restaurantId(), event.orderable()));
-    }
 }

@@ -13,6 +13,7 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadMenuPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateMenuPort;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -38,7 +39,7 @@ public class PublishDishDraftUseCaseImpl implements PublishDishDraftUseCase {
 
     @Override
     @Transactional
-    public void publish(PublishDishDraftCommand command) {
+    public Dish publish(PublishDishDraftCommand command) {
         DishDraft draft = loadDishDraftPort.loadBy(command.draftId()).orElseThrow(
                 () -> new DraftNotFoundException("Can't find dish draft with id: " + command.draftId())
         );
@@ -47,11 +48,12 @@ public class PublishDishDraftUseCaseImpl implements PublishDishDraftUseCase {
                 () -> new MenuNotFoundException("Can't find menu with restaurant id: " + command.restaurantId())
         );
 
-        menu.publishDraft(draft);
+        Dish dish = menu.publishDraft(draft);
 
         deleteDishDraftPort.delete(draft.getId().id());
 
         this.updateMenuPorts.forEach(port -> port.update(menu));
 
+        return dish;
     }
 }

@@ -3,11 +3,9 @@ package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.mappers;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.OwnerJpaEntity;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Owner;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.OwnerId;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.RestaurantId;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
-@Mapper(componentModel = "spring", imports = { RestaurantId.class, OwnerId.class })
+@Mapper(componentModel = "spring", imports = {OwnerId.class})
 public interface OwnerMapper {
 
     @Mapping(target = "id", expression = "java(domain.getId().id())")
@@ -16,9 +14,17 @@ public interface OwnerMapper {
     @Mapping(target = "email", source = "email")
     OwnerJpaEntity toJpa(Owner domain);
 
-    @Mapping(target = "id", expression = "java(OwnerId.of(jpa.getId()))")
-    @Mapping(target = "firstName", source = "firstName")
-    @Mapping(target = "lastName", source = "lastName")
-    @Mapping(target = "email", source = "email")
-    Owner toDomain(OwnerJpaEntity jpa);
+    @ObjectFactory
+    default Owner createOwner(OwnerJpaEntity jpa) {
+        return new Owner(
+                OwnerId.of(jpa.getId()),
+                jpa.getFirstName(),
+                jpa.getLastName(),
+                jpa.getEmail()
+        );
+    }
+
+    default Owner toDomain(OwnerJpaEntity jpa) {
+        return createOwner(jpa);
+    }
 }

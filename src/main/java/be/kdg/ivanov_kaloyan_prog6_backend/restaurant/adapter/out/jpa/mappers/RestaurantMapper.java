@@ -4,12 +4,11 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.embeddable
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.embeddables.DayScheduleEmbeddable;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.RestaurantJpaEntity;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.*;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring", imports = { RestaurantId.class, OwnerId.class })
+@Mapper(componentModel = "spring", imports = {RestaurantId.class, OwnerId.class})
 public interface RestaurantMapper {
 
     @Mapping(target = "id", expression = "java(domain.getId().id())")
@@ -22,15 +21,23 @@ public interface RestaurantMapper {
     @Mapping(target = "openingHours", expression = "java(toJpaOpeningHours(domain.getOpeningHours()))")
     RestaurantJpaEntity toJpa(Restaurant domain);
 
-    @Mapping(target = "id", expression = "java(RestaurantId.of(jpa.getId()))")
-    @Mapping(target = "ownerId", expression = "java(OwnerId.of(jpa.getOwnerId()))")
-    @Mapping(target = "address", expression = "java(toDomainAddress(jpa.getAddress()))")
-    @Mapping(target = "email", source = "email")
-    @Mapping(target = "pictureURL", source = "pictureUrl")
-    @Mapping(target = "defaultPrepTime", source = "defaultPrepMinutes")
-    @Mapping(target = "cuisineType", source = "cuisineType")
-    @Mapping(target = "openingHours", expression = "java(toDomainOpeningHours(jpa.getOpeningHours()))")
-    Restaurant toDomain(RestaurantJpaEntity jpa);
+    @ObjectFactory
+    default Restaurant createRestaurant(RestaurantJpaEntity jpa) {
+        return new Restaurant(
+                RestaurantId.of(jpa.getId()),
+                OwnerId.of(jpa.getOwnerId()),
+                toDomainAddress(jpa.getAddress()),
+                jpa.getEmail(),
+                jpa.getPictureUrl(),
+                jpa.getDefaultPrepMinutes(),
+                jpa.getCuisineType(),
+                toDomainOpeningHours(jpa.getOpeningHours())
+        );
+    }
+
+    default Restaurant toDomain(RestaurantJpaEntity jpa) {
+        return createRestaurant(jpa);
+    }
 
     default AddressEmbeddable toJpaAddress(Address address) {
         return new AddressEmbeddable(

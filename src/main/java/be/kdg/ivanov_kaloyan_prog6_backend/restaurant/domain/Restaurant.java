@@ -8,43 +8,35 @@ import java.util.UUID;
 
 public class Restaurant {
 
-    private RestaurantId id;
-
-    private OwnerId ownerId;
-
+    private final RestaurantId id;
+    private final OwnerId ownerId;
     private Address address;
-
     private String email;
-
     private String pictureURL;
-
     private Integer defaultPrepTime;
-
     private CuisineType cuisineType;
-
     private OpeningHours openingHours;
-
-    private List<DomainEvent> events = new ArrayList<>();
+    private final List<DomainEvent> events = new ArrayList<>();
 
     public Restaurant(RestaurantId id,
                       OwnerId ownerId,
                       Address address, String email,
                       String pictureURL, Integer defaultPrepTime,
                       CuisineType cuisineType, OpeningHours openingHours) {
-        setId(id);
-        setOwnerId(ownerId);
-        setAddress(address);
-        setEmail(email);
-        setPictureURL(pictureURL);
-        setDefaultPrepTime(defaultPrepTime);
-        setCuisineType(cuisineType);
-        setOpeningHours(openingHours);
+        this.id = id;
+        this.ownerId = ownerId;
+        this.address = address;
+        this.email = email;
+        this.pictureURL = pictureURL;
+        this.defaultPrepTime = defaultPrepTime;
+        this.cuisineType = cuisineType;
+        this.openingHours = openingHours;
     }
 
     public static Restaurant create(UUID ownerId,
-                                     Address address, String email,
-                                     String pictureURL, Integer defaultPrepTime,
-                                     CuisineType cuisineType, OpeningHours openingHours){
+                                    Address address, String email,
+                                    String pictureURL, Integer defaultPrepTime,
+                                    CuisineType cuisineType, OpeningHours openingHours) {
         final Restaurant restaurant = new Restaurant(RestaurantId.create(),
                 OwnerId.of(ownerId), address, email, pictureURL, defaultPrepTime,
                 cuisineType, openingHours);
@@ -59,16 +51,20 @@ public class Restaurant {
         return id;
     }
 
+    public OwnerId getOwnerId() {
+        return ownerId;
+    }
+
     public Address getAddress() {
         return address;
     }
 
-    public OpeningHours getOpeningHours() {
-        return openingHours;
-    }
-
     public String getEmail() {
         return email;
+    }
+
+    public String getPictureURL() {
+        return pictureURL;
     }
 
     public Integer getDefaultPrepTime() {
@@ -79,44 +75,8 @@ public class Restaurant {
         return cuisineType;
     }
 
-    public void setId(RestaurantId id) {
-        this.id = id;
-    }
-
-    public OwnerId getOwnerId() {
-        return ownerId;
-    }
-
-    public String getPictureURL() {
-        return pictureURL;
-    }
-
-    public void setOwnerId(OwnerId ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPictureURL(String pictureURL) {
-        this.pictureURL = pictureURL;
-    }
-
-    public void setDefaultPrepTime(Integer defaultPrepTime) {
-        this.defaultPrepTime = defaultPrepTime;
-    }
-
-    public void setCuisineType(CuisineType cuisineType) {
-        this.cuisineType = cuisineType;
-    }
-
-    public void setOpeningHours(OpeningHours openingHours) {
-        this.openingHours = openingHours;
+    public OpeningHours getOpeningHours() {
+        return openingHours;
     }
 
     public List<DomainEvent> getEvents() {

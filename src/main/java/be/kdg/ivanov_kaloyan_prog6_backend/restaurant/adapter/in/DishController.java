@@ -48,23 +48,21 @@ public class DishController {
         this.getDishesForRestaurantUseCase = getDishesForRestaurantUseCase;
     }
 
-    @PatchMapping(":publish")
-    public ResponseEntity<Void> publish(@RequestBody PublishDishRequest request){
-        final PublishDishCommand command =  new PublishDishCommand(request.dishId(), request.menuId());
+    @PatchMapping("/published")
+    public ResponseEntity<DishDTO> publish(@RequestBody PublishDishRequest request,
+                                           @PathVariable String restaurantId){
+        final PublishDishCommand command =  new PublishDishCommand(UUID.fromString(request.id()), UUID.fromString(restaurantId));
 
-        this.publishDishUseCase.publish(command);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(DishDTO.from(this.publishDishUseCase.publish(command)));
     }
 
-    @PostMapping("/unpublish")
-    public ResponseEntity<Void> unpublish(@RequestBody UnpublishDishRequest request,
-                                          @PathVariable String restaurantId){
+    @PatchMapping("/unpublished")
+    public ResponseEntity<DishDTO> unpublish(@RequestBody UnpublishDishRequest request,
+                                             @PathVariable String restaurantId){
+
         final UnpublishDishCommand command =  new UnpublishDishCommand(UUID.fromString(request.id()), UUID.fromString(restaurantId));
 
-        this.unpublishDishUseCase.unpublish(command);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(DishDTO.from(this.unpublishDishUseCase.unpublish(command)));
     }
 
     @PatchMapping(":outOfStock")
@@ -86,16 +84,15 @@ public class DishController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> publish(@RequestBody PublishDishDraftRequest request,
+    public ResponseEntity<DishDTO> publish(@RequestBody PublishDishDraftRequest request,
                                         @PathVariable String restaurantId){
 
+        log.error("Draft id in request: {}", request.draftId());
 
         final PublishDishDraftCommand command =  new PublishDishDraftCommand(UUID.fromString(request.draftId()),
                 UUID.fromString(restaurantId));
 
-        this.publishDishDraftUseCase.publish(command);
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(DishDTO.from(this.publishDishDraftUseCase.publish(command)));
     }
 
     @GetMapping

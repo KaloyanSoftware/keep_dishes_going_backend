@@ -25,12 +25,16 @@ public class UnpublishDishUseCaseImpl implements UnpublishDishUseCase {
 
     @Override
     @Transactional
-    public void unpublish(UnpublishDishCommand command) {
+    public Dish unpublish(UnpublishDishCommand command) {
         Menu menu = loadMenuPort.loadByRestaurantId(command.restaurantId()).orElseThrow(
                 () -> new MenuNotFoundException("Can't find menu with restaurant id: " + command.restaurantId()));
 
-        menu.unpublishDish(command.dishId());
+        Dish dish = menu.unpublishDish(command.dishId());
 
         this.updateMenuPorts.forEach(port -> port.update(menu));
+
+        return dish;
+
+
     }
 }

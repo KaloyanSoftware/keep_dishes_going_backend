@@ -23,7 +23,6 @@ public class Menu {
 
     public static Menu create(UUID restaurantId) {
         Menu menu = new Menu(MenuId.create(), RestaurantId.of(restaurantId));
-        menu.events.add(new SaveMenuEvent(menu.id.id(), restaurantId));
         return menu;
     }
 
@@ -61,7 +60,7 @@ public class Menu {
         dishes.put(dishId, dish);
         publishedCount--;
 
-        this.events.add(new DishUnpublishedEvent(dishId, restaurantId.id(), dish.orderable()));
+        this.events.add(new DishUnpublishedEvent(dishId));
         return dish;
     }
 
@@ -148,6 +147,24 @@ public class Menu {
         return dish;
     }
 
+    public Dish findPublishedDish(UUID dishId){
+        Dish dish = dishes.get(dishId);
+
+        if(dish == null || !dish.published()){
+            throw new DishNotFoundException("Dish with id: " + dishId + " does not exist or isn't published!");
+        }
+        return dish;
+    }
+
+    public Dish findUnpublishedDish(UUID dishId){
+        Dish dish = dishes.get(dishId);
+
+        if(dish == null || dish.published()){
+            throw new DishNotFoundException("Dish with id: " + dishId + " does not exist or is currently published!");
+        }
+        return dish;
+    }
+
 
 
     public static Menu rehydrate(MenuId id, RestaurantId restaurantId, Map<UUID, Dish> dishes, int publishedCount) {
@@ -159,8 +176,8 @@ public class Menu {
     }
 
     public Menu(MenuId menuId, RestaurantId restaurantId) {
-        setId(menuId);
-        setRestaurantId(restaurantId);
+        this.id = menuId;
+        this.restaurantId = restaurantId;
     }
 
     public List<DomainEvent> getEvents() {
@@ -185,13 +202,5 @@ public class Menu {
 
     public int getPublishedCount() {
         return publishedCount;
-    }
-
-    public void setId(MenuId id) {
-        this.id = id;
-    }
-
-    public void setRestaurantId(RestaurantId restaurantId) {
-        this.restaurantId = restaurantId;
     }
 }

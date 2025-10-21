@@ -47,20 +47,6 @@ public class DishDraftJpaEntity {
     @Column(name = "draft_tag", nullable = false)
     private List<FoodTag> draftTags;
 
-    public DishDraftJpaEntity(UUID id, UUID restaurantId, UUID dishId, String name,
-                              DishType type, String description, Double price,
-                              String pictureUrl, List<FoodTag> draftTags) {
-        setId(id);
-        setRestaurantId(restaurantId);
-        setDishId(dishId);
-        setName(name);
-        setType(type);
-        setDescription(description);
-        setPrice(price);
-        setPictureUrl(pictureUrl);
-        setDraftTags(draftTags);
-    }
-
     public DishDraftJpaEntity() {
 
     }

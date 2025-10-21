@@ -3,7 +3,7 @@ package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain;
 import java.util.UUID;
 
 public class RestaurantProjection {
-    private RestaurantProjectionId restaurantId;
+    private UUID restaurantId;
 
     private Location location;
 
@@ -15,7 +15,7 @@ public class RestaurantProjection {
 
     private Cuisine cuisine;
 
-    public RestaurantProjection(RestaurantProjectionId restaurantId, Location location, String email,
+    public RestaurantProjection(UUID restaurantId, Location location, String email,
                                 String pictureURL, Integer defaultPrepTime, Cuisine cuisine) {
         this.restaurantId = restaurantId;
         this.location = location;
@@ -27,11 +27,7 @@ public class RestaurantProjection {
 
     public static RestaurantProjection create(UUID restaurantId, Location location, String email,
                                               String pictureURL, Integer defaultPrepTime, Cuisine cuisine){
-        return new RestaurantProjection(RestaurantProjectionId.of(restaurantId),  location, email, pictureURL, defaultPrepTime, cuisine);
-    }
-
-    public RestaurantProjectionId getRestaurantId() {
-        return restaurantId;
+        return new RestaurantProjection(restaurantId,  location, email, pictureURL, defaultPrepTime, cuisine);
     }
 
     public Location getLocation() {
@@ -52,5 +48,9 @@ public class RestaurantProjection {
 
     public Cuisine getCuisine() {
         return cuisine;
+    }
+
+    public UUID getRestaurantId() {
+        return restaurantId;
     }
 }

@@ -7,6 +7,7 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadOwnerPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateMenuPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateRestaurantPort;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -15,21 +16,21 @@ public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
 
     private final LoadOwnerPort loadOwnerPort;
 
-    private final List<UpdateMenuPort> updateMenuPorts;
+    private final UpdateMenuPort updateMenuPort;
 
     private final List<UpdateRestaurantPort> updateRestaurantPorts;
 
     public CreateRestaurantUseCaseImpl(final LoadOwnerPort loadOwnerPort,
-                                       final  List<UpdateMenuPort> updateMenuPorts,
+                                       final @Qualifier("jpa") UpdateMenuPort updateMenuPort,
                                        final List<UpdateRestaurantPort> updateRestaurantPorts) {
         this.loadOwnerPort = loadOwnerPort;
-        this.updateMenuPorts = updateMenuPorts;
+        this.updateMenuPort = updateMenuPort;
         this.updateRestaurantPorts = updateRestaurantPorts;
     }
 
     @Override
     @Transactional
-    public void createRestaurant(CreateRestaurantCommand command) {
+    public Restaurant createRestaurant(CreateRestaurantCommand command) {
 
         loadOwnerPort.loadBy(command.ownerId())
                 .orElseThrow(() -> new NullPointerException("Owner not found: " + command.ownerId()));
@@ -41,8 +42,17 @@ public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
 
         Menu menu = Menu.create(restaurant.getId().id());
 
-        this.updateRestaurantPorts.forEach(port -> port.update(restaurant));
+        Restaurant savedRestaurant = null;
 
-        this.updateMenuPorts.forEach(port -> port.update(menu));
+        for (UpdateRestaurantPort port : updateRestaurantPorts) {
+            Restaurant updated = port.update(restaurant);
+            if (updated != null && updated.getId() != null) {
+                savedRestaurant = updated;
+            }
+        }
+
+        updateMenuPort.update(menu);
+
+        return savedRestaurant != null ? savedRestaurant : restaurant;
     }
 }
