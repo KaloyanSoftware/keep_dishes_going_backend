@@ -8,16 +8,12 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DishDraft;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.DeleteDishDraftPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadDishDraftPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveDishDraftPort;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-@Qualifier("jpa")
-@Profile("jpa")
 public class DishDraftJpaAdapter implements SaveDishDraftPort, LoadDishDraftPort, DeleteDishDraftPort {
 
     private final DishDraftJpaRepository drafts;

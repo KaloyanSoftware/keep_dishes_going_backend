@@ -35,24 +35,16 @@ public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
         loadOwnerPort.loadBy(command.ownerId())
                 .orElseThrow(() -> new NullPointerException("Owner not found: " + command.ownerId()));
 
-
         final Restaurant restaurant = Restaurant.create(command.ownerId(), command.address(),
                 command.email(), command.pictureURL(), command.defaultPrepTime(), command.cuisineType(),
         command.openingHours());
 
         Menu menu = Menu.create(restaurant.getId().id());
 
-        Restaurant savedRestaurant = null;
-
-        for (UpdateRestaurantPort port : updateRestaurantPorts) {
-            Restaurant updated = port.update(restaurant);
-            if (updated != null && updated.getId() != null) {
-                savedRestaurant = updated;
-            }
-        }
+        this.updateRestaurantPorts.forEach(port -> port.update(restaurant));
 
         updateMenuPort.update(menu);
 
-        return savedRestaurant != null ? savedRestaurant : restaurant;
+        return restaurant;
     }
 }

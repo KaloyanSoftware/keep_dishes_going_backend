@@ -17,7 +17,6 @@ import java.util.UUID;
 
 @Repository
 @Qualifier("jpa")
-@Profile("jpa")
 public class MenuJpaAdapter implements LoadMenuPort, UpdateMenuPort {
 
     private final MenuJpaRepository menus;

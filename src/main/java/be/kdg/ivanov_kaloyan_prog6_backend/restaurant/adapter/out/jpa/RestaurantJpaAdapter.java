@@ -6,15 +6,11 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.repositori
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Restaurant;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadRestaurantPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateRestaurantPort;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-@Qualifier("jpa")
-@Profile("jpa")
 public class RestaurantJpaAdapter implements UpdateRestaurantPort, LoadRestaurantPort {
 
     private final RestaurantJpaRepository restaurants;

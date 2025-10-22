@@ -13,8 +13,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-@Qualifier("jpa")
-@Profile("jpa")
 public class OwnerJpaAdapter implements LoadOwnerPort, SaveOwnerPort {
     private final OwnerJpaRepository owners;
 

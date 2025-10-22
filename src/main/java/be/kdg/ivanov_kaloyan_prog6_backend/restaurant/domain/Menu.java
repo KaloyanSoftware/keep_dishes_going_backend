@@ -3,7 +3,6 @@ package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 import be.kdg.ivanov_kaloyan_prog6_backend.common.events.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.exceptions.*;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 //aggregate
@@ -24,6 +23,19 @@ public class Menu {
     public static Menu create(UUID restaurantId) {
         Menu menu = new Menu(MenuId.create(), RestaurantId.of(restaurantId));
         return menu;
+    }
+
+    public static Menu rehydrate(MenuId id, RestaurantId restaurantId, Map<UUID, Dish> dishes, int publishedCount) {
+        Menu m = new Menu(id, restaurantId);
+        m.dishes.clear();
+        if (dishes != null) m.dishes.putAll(dishes);
+        m.publishedCount = publishedCount;
+        return m;
+    }
+
+    public Menu(MenuId menuId, RestaurantId restaurantId) {
+        this.id = menuId;
+        this.restaurantId = restaurantId;
     }
 
     public Dish publishDish(UUID dishId){
@@ -133,51 +145,8 @@ public class Menu {
         return dish;
     }
 
-    public Dish findOrderableDish(UUID dishId){
-        Dish dish = dishes.get(dishId);
-
-        if(dish == null){
-            throw new DishNotFoundException("Dish with id: " + dishId + " does not exist!");
-        }
-
-        if(!dish.orderable()){
-            throw new DishNotOrderableException("Dish with id " + dishId + " cannot be ordered because it's unpublished and/or out of stock!");
-        }
-
-        return dish;
-    }
-
-    public Dish findPublishedDish(UUID dishId){
-        Dish dish = dishes.get(dishId);
-
-        if(dish == null || !dish.published()){
-            throw new DishNotFoundException("Dish with id: " + dishId + " does not exist or isn't published!");
-        }
-        return dish;
-    }
-
-    public Dish findUnpublishedDish(UUID dishId){
-        Dish dish = dishes.get(dishId);
-
-        if(dish == null || dish.published()){
-            throw new DishNotFoundException("Dish with id: " + dishId + " does not exist or is currently published!");
-        }
-        return dish;
-    }
-
-
-
-    public static Menu rehydrate(MenuId id, RestaurantId restaurantId, Map<UUID, Dish> dishes, int publishedCount) {
-        Menu m = new Menu(id, restaurantId);
-        m.dishes.clear();
-        if (dishes != null) m.dishes.putAll(dishes);
-        m.publishedCount = publishedCount;
-        return m;
-    }
-
-    public Menu(MenuId menuId, RestaurantId restaurantId) {
-        this.id = menuId;
-        this.restaurantId = restaurantId;
+    private boolean publishedCapacityReached(){
+        return publishedCount == MAX_PUBLISHED_DISHES;
     }
 
     public List<DomainEvent> getEvents() {
@@ -190,10 +159,6 @@ public class Menu {
 
     public RestaurantId getRestaurantId() {
         return restaurantId;
-    }
-
-    private boolean publishedCapacityReached(){
-        return publishedCount == MAX_PUBLISHED_DISHES;
     }
 
     public Map<UUID, Dish> getDishes() {

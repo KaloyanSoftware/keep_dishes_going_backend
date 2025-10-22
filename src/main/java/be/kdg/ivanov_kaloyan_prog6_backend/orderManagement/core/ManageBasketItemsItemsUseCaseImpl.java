@@ -8,31 +8,26 @@ import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.AddN
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.RemoveBasketItemCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.useCases.ManageBasketItemsUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.LoadBasketPort;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.PublishedDishCatalog;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.SaveBasketPort;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.UpdateBasketPort;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ManageBasketItemsItemsUseCaseImpl implements ManageBasketItemsUseCase {
 
-    private final SaveBasketPort saveBasketPort;
+    private final UpdateBasketPort updateBasketPort;
 
     private final LoadBasketPort loadBasketPort;
 
-    private final PublishedDishCatalog catalog;
-
-    public ManageBasketItemsItemsUseCaseImpl(final SaveBasketPort saveBasketPort,
-                                             final LoadBasketPort loadBasketPort,
-                                             final PublishedDishCatalog catalog) {
-        this.saveBasketPort = saveBasketPort;
+    public ManageBasketItemsItemsUseCaseImpl(final UpdateBasketPort updateBasketPort,
+                                             final LoadBasketPort loadBasketPort) {
+        this.updateBasketPort = updateBasketPort;
         this.loadBasketPort = loadBasketPort;
-        this.catalog = catalog;
     }
 
     @Override
     public Basket add(AddNewItemToBasketCommand command) {
 
-        final Basket basket = loadBasketPort.loadBy(command.customerSessionId())
+        /*final Basket basket = loadBasketPort.loadBy(command.customerSessionId())
                 .orElseGet(() -> new Basket(command.restaurantId(), command.customerSessionId()));
 
         //not like this, used the saved projection!
@@ -44,9 +39,9 @@ public class ManageBasketItemsItemsUseCaseImpl implements ManageBasketItemsUseCa
 
 
         basket.addItem(item);
-        saveBasketPort.save(basket);
+        updateBasketPort.save(basket);*/
 
-        return basket;
+        return null;
     }
 
     @Override
@@ -56,7 +51,7 @@ public class ManageBasketItemsItemsUseCaseImpl implements ManageBasketItemsUseCa
         );
 
         basket.removeItem(command.dishId());
-        saveBasketPort.save(basket);
+        updateBasketPort.save(basket);
     }
 
 

@@ -2,18 +2,18 @@ package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.embeddables.LocationEmbeddable;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.entities.RestaurantProjectionJpaEntity;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.repositories.RestaurantProjectionRespository;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.repositories.RestaurantProjectionJpaRespository;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.RestaurantProjection;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.UpdateRestaurantProjectionPort;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class RestaurantSavedProjectionJpaAdapter implements UpdateRestaurantProjectionPort {
+public class RestaurantProjectionJpaAdapter implements UpdateRestaurantProjectionPort {
 
-    private final RestaurantProjectionRespository restaurantProjections;
+    private final RestaurantProjectionJpaRespository restaurantProjections;
 
-    public RestaurantSavedProjectionJpaAdapter(final RestaurantProjectionRespository restaurantProjectionRespository) {
-        this.restaurantProjections = restaurantProjectionRespository;
+    public RestaurantProjectionJpaAdapter(final RestaurantProjectionJpaRespository restaurantProjectionJpaRespository) {
+        this.restaurantProjections = restaurantProjectionJpaRespository;
     }
 
     @Override

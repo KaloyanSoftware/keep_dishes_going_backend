@@ -2,7 +2,7 @@ package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.memory;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.Basket;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.LoadBasketPort;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.SaveBasketPort;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.UpdateBasketPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class BasketInMemoryAdapter implements LoadBasketPort, SaveBasketPort {
+public class BasketInMemoryAdapter implements LoadBasketPort, UpdateBasketPort {
     private static final Logger log = LoggerFactory.getLogger(BasketInMemoryAdapter.class);
     private final Map<UUID, Basket> baskets = new HashMap<>();
 

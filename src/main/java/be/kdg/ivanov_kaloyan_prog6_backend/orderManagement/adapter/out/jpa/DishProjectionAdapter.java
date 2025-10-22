@@ -1,7 +1,7 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.entities.DishProjectionJpaEntity;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.repositories.DishProjectionRepository;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.repositories.DishProjectionJpaRepository;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.DishProjection;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.DeleteDishProjectionPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.UpdateDishProjectionPort;
@@ -15,11 +15,11 @@ import java.util.UUID;
 public class DishProjectionAdapter implements UpdateDishProjectionPort, DeleteDishProjectionPort {
 
     private static final Logger log = LoggerFactory.getLogger(DishProjectionAdapter.class);
-    private final DishProjectionRepository dishProjections;
+    private final DishProjectionJpaRepository dishProjections;
 
 
 
-    public DishProjectionAdapter(final DishProjectionRepository dishProjections) {
+    public DishProjectionAdapter(final DishProjectionJpaRepository dishProjections) {
         this.dishProjections = dishProjections;
     }
 

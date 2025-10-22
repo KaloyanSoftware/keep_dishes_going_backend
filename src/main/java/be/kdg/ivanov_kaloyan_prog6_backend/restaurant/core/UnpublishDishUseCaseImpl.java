@@ -34,7 +34,5 @@ public class UnpublishDishUseCaseImpl implements UnpublishDishUseCase {
         this.updateMenuPorts.forEach(port -> port.update(menu));
 
         return dish;
-
-
     }
 }

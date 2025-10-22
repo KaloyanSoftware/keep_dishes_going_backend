@@ -81,6 +81,18 @@ public final class Dish {
         changeStockStatus(StockStatus.IN_STOCK);
     }
 
+    public boolean outOfStock(){
+        return this.stockStatus.equals(StockStatus.OUT_OF_STOCK);
+    }
+
+    public boolean published(){
+        return this.state.equals(State.PUBLISHED);
+    }
+
+    public boolean orderable(){
+        return state.equals(State.PUBLISHED) && stockStatus.equals(StockStatus.IN_STOCK);
+    }
+
     public State getState() {
         return state;
     }
@@ -127,17 +139,5 @@ public final class Dish {
 
     public MenuId getMenuId() {
         return menuId;
-    }
-
-    public boolean outOfStock(){
-        return this.stockStatus.equals(StockStatus.OUT_OF_STOCK);
-    }
-
-    public boolean published(){
-        return this.state.equals(State.PUBLISHED);
-    }
-
-    public boolean orderable(){
-        return state.equals(State.PUBLISHED) && stockStatus.equals(StockStatus.IN_STOCK);
     }
 }

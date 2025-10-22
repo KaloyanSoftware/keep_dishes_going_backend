@@ -4,5 +4,5 @@ import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.entit
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
-public interface RestaurantProjectionRespository extends JpaRepository<RestaurantProjectionJpaEntity, UUID> {
+public interface RestaurantProjectionJpaRespository extends JpaRepository<RestaurantProjectionJpaEntity, UUID> {
 }
