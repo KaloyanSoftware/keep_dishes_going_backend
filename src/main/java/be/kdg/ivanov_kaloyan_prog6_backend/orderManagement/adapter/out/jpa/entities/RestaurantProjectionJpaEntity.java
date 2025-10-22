@@ -41,4 +41,52 @@ public class RestaurantProjectionJpaEntity {
     public RestaurantProjectionJpaEntity() {
 
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public Integer getDefaultPrepMinutes() {
+        return defaultPrepMinutes;
+    }
+
+    public LocationEmbeddable getLocation() {
+        return location;
+    }
+
+    public Cuisine getCuisine() {
+        return cuisine;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
+    public void setDefaultPrepMinutes(Integer defaultPrepMinutes) {
+        this.defaultPrepMinutes = defaultPrepMinutes;
+    }
+
+    public void setLocation(LocationEmbeddable location) {
+        this.location = location;
+    }
+
+    public void setCuisine(Cuisine cuisine) {
+        this.cuisine = cuisine;
+    }
 }

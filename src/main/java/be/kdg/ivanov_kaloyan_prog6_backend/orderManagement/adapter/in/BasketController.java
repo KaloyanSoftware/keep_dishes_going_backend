@@ -2,7 +2,7 @@ package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in.request.AddItemToBasketRequest;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in.request.RemoveBasketItemRequest;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in.response.BasketDTO;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in.dto.BasketDTO;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.Basket;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.AddNewItemToBasketCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.RemoveBasketItemCommand;

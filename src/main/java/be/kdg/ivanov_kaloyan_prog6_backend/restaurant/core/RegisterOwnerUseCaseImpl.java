@@ -5,9 +5,11 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.OwnerId;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.RegisterOwnerCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.RegisterOwnerUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveOwnerPort;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class RegisterOwnerUseCaseImpl implements RegisterOwnerUseCase {
 
     private final SaveOwnerPort saveOwnerPort;

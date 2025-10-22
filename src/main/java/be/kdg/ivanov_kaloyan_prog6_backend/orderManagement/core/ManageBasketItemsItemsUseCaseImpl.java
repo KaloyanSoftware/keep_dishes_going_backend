@@ -9,9 +9,11 @@ import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.Remo
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.useCases.ManageBasketItemsUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.LoadBasketPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.UpdateBasketPort;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class ManageBasketItemsItemsUseCaseImpl implements ManageBasketItemsUseCase {
 
     private final UpdateBasketPort updateBasketPort;

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional
 public class UnpublishDishUseCaseImpl implements UnpublishDishUseCase {
     private final LoadMenuPort loadMenuPort;
 
@@ -24,7 +25,6 @@ public class UnpublishDishUseCaseImpl implements UnpublishDishUseCase {
     }
 
     @Override
-    @Transactional
     public Dish unpublish(UnpublishDishCommand command) {
         Menu menu = loadMenuPort.loadByRestaurantId(command.restaurantId()).orElseThrow(
                 () -> new MenuNotFoundException("Can't find menu with restaurant id: " + command.restaurantId()));

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional
 public class MarkDishBackInStockUseCaseImplementation implements MarkDishBackInStockUseCase {
 
     private final LoadMenuPort loadMenuPort;
@@ -25,7 +26,6 @@ public class MarkDishBackInStockUseCaseImplementation implements MarkDishBackInS
     }
 
     @Override
-    @Transactional
     public void markBackInStock(MarkDishBackInStockCommand command) {
         Menu menu = loadMenuPort.loadById(command.menuId()).orElseThrow(() -> new MenuNotFoundException("Menu not found"));
 

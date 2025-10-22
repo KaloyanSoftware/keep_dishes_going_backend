@@ -6,11 +6,13 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.exceptions.MenuNotFoundExc
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.GetDishesForRestaurantCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.GetDishesForRestaurantUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadMenuPort;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class GetDishesForRestaurantUseCaseImpl implements GetDishesForRestaurantUseCase {
 
     private final LoadMenuPort port;

@@ -1,14 +1,15 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.core;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.Cuisine;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.Location;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.RestaurantProjection;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.RestaurantSavedProjector;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.RestaurantSavedProjectionCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.UpdateRestaurantProjectionPort;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class RestaurantSavedProjectorImpl implements RestaurantSavedProjector {
 
     private final UpdateRestaurantProjectionPort  updateRestaurantProjectionPort;

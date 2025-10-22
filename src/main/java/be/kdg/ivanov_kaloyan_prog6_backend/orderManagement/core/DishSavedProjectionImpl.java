@@ -4,9 +4,11 @@ import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.DishProjection
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.DishSavedProjector;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.DishSavedProjectionCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.UpdateDishProjectionPort;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class DishSavedProjectionImpl implements DishSavedProjector {
 
     private final UpdateDishProjectionPort updateDishProjectionPort;

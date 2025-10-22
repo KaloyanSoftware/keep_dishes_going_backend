@@ -3,6 +3,7 @@ package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.mappers;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.DishDraftJpaEntity;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.*;
 import org.mapstruct.*;
+import java.math.BigDecimal;
 
 @Mapper(componentModel = "spring", imports = {RestaurantId.class, DishDraftId.class, DishId.class})
 public interface DishDraftMapper {
@@ -15,11 +16,11 @@ public interface DishDraftMapper {
     @Mapping(target = "name", source = "name")
     @Mapping(target = "type", source = "type")
     @Mapping(target = "description", source = "description")
-    @Mapping(target = "price", source = "price")
+    @Mapping(target = "price", expression = "java(draft.getPrice() != null ? draft.getPrice().doubleValue() : 0.0)")
     DishDraftJpaEntity toJpa(DishDraft draft);
 
     @ObjectFactory
-    default DishDraft createDishDraft(DishDraftJpaEntity jpa, @Context MoneyMapper moneyMapper) {
+    default DishDraft createDishDraft(DishDraftJpaEntity jpa) {
         return new DishDraft(
                 DishDraftId.of(jpa.getId()),
                 RestaurantId.of(jpa.getRestaurantId()),
@@ -28,12 +29,12 @@ public interface DishDraftMapper {
                 jpa.getType(),
                 jpa.getDraftTags(),
                 jpa.getDescription(),
-                moneyMapper.toBigDecimal(jpa.getPrice()),
+                jpa.getPrice() != null ? BigDecimal.valueOf(jpa.getPrice()) : BigDecimal.ZERO,
                 jpa.getPictureUrl()
         );
     }
 
-    default DishDraft toDomain(DishDraftJpaEntity jpa, @Context MoneyMapper moneyMapper) {
-        return createDishDraft(jpa, moneyMapper);
+    default DishDraft toDomain(DishDraftJpaEntity jpa) {
+        return createDishDraft(jpa);
     }
 }

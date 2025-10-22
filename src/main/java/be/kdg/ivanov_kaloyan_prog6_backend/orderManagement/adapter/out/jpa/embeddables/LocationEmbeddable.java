@@ -31,4 +31,24 @@ public class LocationEmbeddable {
     public LocationEmbeddable() {
 
     }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
 }

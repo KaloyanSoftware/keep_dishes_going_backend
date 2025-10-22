@@ -1,4 +1,4 @@
-package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in.response;
+package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in.dto;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.Basket;
 import java.util.Map;

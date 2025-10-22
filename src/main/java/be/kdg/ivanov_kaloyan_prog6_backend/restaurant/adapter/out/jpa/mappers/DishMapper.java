@@ -4,13 +4,14 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.D
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.*;
 import org.mapstruct.*;
 
+import java.math.BigDecimal;
 import java.util.*;
 
-@Mapper(componentModel = "spring", uses = MoneyMapper.class, imports = {DishId.class, MenuId.class})
+@Mapper(componentModel = "spring", imports = {DishId.class, MenuId.class})
 public interface DishMapper {
 
     @ObjectFactory
-    default Dish createDish(DishJpaEntity jpa, @Context MoneyMapper moneyMapper) {
+    default Dish createDish(DishJpaEntity jpa) {
         return new Dish(
                 DishId.of(jpa.getId()),
                 MenuId.of(jpa.getMenuId()),
@@ -20,13 +21,13 @@ public interface DishMapper {
                 jpa.getType(),
                 jpa.getTags(),
                 jpa.getDescription(),
-                moneyMapper.toBigDecimal(jpa.getPrice()),
+                jpa.getPrice() != null ? BigDecimal.valueOf(jpa.getPrice()) : BigDecimal.ZERO,
                 jpa.getPictureUrl()
         );
     }
 
-    default Dish toDomain(DishJpaEntity jpa, @Context MoneyMapper moneyMapper) {
-        return createDish(jpa, moneyMapper);
+    default Dish toDomain(DishJpaEntity jpa) {
+        return createDish(jpa);
     }
 
     @Mapping(target = "id", expression = "java(domain.getId().id())")
@@ -37,24 +38,24 @@ public interface DishMapper {
     @Mapping(target = "type", source = "type")
     @Mapping(target = "tags", source = "tags")
     @Mapping(target = "description", source = "description")
-    @Mapping(target = "price", expression = "java(moneyMapper.toDouble(domain.getPrice()))")
+    @Mapping(target = "price", expression = "java(domain.getPrice() != null ? domain.getPrice().doubleValue() : 0.0)")
     @Mapping(target = "pictureUrl", source = "pictureURL")
-    DishJpaEntity toJpa(Dish domain, @Context MoneyMapper moneyMapper);
+    DishJpaEntity toJpa(Dish domain);
 
-    default List<DishJpaEntity> toJpaList(Map<UUID, Dish> dishes, @Context MoneyMapper moneyMapper) {
+    default List<DishJpaEntity> toJpaList(Map<UUID, Dish> dishes) {
         if (dishes == null) return Collections.emptyList();
         List<DishJpaEntity> list = new ArrayList<>(dishes.size());
         for (Dish d : dishes.values()) {
-            list.add(toJpa(d, moneyMapper));
+            list.add(toJpa(d));
         }
         return list;
     }
 
-    default Map<UUID, Dish> toDomainMap(List<DishJpaEntity> entities, @Context MoneyMapper moneyMapper) {
+    default Map<UUID, Dish> toDomainMap(List<DishJpaEntity> entities) {
         Map<UUID, Dish> result = new HashMap<>();
         if (entities != null) {
             for (DishJpaEntity e : entities) {
-                Dish d = toDomain(e, moneyMapper);
+                Dish d = toDomain(e);
                 result.put(e.getId(), d);
             }
         }

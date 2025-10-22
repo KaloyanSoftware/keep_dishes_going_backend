@@ -2,13 +2,11 @@ package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.dto;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.*;
 
-import java.util.UUID;
-
-public record RestaurantDTO(UUID id, UUID ownerId, AddressDTO address, String email, String pictureURL,
+public record RestaurantDTO(String id, String ownerId, AddressDTO address, String email, String pictureURL,
                             Integer defaultPrepTime, CuisineType cuisineType, OpeningHoursDTO openingHoursDTO) {
 
     public static RestaurantDTO from(final Restaurant restaurant) {
-        return new RestaurantDTO(restaurant.getId().id(), restaurant.getOwnerId().id(),
+        return new RestaurantDTO(restaurant.getId().id().toString(), restaurant.getOwnerId().id().toString(),
                 AddressDTO.from(restaurant.getAddress()), restaurant.getEmail(), restaurant.getPictureURL(),
                 restaurant.getDefaultPrepTime(), restaurant.getCuisineType(), OpeningHoursDTO.from(restaurant.getOpeningHours()));
     }

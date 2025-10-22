@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional
 public class PublishDishDraftUseCaseImpl implements PublishDishDraftUseCase {
 
     private final LoadDishDraftPort loadDishDraftPort;
@@ -38,7 +39,6 @@ public class PublishDishDraftUseCaseImpl implements PublishDishDraftUseCase {
     }
 
     @Override
-    @Transactional
     public Dish publish(PublishDishDraftCommand command) {
         DishDraft draft = loadDishDraftPort.loadBy(command.draftId()).orElseThrow(
                 () -> new DraftNotFoundException("Can't find dish draft with id: " + command.draftId())

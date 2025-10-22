@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@PreAuthorize("hasAuthority('owner')")
 @RequestMapping("/api")
 public class RestaurantController {
 
@@ -40,6 +39,7 @@ public class RestaurantController {
     }
 
     @PostMapping("/restaurants")
+    @PreAuthorize("hasAuthority('owner')")
     public ResponseEntity<RestaurantDTO> post(@RequestBody CreateRestaurantRequest request) {
 
         final CreateRestaurantCommand command = new CreateRestaurantCommand(
@@ -55,6 +55,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/owners/{ownerId}/restaurant")
+    @PreAuthorize("hasAuthority('owner')")
     public ResponseEntity<RestaurantDTO> get(@PathVariable String ownerId) {
         final var command = new GetRestaurantForOwnerCommand(UUID.fromString(ownerId));
 

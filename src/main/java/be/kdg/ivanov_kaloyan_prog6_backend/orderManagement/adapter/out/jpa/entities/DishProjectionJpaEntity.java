@@ -65,4 +65,76 @@ public class DishProjectionJpaEntity {
     public DishProjectionJpaEntity() {
 
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public UUID getRestaurantId() {
+        return restaurantId;
+    }
+
+    public DishProjection.StockStatus getStockStatus() {
+        return stockStatus;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public DishProjection.DishType getType() {
+        return type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public List<FoodTagProjection> getTags() {
+        return tags;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setRestaurantId(UUID restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
+    public void setStockStatus(DishProjection.StockStatus stockStatus) {
+        this.stockStatus = stockStatus;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(DishProjection.DishType type) {
+        this.type = type;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
+    public void setTags(List<FoodTagProjection> tags) {
+        this.tags = tags;
+    }
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional
 public class PublishDishUseCaseImpl implements PublishDishUseCase {
 
     private final LoadMenuPort loadMenuPort;
@@ -25,7 +26,6 @@ public class PublishDishUseCaseImpl implements PublishDishUseCase {
     }
 
     @Override
-    @Transactional
     public Dish publish(PublishDishCommand command) {
         Menu menu = loadMenuPort.loadByRestaurantId(command.restaurantId()).orElseThrow(
                 () -> new MenuNotFoundException("Menu with restaurant id: " + command.restaurantId() + " not found!"));

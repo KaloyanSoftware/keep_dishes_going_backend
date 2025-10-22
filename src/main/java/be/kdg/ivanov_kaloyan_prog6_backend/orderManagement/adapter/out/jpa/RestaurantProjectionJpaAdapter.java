@@ -1,31 +1,33 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.embeddables.LocationEmbeddable;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.entities.RestaurantProjectionJpaEntity;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.mappers.RestaurantProjectionMapper;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.repositories.RestaurantProjectionJpaRespository;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.RestaurantProjection;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.LoadRestaurantProjectionPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.UpdateRestaurantProjectionPort;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 
 @Repository
-public class RestaurantProjectionJpaAdapter implements UpdateRestaurantProjectionPort {
+public class RestaurantProjectionJpaAdapter implements UpdateRestaurantProjectionPort, LoadRestaurantProjectionPort {
 
     private final RestaurantProjectionJpaRespository restaurantProjections;
 
-    public RestaurantProjectionJpaAdapter(final RestaurantProjectionJpaRespository restaurantProjectionJpaRespository) {
+    private final RestaurantProjectionMapper mapper;
+
+    public RestaurantProjectionJpaAdapter(final RestaurantProjectionJpaRespository restaurantProjectionJpaRespository,
+                                          final RestaurantProjectionMapper mapper) {
         this.restaurantProjections = restaurantProjectionJpaRespository;
+        this.mapper = mapper;
     }
 
     @Override
     public void update(RestaurantProjection restaurant) {
-        final LocationEmbeddable location = new LocationEmbeddable(
-                restaurant.getLocation().street(), restaurant.getLocation().number(),
-                restaurant.getLocation().postalCode(), restaurant.getLocation().city(),
-                restaurant.getLocation().country());
+        restaurantProjections.save(mapper.toJpa(restaurant));
+    }
 
-        final RestaurantProjectionJpaEntity jpa = new RestaurantProjectionJpaEntity(restaurant.getRestaurantId(), restaurant.getEmail(),
-                restaurant.getPictureURL(), restaurant.getDefaultPrepTime(), restaurant.getCuisine() ,location);
-
-        restaurantProjections.save(jpa);
+    @Override
+    public List<RestaurantProjection> loadAll() {
+        return restaurantProjections.findAll().stream().map(mapper::toDomain).toList();
     }
 }

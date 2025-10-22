@@ -6,10 +6,12 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.RestaurantId;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.CreateDishDraftCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.CreateDishDraftUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveDishDraftPort;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 
 @Service
+@Transactional
 public class CreateDishDraftUseCaseImpl implements CreateDishDraftUseCase {
 
     private final SaveDishDraftPort saveDishDraftPort;

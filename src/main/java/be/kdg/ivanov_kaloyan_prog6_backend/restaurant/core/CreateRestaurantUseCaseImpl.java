@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional
 public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
 
     private final LoadOwnerPort loadOwnerPort;
@@ -29,7 +30,6 @@ public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
     }
 
     @Override
-    @Transactional
     public Restaurant createRestaurant(CreateRestaurantCommand command) {
 
         loadOwnerPort.loadBy(command.ownerId())
