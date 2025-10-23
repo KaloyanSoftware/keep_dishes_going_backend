@@ -8,7 +8,7 @@ public record RestaurantProjectionDTO(UUID restaurantId,
                                       String email,
                                       String pictureURL,
                                       Integer defaultPrepTime,
-                                      String cuisine) {
+                                      String cuisineType) {
 
     public static RestaurantProjectionDTO from(final RestaurantProjection restaurantProjection) {
         return new RestaurantProjectionDTO(
@@ -17,7 +17,7 @@ public record RestaurantProjectionDTO(UUID restaurantId,
                 restaurantProjection.getEmail(),
                 restaurantProjection.getPictureURL(),
                 restaurantProjection.getDefaultPrepTime(),
-                restaurantProjection.getCuisine().toString()
+                restaurantProjection.getCuisineType()
         );
     }
 }

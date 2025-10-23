@@ -13,7 +13,7 @@ public interface RestaurantProjectionMapper {
     @Mapping(target = "email", source = "email")
     @Mapping(target = "pictureUrl", source = "pictureURL")
     @Mapping(target = "defaultPrepMinutes", source = "defaultPrepTime")
-    @Mapping(target = "cuisine", source = "cuisine")
+    @Mapping(target = "cuisineType", source = "cuisineType")
     @Mapping(target = "location", expression = "java(toJpaLocation(domain.getLocation()))")
     RestaurantProjectionJpaEntity toJpa(RestaurantProjection domain);
 
@@ -21,7 +21,7 @@ public interface RestaurantProjectionMapper {
     @Mapping(target = "email", source = "email")
     @Mapping(target = "pictureURL", source = "pictureUrl")
     @Mapping(target = "defaultPrepTime", source = "defaultPrepMinutes")
-    @Mapping(target = "cuisine", source = "cuisine")
+    @Mapping(target = "cuisineType", source = "cuisineType")
     @Mapping(target = "location", expression = "java(toDomainLocation(jpa.getLocation()))")
     RestaurantProjection toDomain(RestaurantProjectionJpaEntity jpa);
 

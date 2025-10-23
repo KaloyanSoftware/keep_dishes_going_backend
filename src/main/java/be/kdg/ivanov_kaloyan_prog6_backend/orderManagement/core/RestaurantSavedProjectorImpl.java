@@ -23,7 +23,7 @@ public class RestaurantSavedProjectorImpl implements RestaurantSavedProjector {
                 command.location().postalCode(), command.location().city(), command.location().country());
 
         final RestaurantProjection restaurantProjection = RestaurantProjection.create(command.id(),
-                location, command.email(), command.pictureURL(), command.defaultPrepTime(), command.cuisine());
+                location, command.email(), command.pictureURL(), command.defaultPrepTime(), command.cuisineType());
 
         this.updateRestaurantProjectionPort.update(restaurantProjection);
     }

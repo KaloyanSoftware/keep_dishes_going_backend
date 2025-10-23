@@ -33,6 +33,22 @@ public class Restaurant {
         this.openingHours = openingHours;
     }
 
+    public Restaurant(RestaurantId id,
+                      OwnerId ownerId,
+                      Address address, String email,
+                      String pictureURL, Integer defaultPrepTime,
+                      CuisineType cuisineType, OpeningHours openingHours, List<DomainEvent> events) {
+        this.id = id;
+        this.ownerId = ownerId;
+        this.address = address;
+        this.email = email;
+        this.pictureURL = pictureURL;
+        this.defaultPrepTime = defaultPrepTime;
+        this.cuisineType = cuisineType;
+        this.openingHours = openingHours;
+        this.events.addAll(events);
+    }
+
     public static Restaurant create(UUID ownerId,
                                     Address address, String email,
                                     String pictureURL, Integer defaultPrepTime,
@@ -41,7 +57,7 @@ public class Restaurant {
                 OwnerId.of(ownerId), address, email, pictureURL, defaultPrepTime,
                 cuisineType, openingHours);
 
-        restaurant.events.add(new SaveRestaurantEvent(restaurant.id.id(), address, email,
+        restaurant.events.add(new SaveRestaurantEvent(address, restaurant.id.id() ,email,
                 pictureURL, defaultPrepTime, cuisineType.toString()));
 
         return restaurant;
@@ -82,4 +98,6 @@ public class Restaurant {
     public List<DomainEvent> getEvents() {
         return events;
     }
+
+
 }

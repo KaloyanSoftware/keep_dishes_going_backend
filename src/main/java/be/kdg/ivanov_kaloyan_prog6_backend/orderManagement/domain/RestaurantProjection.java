@@ -13,21 +13,21 @@ public class RestaurantProjection {
 
     private Integer defaultPrepTime;
 
-    private Cuisine cuisine;
+    private String cuisineType;
 
     public RestaurantProjection(UUID restaurantId, Location location, String email,
-                                String pictureURL, Integer defaultPrepTime, Cuisine cuisine) {
+                                String pictureURL, Integer defaultPrepTime, String cuisineType) {
         this.restaurantId = restaurantId;
         this.location = location;
         this.email = email;
         this.pictureURL = pictureURL;
         this.defaultPrepTime = defaultPrepTime;
-        this.cuisine = cuisine;
+        this.cuisineType = cuisineType;
     }
 
     public static RestaurantProjection create(UUID restaurantId, Location location, String email,
-                                              String pictureURL, Integer defaultPrepTime, Cuisine cuisine){
-        return new RestaurantProjection(restaurantId,  location, email, pictureURL, defaultPrepTime, cuisine);
+                                              String pictureURL, Integer defaultPrepTime, String cuisineType){
+        return new RestaurantProjection(restaurantId,  location, email, pictureURL, defaultPrepTime, cuisineType);
     }
 
     public Location getLocation() {
@@ -46,8 +46,8 @@ public class RestaurantProjection {
         return defaultPrepTime;
     }
 
-    public Cuisine getCuisine() {
-        return cuisine;
+    public String getCuisineType() {
+        return cuisineType;
     }
 
     public UUID getRestaurantId() {

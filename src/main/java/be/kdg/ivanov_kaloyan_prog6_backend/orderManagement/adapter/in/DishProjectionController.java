@@ -24,8 +24,8 @@ public class DishProjectionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DishProjectionDTO>> getAllDishProjectionsForRestaurant(@PathVariable UUID restaurantId) {
-        final GetAllDishesForRestaurantCommand command = new GetAllDishesForRestaurantCommand(restaurantId);
+    public ResponseEntity<List<DishProjectionDTO>> getAllDishProjectionsForRestaurant(@PathVariable String restaurantId) {
+        final GetAllDishesForRestaurantCommand command = new GetAllDishesForRestaurantCommand(UUID.fromString(restaurantId));
 
         return ResponseEntity.ok().body(getAllDishProjectionsForRestaurantUseCase
                 .getAllForRestaurant(command).stream().map(DishProjectionDTO::from).toList());

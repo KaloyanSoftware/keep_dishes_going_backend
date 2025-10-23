@@ -43,7 +43,7 @@ public class RestaurantController {
     public ResponseEntity<RestaurantDTO> post(@RequestBody CreateRestaurantRequest request) {
 
         final CreateRestaurantCommand command = new CreateRestaurantCommand(
-                request.ownerId(),
+                UUID.fromString(request.ownerId()),
                 addressMapper.toDomain(request.address()),
                 request.email(),
                 request.pictureURL(),

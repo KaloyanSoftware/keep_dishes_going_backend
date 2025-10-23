@@ -6,7 +6,7 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.CuisineType;
 import java.util.UUID;
 
 public record CreateRestaurantRequest(
-        UUID ownerId,
+        String ownerId,
         AddressDTO address,
         String email,
         String pictureURL,

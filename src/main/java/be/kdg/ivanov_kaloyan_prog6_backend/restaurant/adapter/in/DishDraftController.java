@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -20,12 +19,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api")
 public class DishDraftController {
-    private static final Logger log = LoggerFactory.getLogger(DishDraftController.class);
     private final CreateDishDraftUseCase createDishDraftUseCase;
 
     private final GetDishDraftsByRestaurantUseCase getDishDraftsByRestaurantUseCase;
-
-
 
     public DishDraftController(final CreateDishDraftUseCase createDishDraftUseCase,
                                final GetDishDraftsByRestaurantUseCase getDishDraftsByRestaurantUseCase) {
@@ -37,22 +33,18 @@ public class DishDraftController {
     public ResponseEntity<DishDraftDTO> post(@RequestBody CreateDishDraftRequest request){
 
         final CreateDishDraftCommand command =  new CreateDishDraftCommand(
-                request.restaurantId(), request.dishId(),request.name(), request.type(),
+                UUID.fromString(request.restaurantId()), request.dishId(),request.name(), request.type(),
                 Arrays.stream(request.foodTags()).map(FoodTag::valueOf).toList(),
                 request.description(), request.price(), request.pictureURL()
         );
 
-
-
         return  ResponseEntity.status(HttpStatus.CREATED).body(DishDraftDTO.from(this.createDishDraftUseCase.create(command)));
     }
-//d
+
     @GetMapping("/owner/restaurant/{restaurantId}/drafts")
-    public ResponseEntity<List<DishDraftDTO>> getDrafts(@PathVariable UUID restaurantId){
+    public ResponseEntity<List<DishDraftDTO>> getDrafts(@PathVariable String restaurantId){
 
-        log.error(restaurantId.toString());
-
-        final GetDishDraftsForRestaurantCommand command = new GetDishDraftsForRestaurantCommand(restaurantId);
+        final GetDishDraftsForRestaurantCommand command = new GetDishDraftsForRestaurantCommand(UUID.fromString(restaurantId));
 
         final List<DishDraftDTO> drafts = getDishDraftsByRestaurantUseCase.getDishDrafts(command)
                 .stream().map(DishDraftDTO::from).toList();
