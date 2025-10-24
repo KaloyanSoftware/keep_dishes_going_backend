@@ -1,6 +1,7 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.memory;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.Basket;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.DeleteBasketPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.LoadBasketPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.UpdateBasketPort;
 import org.slf4j.Logger;
@@ -12,8 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class BasketInMemoryAdapter implements LoadBasketPort, UpdateBasketPort {
-    private static final Logger log = LoggerFactory.getLogger(BasketInMemoryAdapter.class);
+public class BasketInMemoryAdapter implements LoadBasketPort, UpdateBasketPort, DeleteBasketPort {
     private final Map<UUID, Basket> baskets = new HashMap<>();
 
     @Override
@@ -31,9 +31,11 @@ public class BasketInMemoryAdapter implements LoadBasketPort, UpdateBasketPort {
     @Override
     public Basket save(Basket basket) {
         baskets.put(basket.getId().id(), basket);
-
-        baskets.values().forEach(b -> log.info("{}", b));
-
         return basket;
+    }
+
+    @Override
+    public void delete(Basket basket) {
+        baskets.remove(basket.getId().id());
     }
 }

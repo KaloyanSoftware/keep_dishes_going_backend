@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public class BasketLine{
-    private BasketLineId id;
-
     private UUID restaurantId;
 
     private UUID dishId;
@@ -14,7 +12,7 @@ public class BasketLine{
 
     private BigDecimal price;
 
-    private Integer quantity = 0;
+    private Integer quantity = 1;
 
     private String pictureURL;
 
@@ -35,10 +33,6 @@ public class BasketLine{
         return --quantity;
     }
 
-    public BasketLineId getId() {
-        return id;
-    }
-
     public UUID getRestaurantId() {
         return restaurantId;
     }
@@ -57,5 +51,19 @@ public class BasketLine{
 
     public String getPictureURL() {
         return pictureURL;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "BasketLine{" +
+                "quantity=" + quantity +
+                ", price=" + price +
+                ", name='" + name + '\'' +
+                ", dishId=" + dishId +
+                ", restaurantId=";
     }
 }

@@ -2,6 +2,8 @@ package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.BasketLineNotFoundException;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.InvalidBasketLineException;
+
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -23,35 +25,42 @@ public class Basket {
         this.customerSessionId = customerSessionId;
     }
 
-    public void addLine(BasketLine newBasketLine) {
-        if(!sameRestaurantCheck(newBasketLine)){
+    public void addLine(UUID restaurantId, UUID dishId, String name, BigDecimal price, String picturerURL) {
+        if(!sameRestaurantCheck(restaurantId)){
             throw new InvalidBasketLineException("You're not allowed to add dishes from different restaurants to your basket!");
         }
 
-        if(basketLines.containsKey(newBasketLine.getId().id())){
-            newBasketLine.increaseQuantity();
-        }
-
-        basketLines.put(newBasketLine.getId().id(), newBasketLine);
-    }
-
-    public void removeLine(UUID basketLineId) {
-
-        BasketLine basketLine = basketLines.get(basketLineId);
+        BasketLine basketLine = basketLines.get(dishId);
 
         if(basketLine == null){
-            throw new BasketLineNotFoundException("Basket line with id: " + basketLineId + " not found!");
+            basketLines.put(dishId, new BasketLine(restaurantId, dishId, name, price, picturerURL));
+        }else{
+            basketLine.increaseQuantity();
+            basketLines.put(dishId, basketLine);
+        }
+    }
+
+    public void decreaseLineQuantity(UUID dishId) {
+
+        BasketLine basketLine = basketLines.get(dishId);
+
+        if(basketLine == null){
+            throw new BasketLineNotFoundException("Basket line with id: " + dishId + " not found!");
         }
 
         if(basketLine.decreaseQuantity() == 0 ){
-            basketLines.remove(basketLineId);
+            basketLines.remove(dishId);
         }else{
-            basketLines.put(basketLine.getId().id(), basketLine);
+            basketLines.put(basketLine.getDishId(), basketLine);
         }
     }
 
-    private boolean sameRestaurantCheck(BasketLine basketLine){
-        return basketLine.getRestaurantId().equals(restaurantId);
+    private boolean sameRestaurantCheck(UUID restaurantId){
+        return this.restaurantId.equals(restaurantId);
+    }
+
+    public boolean empty(){
+        return basketLines.isEmpty();
     }
 
     public UUID getRestaurantId() {
@@ -77,8 +86,8 @@ public class Basket {
                 .collect(Collectors.joining(",\n    "));
 
         return String.format(
-                "Basket{id=%s, restaurantId=%s, items=[\n    %s\n]}",
-                id.id(), restaurantId, itemsString.isEmpty() ? "no items" : itemsString
+                "Basket{id=%s, restaurantId=%s, basketLines=[\n    %s\n]}",
+                id.id(), restaurantId, itemsString.isEmpty() ? "no basketLines" : itemsString
         );
     }
 }

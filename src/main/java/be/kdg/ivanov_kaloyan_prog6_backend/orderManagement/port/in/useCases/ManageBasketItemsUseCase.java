@@ -7,5 +7,5 @@ import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.Remo
 public interface ManageBasketItemsUseCase {
     Basket add(AddNewItemToBasketCommand command);
 
-    void remove(RemoveBasketItemCommand command);
+    Basket lowerQuantity(RemoveBasketItemCommand command);
 }
