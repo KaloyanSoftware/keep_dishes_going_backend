@@ -23,13 +23,13 @@ public class MenuEventJpaEntity {
     @Column(name = "restaurant_id", nullable = false)
     private UUID restaurantId;
 
-    @Column(name = "stock_status", nullable = false)
+    @Column(name = "stock_status")
     private String stockStatus;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "dish_type", nullable = false)
+    @Column(name = "dish_type")
     private String dishType;
 
     @Column(name = "event_type", nullable = false)
@@ -41,16 +41,16 @@ public class MenuEventJpaEntity {
             schema = "restaurant",
             joinColumns = @JoinColumn(name = "menu_event_id", referencedColumnName = "uuid")
     )
-    @Column(name = "tag", nullable = false)
+    @Column(name = "tag")
     private List<String> tags;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "price", nullable = false, precision = 10, scale = 2)
+    @Column(name = "price", precision = 10, scale = 2)
     private BigDecimal price;
 
-    @Column(name = "picture_url", nullable = false)
+    @Column(name = "picture_url")
     private String pictureURL;
 
     public MenuEventJpaEntity() {

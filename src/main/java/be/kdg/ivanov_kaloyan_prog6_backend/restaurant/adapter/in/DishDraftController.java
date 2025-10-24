@@ -7,10 +7,9 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.CreateDis
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.GetDishDraftsForRestaurantCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.CreateDishDraftUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.GetDishDraftsByRestaurantUseCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +29,7 @@ public class DishDraftController {
     }
 
     @PostMapping("/drafts")
+    @PreAuthorize("hasAuthority('owner')")
     public ResponseEntity<DishDraftDTO> post(@RequestBody CreateDishDraftRequest request){
 
         final CreateDishDraftCommand command =  new CreateDishDraftCommand(

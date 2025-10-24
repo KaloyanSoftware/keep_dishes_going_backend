@@ -21,7 +21,7 @@ public class RestaurantProjectionListener {
 
     @EventListener(SaveRestaurantEvent.class)
     public void restaurantCreated(SaveRestaurantEvent event) {
-        log.error("Save restaurant with id: {} command received!", event.restaurantId());
+        log.error("Save restaurant with id: {} event received!", event.restaurantId());
 
         final LocationDTO location = LocationDTO.create(event.address().street(), event.address().number(),
                 event.address().postalCode(), event.address().city(), event.address().country());

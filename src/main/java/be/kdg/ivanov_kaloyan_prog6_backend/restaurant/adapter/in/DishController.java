@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@PreAuthorize("hasAuthority('owner')")
 @RequestMapping("/api/restaurant/{restaurantId}/menu/dishes")
 public class DishController {
 
@@ -45,6 +44,7 @@ public class DishController {
     }
 
     @PatchMapping("/published")
+    @PreAuthorize("hasAuthority('owner')")
     public ResponseEntity<DishDTO> publish(@RequestBody PublishDishRequest request,
                                            @PathVariable String restaurantId){
         final PublishDishCommand command =  new PublishDishCommand(UUID.fromString(request.id()), UUID.fromString(restaurantId));
@@ -53,6 +53,7 @@ public class DishController {
     }
 
     @PatchMapping("/unpublished")
+    @PreAuthorize("hasAuthority('owner')")
     public ResponseEntity<DishDTO> unpublish(@RequestBody UnpublishDishRequest request,
                                              @PathVariable String restaurantId){
 
@@ -82,6 +83,7 @@ public class DishController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('owner')")
     public ResponseEntity<DishDTO> publish(@RequestBody PublishDishDraftRequest request,
                                         @PathVariable String restaurantId){
 

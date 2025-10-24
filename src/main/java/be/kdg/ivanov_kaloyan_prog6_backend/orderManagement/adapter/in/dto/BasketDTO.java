@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public record BasketDTO(UUID basketId, Map<UUID, ItemDTO> items) {
 
     public static BasketDTO from(final Basket basket) {
-        Map<UUID, ItemDTO> itemDTOs = basket.getItems().entrySet().stream()
+        Map<UUID, ItemDTO> itemDTOs = basket.getBasketLines().entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         entry -> ItemDTO.from(entry.getValue())

@@ -37,17 +37,17 @@ CREATE TABLE restaurant.menu_events (
                                         event_type TEXT NOT NULL,
                                         dish_id UUID NOT NULL,
                                         restaurant_id UUID NOT NULL,
-                                        stock_status TEXT NOT NULL,
-                                        name TEXT NOT NULL,
-                                        type TEXT NOT NULL,
-                                        description TEXT NOT NULL,
-                                        price FLOAT NOT NULL,
-                                        picture_url TEXT NOT NULL
+                                        stock_status TEXT,
+                                        name TEXT,
+                                        dish_type TEXT,
+                                        description TEXT,
+                                        price FLOAT,
+                                        picture_url TEXT
 );
 
 CREATE TABLE restaurant.menu_event_tags (
                                             menu_event_id UUID NOT NULL REFERENCES restaurant.menu_events(uuid) ON DELETE CASCADE,
-                                            tag TEXT NOT NULL,
+                                            tag TEXT,
                                             PRIMARY KEY (menu_event_id, tag)
 );
 

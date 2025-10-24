@@ -133,7 +133,7 @@ Accept: application/json
 
 ###
 
-### Add item to basket
+### Add basketLine to basket
 POST localhost:8080/api/basket/items
 Content-Type: application/json
 Accept: application/json
@@ -147,7 +147,7 @@ Accept: application/json
 
 ###
 
-### Remove item from basket
+### Remove basketLine from basket
 DELETE localhost:8080/api/basket/items
 Content-Type: application/json
 

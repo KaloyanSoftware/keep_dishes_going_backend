@@ -55,7 +55,6 @@ public class RestaurantController {
     }
 
     @GetMapping("/owners/{ownerId}/restaurant")
-    @PreAuthorize("hasAuthority('owner')")
     public ResponseEntity<RestaurantDTO> get(@PathVariable String ownerId) {
         final var command = new GetRestaurantForOwnerCommand(UUID.fromString(ownerId));
 

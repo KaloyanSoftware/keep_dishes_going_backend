@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -50,5 +51,10 @@ public class DishProjectionAdapter implements UpdateDishProjectionPort, DeleteDi
     @Override
     public List<DishProjection> loadAllBy(UUID restaurantId) {
         return dishProjections.findAllByRestaurantId(restaurantId).stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public Optional<DishProjection> loadBy(UUID dishProjectionId) {
+        return this.dishProjections.findById(dishProjectionId).map(mapper::toDomain);
     }
 }
