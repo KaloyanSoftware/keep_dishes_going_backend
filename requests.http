@@ -1,6 +1,25 @@
+
+
+### Get access token with admin user
+
+POST http://localhost:8180/realms/keepdishesgoing/protocol/openid-connect/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+client_id=backend-client&client_secret=bB5q7A0iW63XWNrAWXvcaBdyelMS2WB6&username=kaloyan&password=1234&grant_type=password&scope=openid
+
+//saving the access token
+> {%
+    client.global.set("access_token", response.body.access_token);
+%}
+
+
+###
+
 ### Create restaurant
 POST localhost:8080/api/restaurants
 Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{access_token}}
 
 {
   "ownerId": "552cc380-fd95-478f-81c2-bd7d7e5a6588",
@@ -17,9 +36,9 @@ Content-Type: application/json
   "cuisineType": "ITALIAN",
   "openingHours": {
     "weeklySchedule": {
-    "MONDAY": { "start": "10:00:00", "end": "22:00:00" },
-    "TUESDAY": { "start": "10:00:00", "end": "22:00:00" },
-    "WEDNESDAY": { "start": "12:00:00", "end": "23:00:00" },
+      "MONDAY": { "start": "10:00:00", "end": "22:00:00" },
+      "TUESDAY": { "start": "10:00:00", "end": "22:00:00" },
+      "WEDNESDAY": { "start": "12:00:00", "end": "23:00:00" },
       "THURSDAY": { "start": "12:00:00", "end": "23:00:00" },
       "FRIDAY": { "start": "12:00:00", "end": "23:00:00" },
       "SATURDAY": { "start": "12:00:00", "end": "23:00:00" },
@@ -28,21 +47,18 @@ Content-Type: application/json
   }
 }
 
-
-###
-
 ### Create dish draft
 POST localhost:8080/api/drafts
 Content-Type: application/json
 Accept: application/json
+Authorization: Bearer {{access_token}}
 
 {
-  "restaurantId": "e3382dfe-114f-42d3-838c-7733f12b8533",
-  "dishId": "f53317ab-163b-4c4b-8fd1-c75eb8c404b2",
+  "restaurantId": "bf01fc37-85e1-4bbf-8472-bd27317f4e1d",
   "name": "Pizza Margaritta",
   "description": "Tiramissu",
   "price": 20,
-  "tags": ["CARNIVORE"],
+  "foodTags": ["CARNIVORE"],
   "pictureURL": "someURL",
   "type": "DESSERT"
 }
@@ -52,13 +68,13 @@ Accept: application/json
 ###
 
 ### Publish a draft
-POST localhost:8080/api/dishes
+POST localhost:8080/api/restaurant/bf01fc37-85e1-4bbf-8472-bd27317f4e1d/menu/dishes
 Content-Type: application/json
 Accept: application/json
+Authorization: Bearer {{access_token}}
 
 {
-  "restaurantId": "0c8bf7b5-7330-4d3d-b8f1-2d067b0a6ebc",
-  "draftId": "e887c099-262c-4fef-b507-36bd901d67ac"
+  "draftId": "40a0b9a2-ea65-422d-a540-109e1e8fdcbd"
 }
 
 
@@ -117,7 +133,7 @@ Accept: application/json
 
 ###
 
-### Add item to basket
+### Add basketLine to basket
 POST localhost:8080/api/basket/items
 Content-Type: application/json
 Accept: application/json
@@ -131,7 +147,7 @@ Accept: application/json
 
 ###
 
-### Remove item from basket
+### Remove basketLine from basket
 DELETE localhost:8080/api/basket/items
 Content-Type: application/json
 

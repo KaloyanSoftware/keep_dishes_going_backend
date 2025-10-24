@@ -10,13 +10,13 @@ public class DishProjection {
 
     private UUID restaurantId;
 
-    private StockStatus stockStatus;
+    private String stockStatus;
 
     private String name;
 
-    private DishType type;
+    private String type;
 
-    private List<FoodTagProjection> tags;
+    private List<String> tags;
 
     private String description;
 
@@ -24,18 +24,8 @@ public class DishProjection {
 
     private String pictureURL;
 
-    public enum StockStatus {
-        IN_STOCK,
-        OUT_OF_STOCK
-
-    }
-
-    public enum DishType {
-        STARTER, MAIN, DESSERT
-    }
-
-    public DishProjection(UUID id, UUID restaurantId, StockStatus stockStatus, String name, DishType type,
-                          List<FoodTagProjection> tags, String description, BigDecimal price, String pictureURL) {
+    public DishProjection(UUID id, UUID restaurantId, String stockStatus, String name, String type,
+                          List<String> tags, String description, BigDecimal price, String pictureURL) {
         this.id = id;
         this.restaurantId = restaurantId;
         this.stockStatus = stockStatus;
@@ -47,13 +37,13 @@ public class DishProjection {
         this.pictureURL = pictureURL;
     }
 
-    public static DishProjection create(UUID id, UUID restaurantId, StockStatus stockStatus, String name, DishType type,
-                                        List<FoodTagProjection> tags, String description, BigDecimal price, String pictureURL){
+    public static DishProjection create(UUID id, UUID restaurantId, String stockStatus, String name, String type,
+                                        List<String> tags, String description, BigDecimal price, String pictureURL){
         return new DishProjection(id,  restaurantId, stockStatus, name, type,
                 tags, description, price, pictureURL);
     }
 
-    public StockStatus getStockStatus() {
+    public String getStockStatus() {
         return stockStatus;
     }
 
@@ -61,11 +51,11 @@ public class DishProjection {
         return name;
     }
 
-    public DishType getType() {
+    public String getType() {
         return type;
     }
 
-    public List<FoodTagProjection> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 

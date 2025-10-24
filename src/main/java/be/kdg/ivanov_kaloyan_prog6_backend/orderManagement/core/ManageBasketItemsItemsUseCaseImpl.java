@@ -1,13 +1,15 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.core;
 
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.BasketLine;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.DishProjection;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.BasketNotFoundException;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.ItemNotFoundException;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.Basket;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.Item;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.DishProjectionNotFoundException;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.AddNewItemToBasketCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.RemoveBasketItemCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.useCases.ManageBasketItemsUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.LoadBasketPort;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.LoadDishProjectionPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.UpdateBasketPort;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -20,30 +22,32 @@ public class ManageBasketItemsItemsUseCaseImpl implements ManageBasketItemsUseCa
 
     private final LoadBasketPort loadBasketPort;
 
+    private final LoadDishProjectionPort loadDishProjectionPort;
+
     public ManageBasketItemsItemsUseCaseImpl(final UpdateBasketPort updateBasketPort,
-                                             final LoadBasketPort loadBasketPort) {
+                                             final LoadBasketPort loadBasketPort,
+                                             final LoadDishProjectionPort loadDishProjectionPort) {
         this.updateBasketPort = updateBasketPort;
         this.loadBasketPort = loadBasketPort;
+        this.loadDishProjectionPort = loadDishProjectionPort;
     }
 
     @Override
     public Basket add(AddNewItemToBasketCommand command) {
 
-        /*final Basket basket = loadBasketPort.loadBy(command.customerSessionId())
+        final Basket basket = loadBasketPort.loadBy(command.customerSessionId())
                 .orElseGet(() -> new Basket(command.restaurantId(), command.customerSessionId()));
 
-        //not like this, used the saved projection!
-        var dish = catalog.findPublishedDish(command.restaurantId(), command.dishId())
-                .orElseThrow(() -> new ItemNotFoundException("Dish not available"));
+        final DishProjection projection = loadDishProjectionPort.loadBy(command.dishId()).orElseThrow(
+                () -> new DishProjectionNotFoundException("Dish projection with id: " + command.dishId() + " not found!")
+        );
 
-        Item item = new Item(dish.restaurantId(), dish.dishId(), dish.name(),
-                dish.price(), 1,dish.pictureURL());
+        final BasketLine basketLine = new BasketLine(command.restaurantId(), command.dishId(), projection.getName(),
+                projection.getPrice(), projection.getPictureURL());
 
+        basket.addLine(basketLine);
 
-        basket.addItem(item);
-        updateBasketPort.save(basket);*/
-
-        return null;
+        return updateBasketPort.save(basket);
     }
 
     @Override
@@ -52,7 +56,7 @@ public class ManageBasketItemsItemsUseCaseImpl implements ManageBasketItemsUseCa
                 () -> new BasketNotFoundException("Can't find basket with id: " + command.basketId())
         );
 
-        basket.removeItem(command.dishId());
+        basket.removeLine(command.dishId());
         updateBasketPort.save(basket);
     }
 

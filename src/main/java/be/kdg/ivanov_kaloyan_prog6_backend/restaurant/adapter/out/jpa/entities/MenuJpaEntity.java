@@ -7,6 +7,7 @@ import java.util.UUID;
 @Entity
 @Table(schema = "restaurant", name = "menu")
 public class MenuJpaEntity {
+
     @Id
     @Column(name = "uuid")
     private UUID id;
@@ -14,23 +15,30 @@ public class MenuJpaEntity {
     @Column(name = "restaurant_id", nullable = false)
     private UUID restaurantId;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}
-    )
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
     @JoinColumn(name = "menu_id", referencedColumnName = "uuid")
     private List<DishJpaEntity> dishes;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
+    @JoinColumn(name = "menu_id", referencedColumnName = "uuid")
+    private List<MenuEventJpaEntity> events;
 
     @Column(name = "published_count")
     private Integer publishedCount;
 
-    public MenuJpaEntity(UUID id, UUID restaurantId, List<DishJpaEntity> dishes,  Integer publishedCount) {
-        setId(id);
-        setRestaurantId(restaurantId);
-        setDishes(dishes);
-        setPublishedCount(publishedCount);
+    public MenuJpaEntity() {
     }
 
-    public MenuJpaEntity() {
-
+    public MenuJpaEntity(UUID id,
+                         UUID restaurantId,
+                         List<DishJpaEntity> dishes,
+                         Integer publishedCount,
+                         List<MenuEventJpaEntity> events) {
+        this.id = id;
+        this.restaurantId = restaurantId;
+        this.dishes = dishes;
+        this.publishedCount = publishedCount;
+        this.events = events;
     }
 
     public UUID getId() {
@@ -55,6 +63,14 @@ public class MenuJpaEntity {
 
     public void setDishes(List<DishJpaEntity> dishes) {
         this.dishes = dishes;
+    }
+
+    public List<MenuEventJpaEntity> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<MenuEventJpaEntity> events) {
+        this.events = events;
     }
 
     public Integer getPublishedCount() {

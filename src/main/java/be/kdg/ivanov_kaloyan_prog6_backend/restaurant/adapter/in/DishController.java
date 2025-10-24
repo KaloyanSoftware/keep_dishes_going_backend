@@ -4,8 +4,6 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.dto.DishDTO;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.request.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,11 +12,8 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@PreAuthorize("hasAuthority('owner')")
 @RequestMapping("/api/restaurant/{restaurantId}/menu/dishes")
 public class DishController {
-
-    private static final Logger log = LoggerFactory.getLogger(DishController.class);
 
     private final PublishDishUseCase publishDishUseCase;
 
@@ -49,6 +44,7 @@ public class DishController {
     }
 
     @PatchMapping("/published")
+    @PreAuthorize("hasAuthority('owner')")
     public ResponseEntity<DishDTO> publish(@RequestBody PublishDishRequest request,
                                            @PathVariable String restaurantId){
         final PublishDishCommand command =  new PublishDishCommand(UUID.fromString(request.id()), UUID.fromString(restaurantId));
@@ -57,6 +53,7 @@ public class DishController {
     }
 
     @PatchMapping("/unpublished")
+    @PreAuthorize("hasAuthority('owner')")
     public ResponseEntity<DishDTO> unpublish(@RequestBody UnpublishDishRequest request,
                                              @PathVariable String restaurantId){
 
@@ -65,18 +62,20 @@ public class DishController {
         return ResponseEntity.ok().body(DishDTO.from(this.unpublishDishUseCase.unpublish(command)));
     }
 
-    @PatchMapping(":outOfStock")
+    @PatchMapping("/outOfStock")
     public ResponseEntity<Void> markOutOfStock(@RequestBody MarkDishOutOfStockRequest request){
-        final MarkDishOutOfStockCommand command =  new MarkDishOutOfStockCommand(request.dishId(), request.menuId());
+        final MarkDishOutOfStockCommand command =  new MarkDishOutOfStockCommand(UUID.fromString(request.dishId()),
+                UUID.fromString(request.menuId()));
 
         this.markDishOutOfStockUseCase.markOutOfStock(command);
 
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping(":backInStock")
+    @PatchMapping("/backInStock")
     public ResponseEntity<Void> markBackInStock(@RequestBody MarkDishBackInStockRequest request){
-        final MarkDishBackInStockCommand command =  new MarkDishBackInStockCommand(request.dishId(), request.menuId());
+        final MarkDishBackInStockCommand command =  new MarkDishBackInStockCommand(UUID.fromString(request.dishId()),
+                UUID.fromString(request.menuId()));
 
         this.markDishBackInStockUseCase.markBackInStock(command);
 
@@ -84,10 +83,9 @@ public class DishController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('owner')")
     public ResponseEntity<DishDTO> publish(@RequestBody PublishDishDraftRequest request,
                                         @PathVariable String restaurantId){
-
-        log.error("Draft id in request: {}", request.draftId());
 
         final PublishDishDraftCommand command =  new PublishDishDraftCommand(UUID.fromString(request.draftId()),
                 UUID.fromString(restaurantId));

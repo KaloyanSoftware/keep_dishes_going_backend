@@ -3,15 +3,10 @@ package be.kdg.ivanov_kaloyan_prog6_backend.common.events;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record DishUnpublishedEvent(LocalDateTime eventPit, UUID dishId) implements DomainEvent{
-
-    public DishUnpublishedEvent(LocalDateTime eventPit, UUID dishId) {
-        this.eventPit = eventPit;
-        this.dishId = dishId;
-    }
+public record DishUnpublishedEvent(UUID id, EventCatalog eventCatalog,LocalDateTime eventPit, UUID dishId) implements DomainEvent{
 
     public DishUnpublishedEvent(UUID dishId) {
-        this(LocalDateTime.now(), dishId);
+        this(UUID.randomUUID(), EventCatalog.DISH_UNPUBLISHED, LocalDateTime.now(), dishId);
     }
 
     @Override

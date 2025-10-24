@@ -2,7 +2,6 @@ package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.common.events.SaveRestaurantEvent;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in.dto.LocationDTO;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.Cuisine;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.RestaurantSavedProjector;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.RestaurantSavedProjectionCommand;
 import org.slf4j.Logger;
@@ -22,13 +21,13 @@ public class RestaurantProjectionListener {
 
     @EventListener(SaveRestaurantEvent.class)
     public void restaurantCreated(SaveRestaurantEvent event) {
-        log.error("Save restaurant with id: {} command received!", event.id());
+        log.error("Save restaurant with id: {} event received!", event.restaurantId());
 
         final LocationDTO location = LocationDTO.create(event.address().street(), event.address().number(),
                 event.address().postalCode(), event.address().city(), event.address().country());
 
-        final RestaurantSavedProjectionCommand command = new RestaurantSavedProjectionCommand(event.id(), location,
-                event.email(),  event.pictureURL(), event.defaultPrepTime(), Cuisine.valueOf(event.cuisineType()));
+        final RestaurantSavedProjectionCommand command = new RestaurantSavedProjectionCommand(event.restaurantId(), location,
+                event.email(),  event.pictureURL(), event.defaultPrepTime(), event.cuisineType());
 
         this.projector.project(command);
     }

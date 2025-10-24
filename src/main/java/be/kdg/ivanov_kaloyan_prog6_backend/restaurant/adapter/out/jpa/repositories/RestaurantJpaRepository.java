@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface RestaurantJpaRepository extends JpaRepository<RestaurantJpaEntity, UUID> {
     Optional<RestaurantJpaEntity> findByOwnerId(UUID ownerId);
+    boolean existsByIdAndOwnerId(UUID id, UUID ownerId);
 }

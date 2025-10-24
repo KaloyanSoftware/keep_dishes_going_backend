@@ -1,7 +1,6 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in.request.AddItemToBasketRequest;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in.request.RemoveBasketItemRequest;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in.dto.BasketDTO;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.Basket;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.AddNewItemToBasketCommand;
@@ -11,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
-@RequestMapping("/api/basket")
+@RequestMapping("/api/baskets")
 public class BasketController {
 
     private final ManageBasketItemsUseCase manageBasketItemsUseCase;
@@ -21,7 +22,7 @@ public class BasketController {
         this.manageBasketItemsUseCase = manageBasketItemsUseCase;
     }
 
-    @PostMapping("/items")
+    @PostMapping("/basketLines")
     public ResponseEntity<BasketDTO> addItem(@RequestBody AddItemToBasketRequest request) {
         AddNewItemToBasketCommand command =
                 new AddNewItemToBasketCommand(request.restaurantId(),
@@ -32,10 +33,10 @@ public class BasketController {
         return ResponseEntity.status(HttpStatus.CREATED).body(BasketDTO.from(basket));
     }
 
-    @DeleteMapping("/items")
-    public ResponseEntity<Void> removeItem(@RequestBody RemoveBasketItemRequest request) {
+    @DeleteMapping("/{basketId}/basketLines/{basketLineId}")
+    public ResponseEntity<Void> removeItem(@PathVariable String basketId, @PathVariable String basketLineId) {
         RemoveBasketItemCommand command =
-                new RemoveBasketItemCommand(request.basketId(), request.dishId());
+                new RemoveBasketItemCommand(UUID.fromString(basketId), UUID.fromString(basketLineId));
 
         this.manageBasketItemsUseCase.remove(command);
 

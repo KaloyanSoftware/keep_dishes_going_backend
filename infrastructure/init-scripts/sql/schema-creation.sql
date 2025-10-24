@@ -30,6 +30,30 @@ CREATE TABLE restaurant.menu (
                                        published_count INTEGER
 );
 
+CREATE TABLE restaurant.menu_events (
+                                        uuid UUID NOT NULL PRIMARY KEY,
+                                        menu_id UUID NOT NULL REFERENCES restaurant.menu(uuid) ON DELETE CASCADE,
+                                        event_pit TIMESTAMP NOT NULL,
+                                        event_type TEXT NOT NULL,
+                                        dish_id UUID NOT NULL,
+                                        restaurant_id UUID NOT NULL,
+                                        stock_status TEXT,
+                                        name TEXT,
+                                        dish_type TEXT,
+                                        description TEXT,
+                                        price FLOAT,
+                                        picture_url TEXT
+);
+
+CREATE TABLE restaurant.menu_event_tags (
+                                            menu_event_id UUID NOT NULL REFERENCES restaurant.menu_events(uuid) ON DELETE CASCADE,
+                                            tag TEXT,
+                                            PRIMARY KEY (menu_event_id, tag)
+);
+
+
+
+
 
 
 CREATE TABLE restaurant.opening_hours (
@@ -75,6 +99,24 @@ CREATE TABLE restaurant.draft_tag (
                                            draft_tag     TEXT NOT NULL,
                                            PRIMARY KEY (draft_id, draft_tag)
 );
+
+CREATE TABLE restaurant.restaurant_events (
+                                                            uuid UUID NOT NULL PRIMARY KEY,
+                                                            restaurant_id UUID NOT NULL REFERENCES restaurant.restaurant(uuid) ON DELETE CASCADE,
+                                                            event_pit TIMESTAMP NOT NULL,
+                                                            event_type TEXT NOT NULL,
+                                                            street TEXT NOT NULL,
+                                                            house_number INTEGER NOT NULL,
+                                                            postal_code INTEGER NOT NULL,
+                                                            city TEXT NOT NULL,
+                                                            country TEXT NOT NULL,
+                                                            email TEXT NOT NULL,
+                                                            picture_url TEXT NOT NULL,
+                                                            default_prep_time INTEGER NOT NULL,
+                                                            cuisine_type TEXT NOT NULL
+
+);
+
 
 
 CREATE TABLE order_management.item_availability (

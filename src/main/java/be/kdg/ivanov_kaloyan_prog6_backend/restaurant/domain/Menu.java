@@ -2,10 +2,8 @@ package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.common.events.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.exceptions.*;
-
 import java.util.*;
 
-//aggregate
 public class Menu {
 
     private MenuId id;
@@ -25,10 +23,11 @@ public class Menu {
         return menu;
     }
 
-    public static Menu rehydrate(MenuId id, RestaurantId restaurantId, Map<UUID, Dish> dishes, int publishedCount) {
+    public static Menu rehydrate(MenuId id, RestaurantId restaurantId, Map<UUID, Dish> dishes, int publishedCount, List<DomainEvent> events) {
         Menu m = new Menu(id, restaurantId);
         m.dishes.clear();
         if (dishes != null) m.dishes.putAll(dishes);
+        if (events != null) m.events.addAll(events);
         m.publishedCount = publishedCount;
         return m;
     }

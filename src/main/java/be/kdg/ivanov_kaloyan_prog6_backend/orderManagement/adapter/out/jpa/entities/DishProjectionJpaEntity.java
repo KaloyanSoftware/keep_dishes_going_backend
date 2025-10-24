@@ -1,7 +1,4 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.entities;
-
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.DishProjection;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.FoodTagProjection;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.UUID;
@@ -17,16 +14,14 @@ public class DishProjectionJpaEntity {
     @Column(name = "restaurant_id", nullable = false)
     private UUID restaurantId;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "stock_status", nullable = false)
-    private DishProjection.StockStatus stockStatus;
+    private String stockStatus;
 
     @Column(name = "name")
     private String name;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private DishProjection.DishType type;
+    private String type;
 
     @Column(name = "description")
     private String description;
@@ -44,13 +39,12 @@ public class DishProjectionJpaEntity {
             joinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "uuid")
     )
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "tag", nullable = false)
-    private List<FoodTagProjection> tags;
+    private List<String> tags;
 
-    public DishProjectionJpaEntity(UUID id, UUID restaurantId, DishProjection.StockStatus stockStatus,
-                                   String name, DishProjection.DishType type, String description,
-                                   Double price, String pictureUrl, List<FoodTagProjection> tags) {
+    public DishProjectionJpaEntity(UUID id, UUID restaurantId, String stockStatus,
+                                   String name, String type, String description,
+                                   Double price, String pictureUrl, List<String> tags) {
         this.id = id;
         this.restaurantId = restaurantId;
         this.stockStatus = stockStatus;
@@ -74,7 +68,7 @@ public class DishProjectionJpaEntity {
         return restaurantId;
     }
 
-    public DishProjection.StockStatus getStockStatus() {
+    public String getStockStatus() {
         return stockStatus;
     }
 
@@ -82,7 +76,7 @@ public class DishProjectionJpaEntity {
         return name;
     }
 
-    public DishProjection.DishType getType() {
+    public String getType() {
         return type;
     }
 
@@ -98,7 +92,7 @@ public class DishProjectionJpaEntity {
         return pictureUrl;
     }
 
-    public List<FoodTagProjection> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
@@ -110,7 +104,7 @@ public class DishProjectionJpaEntity {
         this.restaurantId = restaurantId;
     }
 
-    public void setStockStatus(DishProjection.StockStatus stockStatus) {
+    public void setStockStatus(String stockStatus) {
         this.stockStatus = stockStatus;
     }
 
@@ -118,7 +112,7 @@ public class DishProjectionJpaEntity {
         this.name = name;
     }
 
-    public void setType(DishProjection.DishType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -134,7 +128,7 @@ public class DishProjectionJpaEntity {
         this.pictureUrl = pictureUrl;
     }
 
-    public void setTags(List<FoodTagProjection> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 }

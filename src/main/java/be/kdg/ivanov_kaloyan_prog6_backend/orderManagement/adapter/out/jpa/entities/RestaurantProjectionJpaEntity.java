@@ -1,7 +1,6 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.entities;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.embeddables.LocationEmbeddable;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.Cuisine;
 import jakarta.persistence.*;
 import java.util.UUID;
 
@@ -24,17 +23,16 @@ public class RestaurantProjectionJpaEntity {
     @Embedded
     private LocationEmbeddable location;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "cuisine_type", nullable = false)
-    private Cuisine cuisine;
+    private String cuisineType;
 
     public RestaurantProjectionJpaEntity(UUID id, String email, String pictureUrl, Integer defaultPrepMinutes,
-                                         Cuisine cuisine, LocationEmbeddable location) {
+                                         String cuisineType, LocationEmbeddable location) {
         this.id = id;
         this.email = email;
         this.pictureUrl = pictureUrl;
         this.defaultPrepMinutes = defaultPrepMinutes;
-        this.cuisine = cuisine;
+        this.cuisineType = cuisineType;
         this.location = location;
     }
 
@@ -62,8 +60,8 @@ public class RestaurantProjectionJpaEntity {
         return location;
     }
 
-    public Cuisine getCuisine() {
-        return cuisine;
+    public String getCuisineType() {
+        return cuisineType;
     }
 
     public void setId(UUID id) {
@@ -86,7 +84,7 @@ public class RestaurantProjectionJpaEntity {
         this.location = location;
     }
 
-    public void setCuisine(Cuisine cuisine) {
-        this.cuisine = cuisine;
+    public void setCuisineType(String cuisine) {
+        this.cuisineType = cuisine;
     }
 }

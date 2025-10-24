@@ -32,7 +32,6 @@ public class BasketInMemoryAdapter implements LoadBasketPort, UpdateBasketPort {
     public Basket save(Basket basket) {
         baskets.put(basket.getId().id(), basket);
 
-        // Log all baskets with their items
         baskets.values().forEach(b -> log.info("{}", b));
 
         return basket;

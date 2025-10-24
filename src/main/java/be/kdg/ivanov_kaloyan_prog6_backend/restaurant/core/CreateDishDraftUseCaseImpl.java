@@ -9,6 +9,7 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveDishDraftPort
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Service
 @Transactional

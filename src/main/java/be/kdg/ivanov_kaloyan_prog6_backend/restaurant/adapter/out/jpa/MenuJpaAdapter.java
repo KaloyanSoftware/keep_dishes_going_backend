@@ -12,15 +12,14 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import java.util.UUID;
 
-
 @Repository
 @Qualifier("jpa")
 public class MenuJpaAdapter implements LoadMenuPort, UpdateMenuPort {
 
+
     private final MenuJpaRepository menus;
     private final MenuMapper menuMapper;
     private final DishMapper dishMapper;
-
 
     public MenuJpaAdapter(final MenuJpaRepository menus,
                           final MenuMapper menuMapper,
@@ -46,11 +45,10 @@ public class MenuJpaAdapter implements LoadMenuPort, UpdateMenuPort {
 
     @Override
     public Menu update(Menu menu) {
+        MenuJpaEntity jpa = menuMapper.toJpa(menu, dishMapper);
 
-        MenuJpaEntity jpa = menuMapper.toJpa(menu, dishMapper );
+        MenuJpaEntity savedJpa = menus.save(jpa);
 
-        menus.save(jpa);
-
-        return menuMapper.toDomain(jpa, dishMapper);
+        return menuMapper.toDomain(savedJpa, dishMapper);
     }
 }

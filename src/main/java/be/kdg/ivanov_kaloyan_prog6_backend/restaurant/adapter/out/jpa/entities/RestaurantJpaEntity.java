@@ -43,6 +43,10 @@ public class RestaurantJpaEntity {
     @MapKeyColumn(name = "day_of_week")
     private Map<DayOfWeek, DayScheduleEmbeddable> openingHours = new HashMap<>();
 
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
+    @JoinColumn(name = "restaurant_id", referencedColumnName = "uuid")
+    private List<RestaurantEventJpaEntity> events = new ArrayList<>();
+
     public RestaurantJpaEntity() {
     }
 
@@ -122,5 +126,13 @@ public class RestaurantJpaEntity {
 
     public void setOpeningHours(Map<DayOfWeek, DayScheduleEmbeddable> openingHours) {
         this.openingHours = openingHours;
+    }
+
+    public List<RestaurantEventJpaEntity> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<RestaurantEventJpaEntity> events) {
+        this.events = events;
     }
 }

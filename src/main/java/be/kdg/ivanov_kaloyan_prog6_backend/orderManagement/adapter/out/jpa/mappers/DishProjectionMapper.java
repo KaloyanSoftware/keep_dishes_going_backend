@@ -2,11 +2,10 @@ package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.mapp
 
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.entities.DishProjectionJpaEntity;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.DishProjection;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.FoodTagProjection;
 import org.mapstruct.*;
 import java.math.BigDecimal;
 
-@Mapper(componentModel = "spring", imports = {DishProjection.class, FoodTagProjection.class})
+@Mapper(componentModel = "spring")
 public interface DishProjectionMapper {
 
     @Mapping(target = "id", source = "id")

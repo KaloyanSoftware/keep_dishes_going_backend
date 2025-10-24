@@ -1,6 +1,4 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.request;
 
-import java.util.UUID;
-
-public record MarkDishOutOfStockRequest(UUID dishId, UUID menuId) {
+public record MarkDishOutOfStockRequest(String dishId, String menuId) {
 }

@@ -1,20 +1,21 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.InvalidBasketItemException;
-import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.ItemNotFoundException;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.BasketLineNotFoundException;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.InvalidBasketLineException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Basket {
+
     private BasketId id;
 
     private UUID restaurantId;
 
     private UUID customerSessionId;
 
-    private Map<UUID, Item> items = new HashMap<>();
+    private Map<UUID, BasketLine> basketLines = new HashMap<>();
 
     public Basket(UUID restaurantId, UUID customerSessionId) {
         this.id = BasketId.create();
@@ -22,37 +23,35 @@ public class Basket {
         this.customerSessionId = customerSessionId;
     }
 
-    public void addItem(Item newItem) {
-        if(!sameRestaurantCheck(newItem)){
-            throw new InvalidBasketItemException("You're not allowed to add dishes from different restaurants to your basket!");
+    public void addLine(BasketLine newBasketLine) {
+        if(!sameRestaurantCheck(newBasketLine)){
+            throw new InvalidBasketLineException("You're not allowed to add dishes from different restaurants to your basket!");
         }
 
-        items.merge(newItem.dishId(), newItem, (existing, incoming) ->
-                new Item(existing.restaurantId(),existing.dishId(), existing.name(),
-                        existing.price(), existing.quantity() + incoming.quantity(),
-                        existing.pictureURL()));
+        if(basketLines.containsKey(newBasketLine.getId().id())){
+            newBasketLine.increaseQuantity();
+        }
 
+        basketLines.put(newBasketLine.getId().id(), newBasketLine);
     }
 
-    public void removeItem(UUID dishId) {
+    public void removeLine(UUID basketLineId) {
 
-        Item item = items.get(dishId);
+        BasketLine basketLine = basketLines.get(basketLineId);
 
-        if(item == null){
-            throw new ItemNotFoundException("Item with id: " + dishId + " does not exist!");
+        if(basketLine == null){
+            throw new BasketLineNotFoundException("Basket line with id: " + basketLineId + " not found!");
         }
 
-        if(item.quantity() - 1 == 0 ){
-            items.remove(dishId);
+        if(basketLine.decreaseQuantity() == 0 ){
+            basketLines.remove(basketLineId);
         }else{
-            items.put(item.dishId(), new Item(item.restaurantId(),item.dishId(), item.name(),
-                    item.price(), item.quantity() - 1,
-                    item.pictureURL()));
+            basketLines.put(basketLine.getId().id(), basketLine);
         }
     }
 
-    private boolean sameRestaurantCheck(Item item){
-        return item.restaurantId().equals(restaurantId);
+    private boolean sameRestaurantCheck(BasketLine basketLine){
+        return basketLine.getRestaurantId().equals(restaurantId);
     }
 
     public UUID getRestaurantId() {
@@ -63,8 +62,8 @@ public class Basket {
         return id;
     }
 
-    public Map<UUID, Item> getItems() {
-        return items;
+    public Map<UUID, BasketLine> getBasketLines() {
+        return basketLines;
     }
 
     public UUID getCustomerSessionId() {
@@ -73,8 +72,8 @@ public class Basket {
 
     @Override
     public String toString() {
-        String itemsString = items.values().stream()
-                .map(Item::toString)
+        String itemsString = basketLines.values().stream()
+                .map(BasketLine::toString)
                 .collect(Collectors.joining(",\n    "));
 
         return String.format(
