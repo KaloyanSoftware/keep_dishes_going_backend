@@ -58,7 +58,7 @@ public class ManageBasketItemsItemsUseCaseImpl implements ManageBasketItemsUseCa
 
         log.error(basket.toString());
 
-        return updateBasketPort.save(basket);
+        return updateBasketPort.update(basket);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class ManageBasketItemsItemsUseCaseImpl implements ManageBasketItemsUseCa
             return null;
         }
 
-        return updateBasketPort.save(basket);
+        return updateBasketPort.update(basket);
     }
 
 

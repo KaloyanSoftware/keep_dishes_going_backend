@@ -29,7 +29,7 @@ public class BasketInMemoryAdapter implements LoadBasketPort, UpdateBasketPort, 
     }
 
     @Override
-    public Basket save(Basket basket) {
+    public Basket update(Basket basket) {
         baskets.put(basket.getId().id(), basket);
         return basket;
     }
