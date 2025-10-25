@@ -119,7 +119,7 @@ public class Menu {
         dish.markOutOfStock();
         dishes.put(dishId, dish);
 
-        this.events.add(new DishOutOfStockEvent(dishId, restaurantId.id(), dish.orderable()));
+        this.events.add(new DishOutOfStockEvent(dishId));
         return dish;
     }
 
@@ -130,17 +130,17 @@ public class Menu {
             throw new InvalidMarkDishBackInStockException("Dish is already in stock or doesn't exist!");
         }
 
-        if(publishedCapacityReached()){
+        if (publishedCapacityReached()) {
             throw new MenuCapacityException("""
-                        Can't make more dishes available, max capacity reached: 10!
-                        Take a dish off the live menu to make this one available!
-                        """);
+            Can't make more dishes available, max capacity reached: %d!
+            Take a dish off the live menu to make this one available!
+            """.formatted(MAX_PUBLISHED_DISHES));
         }
 
         dish.markInStock();
         dishes.put(dishId, dish);
 
-        this.events.add(new DishBackInStockEvent(dishId, restaurantId.id(), dish.orderable()));
+        this.events.add(new DishBackInStockEvent(dishId));
         return dish;
     }
 

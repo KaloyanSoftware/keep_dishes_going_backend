@@ -1,5 +1,6 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in;
 
+import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DishOutOfStockEvent;
 import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DishPublishedEvent;
 import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DishUnpublishedEvent;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.DishDeleteProjector;

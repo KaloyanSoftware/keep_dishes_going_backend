@@ -1,20 +1,14 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.common.events;
 
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Dish;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record DishOutOfStockEvent(LocalDateTime eventPit, UUID dishId, UUID restaurantId,
-                                  boolean orderable) implements DomainEvent {
+public record DishOutOfStockEvent(LocalDateTime eventPit, UUID dishId, String stockStatus) implements DomainEvent {
 
-    public DishOutOfStockEvent(LocalDateTime eventPit, UUID dishId, UUID restaurantId, boolean orderable) {
-        this.eventPit = eventPit;
-        this.dishId = dishId;
-        this.restaurantId = restaurantId;
-        this.orderable = orderable;
-    }
-
-    public DishOutOfStockEvent(UUID dishId, UUID restaurantId, boolean orderable) {
-        this(LocalDateTime.now(), dishId, restaurantId, orderable);
+    public DishOutOfStockEvent(UUID dishId) {
+        this(LocalDateTime.now(), dishId, Dish.StockStatus.OUT_OF_STOCK.name());
     }
 
     @Override
