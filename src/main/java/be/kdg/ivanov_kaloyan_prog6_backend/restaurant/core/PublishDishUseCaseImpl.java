@@ -33,6 +33,7 @@ public class PublishDishUseCaseImpl implements PublishDishUseCase {
         Dish dish = menu.publishDish(command.dishId());
 
         this.updateMenuPorts.forEach(port -> port.update(menu));
+        menu.commitEvents();
 
         return dish;
     }

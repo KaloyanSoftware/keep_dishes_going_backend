@@ -16,7 +16,8 @@ public class Restaurant {
     private Integer defaultPrepTime;
     private CuisineType cuisineType;
     private OpeningHours openingHours;
-    private final List<DomainEvent> events = new ArrayList<>();
+    private final List<DomainEvent> eventStore = new ArrayList<>();
+    private final List<DomainEvent> uncommittedEvents = new ArrayList<>();
 
     public Restaurant(RestaurantId id,
                       OwnerId ownerId,
@@ -37,7 +38,7 @@ public class Restaurant {
                       OwnerId ownerId,
                       Address address, String email,
                       String pictureURL, Integer defaultPrepTime,
-                      CuisineType cuisineType, OpeningHours openingHours, List<DomainEvent> events) {
+                      CuisineType cuisineType, OpeningHours openingHours, List<DomainEvent> eventStore) {
         this.id = id;
         this.ownerId = ownerId;
         this.address = address;
@@ -46,7 +47,7 @@ public class Restaurant {
         this.defaultPrepTime = defaultPrepTime;
         this.cuisineType = cuisineType;
         this.openingHours = openingHours;
-        this.events.addAll(events);
+        this.eventStore.addAll(eventStore);
     }
 
     public static Restaurant create(UUID ownerId,
@@ -57,7 +58,7 @@ public class Restaurant {
                 OwnerId.of(ownerId), address, email, pictureURL, defaultPrepTime,
                 cuisineType, openingHours);
 
-        restaurant.events.add(new SaveRestaurantEvent(address, restaurant.id.id() ,email,
+        restaurant.getUncommitedEvents().add(new SaveRestaurantEvent(address, restaurant.id.id() ,email,
                 pictureURL, defaultPrepTime, cuisineType.toString()));
 
         return restaurant;
@@ -95,9 +96,16 @@ public class Restaurant {
         return openingHours;
     }
 
-    public List<DomainEvent> getEvents() {
-        return events;
+    public List<DomainEvent> getDomainEvents() {
+        return eventStore;
     }
 
+    public List<DomainEvent> getUncommitedEvents(){
+        return new ArrayList<>(uncommittedEvents);
+    }
 
+    public void commitEvents(){
+        this.eventStore.addAll(uncommittedEvents);
+        uncommittedEvents.clear();
+    }
 }

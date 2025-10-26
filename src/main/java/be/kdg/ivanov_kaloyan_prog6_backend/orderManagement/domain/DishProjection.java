@@ -43,6 +43,10 @@ public class DishProjection {
                 tags, description, price, pictureURL);
     }
 
+    public void changeStockStatus(String stockStatus){
+        this.stockStatus = stockStatus;
+    }
+
     public String getStockStatus() {
         return stockStatus;
     }

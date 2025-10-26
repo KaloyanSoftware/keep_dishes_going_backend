@@ -53,6 +53,7 @@ public class PublishDishDraftUseCaseImpl implements PublishDishDraftUseCase {
         deleteDishDraftPort.delete(draft.getId().id());
 
         this.updateMenuPorts.forEach(port -> port.update(menu));
+        menu.commitEvents();
 
         return dish;
     }

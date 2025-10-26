@@ -16,7 +16,7 @@ public class MenuEventPublisher implements UpdateMenuPort {
 
     @Override
     public Menu update(Menu menu) {
-        menu.getEvents().forEach(applicationEventPublisher::publishEvent);
+        menu.getUncommittedEvents().forEach(applicationEventPublisher::publishEvent);
         return menu;
     }
 }

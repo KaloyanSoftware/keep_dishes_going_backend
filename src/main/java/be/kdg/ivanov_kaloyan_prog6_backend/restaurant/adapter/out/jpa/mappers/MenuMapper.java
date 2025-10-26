@@ -1,9 +1,6 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.mappers;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DishUnpublishedEvent;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DomainEvent;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DishPublishedEvent;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.EventCatalog;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.events.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.MenuEventJpaEntity;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.MenuJpaEntity;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.*;
@@ -17,8 +14,7 @@ public interface MenuMapper {
     @Mapping(target = "id", expression = "java(domain.getId().id())")
     @Mapping(target = "restaurantId", expression = "java(domain.getRestaurantId().id())")
     @Mapping(target = "dishes", ignore = true)
-    @Mapping(target = "events", expression = "java(toJpaEvents(domain.getEvents(), domain.getRestaurantId().id()))")
-    @Mapping(target = "publishedCount", source = "publishedCount")
+    @Mapping(target = "events", expression = "java(toJpaEvents(domain.getDomainEvents(), domain.getRestaurantId().id()))")
     MenuJpaEntity toJpa(Menu domain, @Context DishMapper dishMapper);
 
     @AfterMapping
@@ -37,7 +33,7 @@ public interface MenuMapper {
                 ? toDomainEvents(jpa.getEvents())
                 : new ArrayList<>();
 
-        return Menu.rehydrate(menuId, restaurantId, dishes, jpa.getPublishedCount(), domainEvents);
+        return Menu.rehydrate(menuId, restaurantId, dishes, domainEvents);
     }
 
     default Menu toDomain(MenuJpaEntity jpa, @Context DishMapper dishMapper) {
@@ -77,6 +73,22 @@ public interface MenuMapper {
                     restaurantId
             );
 
+            case DishOutOfStockEvent e -> new MenuEventJpaEntity(
+                    e.id(),
+                    e.eventPit(),
+                    e.eventCatalog().name(),
+                    e.dishId(),
+                    restaurantId
+            );
+
+            case DishBackInStockEvent e -> new MenuEventJpaEntity(
+                    e.id(),
+                    e.eventPit(),
+                    e.eventCatalog().name(),
+                    e.dishId(),
+                    restaurantId
+            );
+
             default -> throw new IllegalArgumentException("Unknown menu event type: " + domainEvent.getClass());
         };
     }
@@ -104,6 +116,14 @@ public interface MenuMapper {
             );
 
             case DISH_UNPUBLISHED -> new DishUnpublishedEvent(
+                    e.getDishId()
+            );
+
+            case DISH_OUT_OF_STOCK -> new DishOutOfStockEvent(
+                    e.getDishId()
+            );
+
+            case DISH_BACK_IN_STOCK -> new DishBackInStockEvent(
                     e.getDishId()
             );
 

@@ -32,6 +32,7 @@ public class UnpublishDishUseCaseImpl implements UnpublishDishUseCase {
         Dish dish = menu.unpublishDish(command.dishId());
 
         this.updateMenuPorts.forEach(port -> port.update(menu));
+        menu.commitEvents();
 
         return dish;
     }

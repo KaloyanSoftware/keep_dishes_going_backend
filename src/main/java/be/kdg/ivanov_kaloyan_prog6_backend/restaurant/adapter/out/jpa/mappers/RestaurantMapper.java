@@ -25,12 +25,12 @@ public interface RestaurantMapper {
 
     @AfterMapping
     default void linkEvents(@MappingTarget RestaurantJpaEntity jpa, Restaurant domain) {
-        if (domain.getEvents() == null || domain.getEvents().isEmpty()) {
+        if (domain.getDomainEvents() == null || domain.getDomainEvents().isEmpty()) {
             jpa.setEvents(new ArrayList<>());
             return;
         }
 
-        List<RestaurantEventJpaEntity> jpaEvents = domain.getEvents().stream()
+        List<RestaurantEventJpaEntity> jpaEvents = domain.getDomainEvents().stream()
                 .map(event -> toJpaEvent(event, domain.getId().id()))
                 .collect(Collectors.toList());
 

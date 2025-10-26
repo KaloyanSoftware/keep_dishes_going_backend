@@ -63,23 +63,23 @@ public class DishController {
     }
 
     @PatchMapping("/outOfStock")
-    public ResponseEntity<Void> markOutOfStock(@RequestBody MarkDishOutOfStockRequest request){
+    @PreAuthorize("hasAuthority('owner')")
+    public ResponseEntity<DishDTO> markOutOfStock(@RequestBody MarkDishOutOfStockRequest request,
+                                               @PathVariable String restaurantId){
         final MarkDishOutOfStockCommand command =  new MarkDishOutOfStockCommand(UUID.fromString(request.dishId()),
-                UUID.fromString(request.menuId()));
+                UUID.fromString(restaurantId));
 
-        this.markDishOutOfStockUseCase.markOutOfStock(command);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(DishDTO.from(this.markDishOutOfStockUseCase.markOutOfStock(command)));
     }
 
     @PatchMapping("/backInStock")
-    public ResponseEntity<Void> markBackInStock(@RequestBody MarkDishBackInStockRequest request){
+    @PreAuthorize("hasAuthority('owner')")
+    public ResponseEntity<DishDTO> markBackInStock(@RequestBody MarkDishBackInStockRequest request,
+                                                @PathVariable String restaurantId){
         final MarkDishBackInStockCommand command =  new MarkDishBackInStockCommand(UUID.fromString(request.dishId()),
-                UUID.fromString(request.menuId()));
+                UUID.fromString(restaurantId));
 
-        this.markDishBackInStockUseCase.markBackInStock(command);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(DishDTO.from(this.markDishBackInStockUseCase.markBackInStock(command)));
     }
 
     @PostMapping

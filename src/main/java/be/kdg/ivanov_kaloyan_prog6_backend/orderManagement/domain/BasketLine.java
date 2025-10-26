@@ -16,6 +16,8 @@ public class BasketLine{
 
     private String pictureURL;
 
+    //private boolean isValid = true;
+
     public BasketLine(UUID restaurantId, UUID dishId, String name,
                       BigDecimal price, String pictureURL) {
         this.restaurantId = restaurantId;
@@ -32,6 +34,13 @@ public class BasketLine{
     public Integer decreaseQuantity(){
         return --quantity;
     }
+
+    /*public void validate(String stockStatus){
+        switch (stockStatus){
+            case "OUT_OF_STOCK": this.isValid = false;
+            case "IN_STOCK": this.isValid = true;
+        }
+    }*/
 
     public UUID getRestaurantId() {
         return restaurantId;

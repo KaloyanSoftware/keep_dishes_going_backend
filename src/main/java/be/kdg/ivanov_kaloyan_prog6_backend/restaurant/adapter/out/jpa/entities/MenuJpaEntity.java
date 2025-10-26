@@ -23,22 +23,7 @@ public class MenuJpaEntity {
     @JoinColumn(name = "menu_id", referencedColumnName = "uuid")
     private List<MenuEventJpaEntity> events;
 
-    @Column(name = "published_count")
-    private Integer publishedCount;
-
     public MenuJpaEntity() {
-    }
-
-    public MenuJpaEntity(UUID id,
-                         UUID restaurantId,
-                         List<DishJpaEntity> dishes,
-                         Integer publishedCount,
-                         List<MenuEventJpaEntity> events) {
-        this.id = id;
-        this.restaurantId = restaurantId;
-        this.dishes = dishes;
-        this.publishedCount = publishedCount;
-        this.events = events;
     }
 
     public UUID getId() {
@@ -71,13 +56,5 @@ public class MenuJpaEntity {
 
     public void setEvents(List<MenuEventJpaEntity> events) {
         this.events = events;
-    }
-
-    public Integer getPublishedCount() {
-        return publishedCount;
-    }
-
-    public void setPublishedCount(Integer publishedCount) {
-        this.publishedCount = publishedCount;
     }
 }

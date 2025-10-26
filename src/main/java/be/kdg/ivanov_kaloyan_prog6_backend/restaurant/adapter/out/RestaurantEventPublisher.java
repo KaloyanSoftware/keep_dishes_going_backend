@@ -15,7 +15,7 @@ public class RestaurantEventPublisher implements UpdateRestaurantPort {
 
     @Override
     public Restaurant update(Restaurant restaurant) {
-        restaurant.getEvents().forEach(applicationEventPublisher::publishEvent);
+        restaurant.getUncommitedEvents().forEach(applicationEventPublisher::publishEvent);
         return restaurant;
     }
 }

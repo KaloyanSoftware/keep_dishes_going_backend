@@ -3,6 +3,7 @@ package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 import be.kdg.ivanov_kaloyan_prog6_backend.common.events.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.exceptions.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Menu {
 
@@ -12,23 +13,22 @@ public class Menu {
 
     private final Map<UUID, Dish> dishes = new HashMap<>();
 
-    private List<DomainEvent> events = new ArrayList<>();
+    private List<DomainEvent> eventStore = new ArrayList<>();
+
+    private List<DomainEvent> uncommittedEvents = new ArrayList<>();
 
     private static final int MAX_PUBLISHED_DISHES = 10;
-
-    private int publishedCount = 0;
 
     public static Menu create(UUID restaurantId) {
         Menu menu = new Menu(MenuId.create(), RestaurantId.of(restaurantId));
         return menu;
     }
 
-    public static Menu rehydrate(MenuId id, RestaurantId restaurantId, Map<UUID, Dish> dishes, int publishedCount, List<DomainEvent> events) {
+    public static Menu rehydrate(MenuId id, RestaurantId restaurantId, Map<UUID, Dish> dishes, List<DomainEvent> events) {
         Menu m = new Menu(id, restaurantId);
         m.dishes.clear();
         if (dishes != null) m.dishes.putAll(dishes);
-        if (events != null) m.events.addAll(events);
-        m.publishedCount = publishedCount;
+        if (events != null) m.eventStore.addAll(events);
         return m;
     }
 
@@ -50,12 +50,11 @@ public class Menu {
 
         dish.publish();
         dishes.put(dishId, dish);
-        publishedCount++;
 
         final List<String> tags = dish.getTags().stream()
                 .map(FoodTag::name).toList();
 
-        this.events.add(new DishPublishedEvent(dishId, restaurantId.id(),dish.getStockStatus().name(), dish.getName(),
+        this.uncommittedEvents.add(new DishPublishedEvent(dishId, restaurantId.id(),dish.getStockStatus().name(), dish.getName(),
                 dish.getType().name(), tags, dish.getDescription(), dish.getPrice(), dish.getPictureURL()));
         return dish;
     }
@@ -69,9 +68,8 @@ public class Menu {
 
         dish.unpublish();
         dishes.put(dishId, dish);
-        publishedCount--;
 
-        this.events.add(new DishUnpublishedEvent(dishId));
+        this.uncommittedEvents.add(new DishUnpublishedEvent(dishId));
         return dish;
     }
 
@@ -99,12 +97,11 @@ public class Menu {
         dish.publish();
         dish.markInStock();
         dishes.put(dish.getId().id(), dish);
-        publishedCount++;
 
         final List<String> tags = dish.getTags().stream()
                 .map(FoodTag::name).toList();
 
-        this.events.add(new DishPublishedEvent(dish.getId().id(), restaurantId.id(),dish.getStockStatus().name(), dish.getName(),
+        this.uncommittedEvents.add(new DishPublishedEvent(dish.getId().id(), restaurantId.id(),dish.getStockStatus().name(), dish.getName(),
                 dish.getType().name(), tags, dish.getDescription(), dish.getPrice(), dish.getPictureURL()));
         return dish;
     }
@@ -119,7 +116,7 @@ public class Menu {
         dish.markOutOfStock();
         dishes.put(dishId, dish);
 
-        this.events.add(new DishOutOfStockEvent(dishId));
+        this.uncommittedEvents.add(new DishOutOfStockEvent(dishId));
         return dish;
     }
 
@@ -140,16 +137,35 @@ public class Menu {
         dish.markInStock();
         dishes.put(dishId, dish);
 
-        this.events.add(new DishBackInStockEvent(dishId));
+        this.uncommittedEvents.add(new DishBackInStockEvent(dishId));
         return dish;
     }
 
-    private boolean publishedCapacityReached(){
-        return publishedCount == MAX_PUBLISHED_DISHES;
+    public int getPublishedCount() {
+        return eventStore.stream()
+                .mapToInt(event -> switch (event) {
+                    case DishPublishedEvent ignored -> 1;
+                    case DishUnpublishedEvent ignored -> -1;
+                    default -> 0;
+                })
+                .sum();
     }
 
-    public List<DomainEvent> getEvents() {
-        return events;
+    public List<DomainEvent> getUncommittedEvents() {
+        return new ArrayList<>(uncommittedEvents);
+    }
+
+    public void commitEvents(){
+        this.eventStore.addAll(uncommittedEvents);
+        uncommittedEvents.clear();
+    }
+
+    public List<DomainEvent> getDomainEvents() {
+        return new ArrayList<>(Stream.concat(eventStore.stream(), uncommittedEvents.stream()).toList());
+    }
+
+    private boolean publishedCapacityReached(){
+        return getPublishedCount() == MAX_PUBLISHED_DISHES;
     }
 
     public MenuId getId() {
@@ -162,9 +178,5 @@ public class Menu {
 
     public Map<UUID, Dish> getDishes() {
         return dishes;
-    }
-
-    public int getPublishedCount() {
-        return publishedCount;
     }
 }

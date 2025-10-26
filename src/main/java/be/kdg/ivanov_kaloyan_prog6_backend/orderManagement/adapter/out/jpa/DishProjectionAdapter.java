@@ -23,8 +23,6 @@ public class DishProjectionAdapter implements UpdateDishProjectionPort, DeleteDi
 
     private final DishProjectionMapper mapper;
 
-
-
     public DishProjectionAdapter(final DishProjectionJpaRepository dishProjections,
                                  final DishProjectionMapper mapper) {
         this.dishProjections = dishProjections;
@@ -34,13 +32,7 @@ public class DishProjectionAdapter implements UpdateDishProjectionPort, DeleteDi
     @Override
     public void update(DishProjection projection) {
         log.error("Saving dish projection with id : {}", projection.getId());
-
-        final DishProjectionJpaEntity entity = new DishProjectionJpaEntity(
-                projection.getId(), projection.getRestaurantId(), projection.getStockStatus(),
-                projection.getName(), projection.getType(), projection.getDescription(),
-                projection.getPrice().doubleValue(), projection.getPictureURL(), projection.getTags());
-
-        dishProjections.save(entity);
+        dishProjections.save(mapper.toJpa(projection));
     }
 
     @Override

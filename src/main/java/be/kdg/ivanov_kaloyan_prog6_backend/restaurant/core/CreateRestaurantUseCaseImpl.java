@@ -43,6 +43,8 @@ public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
 
         this.updateRestaurantPorts.forEach(port -> port.update(restaurant));
 
+        restaurant.commitEvents();
+
         updateMenuPort.update(menu);
 
         return restaurant;
