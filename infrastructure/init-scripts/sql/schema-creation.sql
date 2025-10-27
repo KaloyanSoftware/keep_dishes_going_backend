@@ -110,11 +110,23 @@ CREATE TABLE restaurant.restaurant_events (
                                               cuisine_type TEXT NOT NULL
 );
 
-CREATE TABLE order_management.item_availability (
-                                                    dish_id UUID PRIMARY KEY NOT NULL,
-                                                    restaurant_id UUID NOT NULL,
-                                                    orderable BOOLEAN NOT NULL
+CREATE TABLE restaurant.order_projection (
+                                             uuid UUID PRIMARY KEY,
+                                             restaurant_id UUID NOT NULL REFERENCES restaurant.restaurant(uuid) ON DELETE CASCADE,
+                                             street TEXT NOT NULL,
+                                             number TEXT NOT NULL,
+                                             postal_code TEXT NOT NULL,
+                                             city TEXT NOT NULL
+
 );
+
+CREATE TABLE restaurant.order_projection_lines (
+                                                   order_id UUID NOT NULL REFERENCES restaurant.order_projection(uuid) ON DELETE CASCADE,
+                                                   dish_name TEXT NOT NULL,
+                                                   quantity INTEGER NOT NULL,
+                                                   PRIMARY KEY(order_id, dish_name)
+);
+
 
 CREATE TABLE order_management.restaurant_projection (
                                                         uuid UUID PRIMARY KEY,
@@ -126,7 +138,8 @@ CREATE TABLE order_management.restaurant_projection (
                                                         house_number INTEGER NOT NULL,
                                                         postal_code TEXT NOT NULL,
                                                         city TEXT NOT NULL,
-                                                        country TEXT NOT NULL
+                                                        country TEXT NOT NULL,
+                                                        is_open BOOLEAN NOT NULL
 );
 
 CREATE TABLE order_management.dish_projection (
@@ -148,6 +161,7 @@ CREATE TABLE order_management.dish_projection_tag (
 
 CREATE TABLE order_management.orders (
                                          uuid UUID PRIMARY KEY,
+                                         restaurant_id UUID NOT NULL,
                                          customer_session_id UUID NOT NULL,
                                          customer_name TEXT NOT NULL,
                                          customer_email TEXT NOT NULL,
@@ -156,6 +170,7 @@ CREATE TABLE order_management.orders (
                                          postal_code TEXT NOT NULL,
                                          city TEXT NOT NULL,
                                          country TEXT NOT NULL,
+                                         status TEXT NOT NULL,
                                          total NUMERIC(14,2) NOT NULL
 );
 

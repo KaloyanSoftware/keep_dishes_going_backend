@@ -8,7 +8,6 @@ import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ObjectFactory;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,20 +16,24 @@ import java.util.stream.Collectors;
 public interface OrderMapper {
 
     @Mapping(target = "id", expression = "java(order.getId().orderId())")
+    @Mapping(target = "restaurantId", expression = "java(order.getRestaurantId())")
     @Mapping(target = "orderLines", expression = "java(toEmbeddableOrderLines(order.getOrderLines()))")
     @Mapping(target = "customerInfo", expression = "java(toEmbeddableCustomerInfo(order.getCustomerInfo()))")
     @Mapping(target = "total", source = "total")
     @Mapping(target = "customerSessionId", expression = "java(order.getCustomerSessionId())")
+    @Mapping(target = "status", source = "status")
     OrderJpaEntity toJpa(Order order);
 
     @ObjectFactory
     default Order createOrder(OrderJpaEntity jpa) {
         return new Order(
                 OrderId.of(jpa.getId()),
+                jpa.getRestaurantId(),
                 toDomainOrderLines(jpa.getOrderLines()),
                 toDomainCustomerInfo(jpa.getCustomerInfo()),
                 jpa.getTotal() != null ? jpa.getTotal() : BigDecimal.ZERO,
-                jpa.getCustomerSessionId()
+                jpa.getCustomerSessionId(),
+                jpa.getStatus()
         );
     }
 

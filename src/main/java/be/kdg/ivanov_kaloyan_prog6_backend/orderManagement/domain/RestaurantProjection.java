@@ -1,5 +1,7 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain;
 
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.exceptions.OrderPlacedException;
+
 import java.util.UUID;
 
 public class RestaurantProjection {
@@ -15,6 +17,8 @@ public class RestaurantProjection {
 
     private String cuisineType;
 
+    private boolean isOpen;
+
     public RestaurantProjection(UUID restaurantId, Location location, String email,
                                 String pictureURL, Integer defaultPrepTime, String cuisineType) {
         this.restaurantId = restaurantId;
@@ -23,11 +27,29 @@ public class RestaurantProjection {
         this.pictureURL = pictureURL;
         this.defaultPrepTime = defaultPrepTime;
         this.cuisineType = cuisineType;
+        this.isOpen = true;
     }
 
     public static RestaurantProjection create(UUID restaurantId, Location location, String email,
                                               String pictureURL, Integer defaultPrepTime, String cuisineType){
         return new RestaurantProjection(restaurantId,  location, email, pictureURL, defaultPrepTime, cuisineType);
+    }
+
+    public static RestaurantProjection rehydrate(UUID restaurantId, Location location,
+                                                 String email, String pictureURL,
+                                                 Integer defaultPrepTime, String cuisineType,
+                                                 boolean isOpen) {
+        RestaurantProjection projection = new RestaurantProjection(
+                restaurantId, location, email, pictureURL, defaultPrepTime, cuisineType
+        );
+        projection.isOpen = isOpen;
+        return projection;
+    }
+
+    public void checkOrderAvailability(){
+        if(!isOpen){
+            throw new OrderPlacedException("Restaurant with id: " + restaurantId + " is not open, can't place any orders!");
+        }
     }
 
     public Location getLocation() {
@@ -52,5 +74,9 @@ public class RestaurantProjection {
 
     public UUID getRestaurantId() {
         return restaurantId;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
     }
 }

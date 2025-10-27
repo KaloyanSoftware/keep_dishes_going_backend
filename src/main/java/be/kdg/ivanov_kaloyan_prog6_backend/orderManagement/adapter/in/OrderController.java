@@ -24,7 +24,9 @@ public class OrderController {
     public ResponseEntity<OrderDTO> create(@PathVariable String basketId,
                                            @RequestBody CreateOrderRequest request,
                                            @CookieValue(name = "customerSessionId", required = false) String sessionId){
-        final CreateOrderCommand command = new CreateOrderCommand(UUID.fromString(basketId), request.customerInfo(),
+        final CreateOrderCommand command = new CreateOrderCommand(
+                UUID.fromString(basketId),
+                request.customerInfo(),
                 UUID.fromString(sessionId));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(OrderDTO.from(this.createOrderUseCase.create(command)));

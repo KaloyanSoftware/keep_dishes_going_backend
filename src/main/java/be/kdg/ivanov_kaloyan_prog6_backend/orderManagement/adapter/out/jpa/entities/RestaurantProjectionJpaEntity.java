@@ -7,84 +7,47 @@ import java.util.UUID;
 @Entity
 @Table(schema = "order_management", name = "restaurant_projection")
 public class RestaurantProjectionJpaEntity {
+
     @Id
-    @Column(name = "uuid")
+    @Column(name = "uuid", nullable = false)
     private UUID id;
+
+    @Embedded
+    private LocationEmbeddable location;
 
     @Column(name = "email", nullable = false)
     private String email;
 
     @Column(name = "picture_url")
-    private String pictureUrl;
+    private String pictureURL;
 
     @Column(name = "default_prep_min", nullable = false)
-    private Integer defaultPrepMinutes;
-
-    @Embedded
-    private LocationEmbeddable location;
+    private Integer defaultPrepTime;
 
     @Column(name = "cuisine_type", nullable = false)
     private String cuisineType;
 
-    public RestaurantProjectionJpaEntity(UUID id, String email, String pictureUrl, Integer defaultPrepMinutes,
-                                         String cuisineType, LocationEmbeddable location) {
-        this.id = id;
-        this.email = email;
-        this.pictureUrl = pictureUrl;
-        this.defaultPrepMinutes = defaultPrepMinutes;
-        this.cuisineType = cuisineType;
-        this.location = location;
-    }
+    @Column(name = "is_open", nullable = false)
+    private boolean isOpen;
 
-    public RestaurantProjectionJpaEntity() {
+    public UUID getId() { return id; }
+    public void setId(UUID id) { this.id = id; }
 
-    }
+    public LocationEmbeddable getLocation() { return location; }
+    public void setLocation(LocationEmbeddable location) { this.location = location; }
 
-    public UUID getId() {
-        return id;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getPictureURL() { return pictureURL; }
+    public void setPictureURL(String pictureURL) { this.pictureURL = pictureURL; }
 
-    public String getPictureUrl() {
-        return pictureUrl;
-    }
+    public Integer getDefaultPrepTime() { return defaultPrepTime; }
+    public void setDefaultPrepTime(Integer defaultPrepTime) { this.defaultPrepTime = defaultPrepTime; }
 
-    public Integer getDefaultPrepMinutes() {
-        return defaultPrepMinutes;
-    }
+    public String getCuisineType() { return cuisineType; }
+    public void setCuisineType(String cuisineType) { this.cuisineType = cuisineType; }
 
-    public LocationEmbeddable getLocation() {
-        return location;
-    }
-
-    public String getCuisineType() {
-        return cuisineType;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
-    }
-
-    public void setDefaultPrepMinutes(Integer defaultPrepMinutes) {
-        this.defaultPrepMinutes = defaultPrepMinutes;
-    }
-
-    public void setLocation(LocationEmbeddable location) {
-        this.location = location;
-    }
-
-    public void setCuisineType(String cuisine) {
-        this.cuisineType = cuisine;
-    }
+    public boolean isOpen() { return isOpen; }
+    public void setOpen(boolean open) { isOpen = open; }
 }

@@ -2,6 +2,7 @@ package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.enti
 
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.embeddables.CustomerInfoEmbeddable;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.embeddables.OrderLineEmbeddable;
+import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.Order;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,6 +16,9 @@ public class OrderJpaEntity {
     @Id
     @Column(name = "uuid", nullable = false)
     private UUID id;
+
+    @Column(name = "restaurant_id")
+    private UUID restaurantId;
 
     @Column(name="customer_session_id",  nullable = false)
     private UUID customerSessionId;
@@ -33,12 +37,17 @@ public class OrderJpaEntity {
     @Column(name = "total", nullable = false, precision = 14, scale = 2)
     private BigDecimal total;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private Order.OrderStatus status;
+
     protected OrderJpaEntity() {
     }
 
-    public OrderJpaEntity(UUID id, UUID customerSessionId, List<OrderLineEmbeddable> orderLines,
+    public OrderJpaEntity(UUID id, UUID restaurantId, UUID customerSessionId, List<OrderLineEmbeddable> orderLines,
                           CustomerInfoEmbeddable customerInfo, BigDecimal total) {
         this.id = id;
+        this.restaurantId = restaurantId;
         this.customerSessionId = customerSessionId;
         this.orderLines = orderLines;
         this.customerInfo = customerInfo;
@@ -83,5 +92,21 @@ public class OrderJpaEntity {
 
     public void setCustomerSessionId(UUID customerSessionid) {
         this.customerSessionId = customerSessionid;
+    }
+
+    public UUID getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(UUID restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
+    public Order.OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(Order.OrderStatus status) {
+        this.status = status;
     }
 }

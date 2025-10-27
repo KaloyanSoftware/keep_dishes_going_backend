@@ -6,7 +6,7 @@ import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.RestaurantSav
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.RestaurantSavedProjectionCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.event.EventListener;
+import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,7 +19,7 @@ public class RestaurantProjectionListener {
         this.projector = projector;
     }
 
-    @EventListener(SaveRestaurantEvent.class)
+    @ApplicationModuleListener
     public void restaurantCreated(SaveRestaurantEvent event) {
         log.error("Save restaurant with id: {} event received!", event.restaurantId());
 

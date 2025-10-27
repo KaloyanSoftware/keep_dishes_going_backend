@@ -7,6 +7,8 @@ import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.LoadRestaura
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.UpdateRestaurantProjectionPort;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class RestaurantProjectionJpaAdapter implements UpdateRestaurantProjectionPort, LoadRestaurantProjectionPort {
@@ -29,5 +31,10 @@ public class RestaurantProjectionJpaAdapter implements UpdateRestaurantProjectio
     @Override
     public List<RestaurantProjection> loadAll() {
         return restaurantProjections.findAll().stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public Optional<RestaurantProjection> loadBy(UUID restaurantId) {
+        return restaurantProjections.findById(restaurantId).map(mapper::toDomain);
     }
 }

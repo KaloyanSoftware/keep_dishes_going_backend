@@ -9,24 +9,35 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface RestaurantProjectionMapper {
 
-    @Mapping(target = "id", source = "restaurantId")
-    @Mapping(target = "email", source = "email")
-    @Mapping(target = "pictureUrl", source = "pictureURL")
-    @Mapping(target = "defaultPrepMinutes", source = "defaultPrepTime")
-    @Mapping(target = "cuisineType", source = "cuisineType")
-    @Mapping(target = "location", expression = "java(toJpaLocation(domain.getLocation()))")
+    @Mappings({
+            @Mapping(target = "id", source = "restaurantId"),
+            @Mapping(target = "location", expression = "java(toEmbeddable(domain.getLocation()))"),
+            @Mapping(target = "email", source = "email"),
+            @Mapping(target = "pictureURL", source = "pictureURL"),
+            @Mapping(target = "defaultPrepTime", source = "defaultPrepTime"),
+            @Mapping(target = "cuisineType", source = "cuisineType"),
+            @Mapping(target = "open", source = "open")
+    })
     RestaurantProjectionJpaEntity toJpa(RestaurantProjection domain);
 
-    @Mapping(target = "restaurantId", source = "id")
-    @Mapping(target = "email", source = "email")
-    @Mapping(target = "pictureURL", source = "pictureUrl")
-    @Mapping(target = "defaultPrepTime", source = "defaultPrepMinutes")
-    @Mapping(target = "cuisineType", source = "cuisineType")
-    @Mapping(target = "location", expression = "java(toDomainLocation(jpa.getLocation()))")
-    RestaurantProjection toDomain(RestaurantProjectionJpaEntity jpa);
+    @ObjectFactory
+    default RestaurantProjection rehydrate(RestaurantProjectionJpaEntity jpa) {
+        return RestaurantProjection.rehydrate(
+                jpa.getId(),
+                toDomain(jpa.getLocation()),
+                jpa.getEmail(),
+                jpa.getPictureURL(),
+                jpa.getDefaultPrepTime(),
+                jpa.getCuisineType(),
+                jpa.isOpen()
+        );
+    }
 
-    default LocationEmbeddable toJpaLocation(Location location) {
-        if (location == null) return null;
+    default RestaurantProjection toDomain(RestaurantProjectionJpaEntity jpa) {
+        return rehydrate(jpa);
+    }
+
+    default LocationEmbeddable toEmbeddable(Location location) {
         return new LocationEmbeddable(
                 location.street(),
                 location.number(),
@@ -36,8 +47,7 @@ public interface RestaurantProjectionMapper {
         );
     }
 
-    default Location toDomainLocation(LocationEmbeddable emb) {
-        if (emb == null) return null;
+    default Location toDomain(LocationEmbeddable emb) {
         return new Location(
                 emb.getStreet(),
                 emb.getNumber(),
