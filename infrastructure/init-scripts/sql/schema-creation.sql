@@ -14,6 +14,7 @@ CREATE TABLE restaurant.restaurant (
                                        email TEXT NOT NULL,
                                        picture_url TEXT,
                                        default_prep_min INTEGER NOT NULL,
+                                       is_open BOOLEAN,
                                        cuisine_type TEXT NOT NULL,
                                        street TEXT NOT NULL,
                                        house_number INTEGER NOT NULL,

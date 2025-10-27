@@ -26,6 +26,9 @@ public class RestaurantJpaEntity {
     @Column(name = "default_prep_min", nullable = false)
     private Integer defaultPrepMinutes;
 
+    @Column(name = "is_open")
+    private boolean isOpen = true;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "cuisine_type", nullable = false)
     private CuisineType cuisineType;
@@ -106,6 +109,14 @@ public class RestaurantJpaEntity {
 
     public CuisineType getCuisineType() {
         return cuisineType;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setIsOpen(boolean open) {
+        isOpen = open;
     }
 
     public void setCuisineType(CuisineType cuisineType) {

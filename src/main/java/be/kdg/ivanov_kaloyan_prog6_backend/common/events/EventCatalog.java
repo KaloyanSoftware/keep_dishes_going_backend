@@ -2,6 +2,8 @@ package be.kdg.ivanov_kaloyan_prog6_backend.common.events;
 
 public enum EventCatalog {
     RESTAURANT_SAVED,
+    RESTAURANT_CLOSED,
+    RESTAURANT_OPENED,
     DISH_PUBLISHED,
     DISH_UNPUBLISHED,
     DISH_OUT_OF_STOCK,

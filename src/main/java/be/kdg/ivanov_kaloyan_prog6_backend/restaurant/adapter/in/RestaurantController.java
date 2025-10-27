@@ -7,8 +7,12 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.request.CreateR
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Restaurant;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.CreateRestaurantCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.GetRestaurantForOwnerCommand;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.CloseRestaurantCommand;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.OpenRestaurantCommand;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.CloseRestaurantUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.CreateRestaurantUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.GetRestaurantForOwnerUseCase;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.OpenRestaurantUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +27,10 @@ public class RestaurantController {
 
     private final GetRestaurantForOwnerUseCase getRestaurantForOwnerUseCase;
 
+    private final CloseRestaurantUseCase closeRestaurantUseCase;
+
+    private final OpenRestaurantUseCase openRestaurantUseCase;
+
     private final AddressMapper addressMapper;
 
     private final OpeningHoursMapper openingHoursMapper;
@@ -31,16 +39,20 @@ public class RestaurantController {
     public RestaurantController(final CreateRestaurantUseCase createRestaurantUseCase,
                                 final GetRestaurantForOwnerUseCase getRestaurantForOwnerUseCase,
                                 final AddressMapper addressMapper,
-                                final OpeningHoursMapper openingHoursMapper) {
+                                final OpeningHoursMapper openingHoursMapper,
+                                final CloseRestaurantUseCase closeRestaurantUseCase,
+                                final OpenRestaurantUseCase openRestaurantUseCase) {
         this.createRestaurantUseCase = createRestaurantUseCase;
         this.getRestaurantForOwnerUseCase = getRestaurantForOwnerUseCase;
         this.addressMapper = addressMapper;
         this.openingHoursMapper = openingHoursMapper;
+        this.closeRestaurantUseCase = closeRestaurantUseCase;
+        this.openRestaurantUseCase = openRestaurantUseCase;
     }
 
     @PostMapping("/restaurants")
     @PreAuthorize("hasAuthority('owner')")
-    public ResponseEntity<RestaurantDTO> post(@RequestBody CreateRestaurantRequest request) {
+    public ResponseEntity<RestaurantDTO> create(@RequestBody CreateRestaurantRequest request) {
 
         final CreateRestaurantCommand command = new CreateRestaurantCommand(
                 UUID.fromString(request.ownerId()),
@@ -66,5 +78,23 @@ public class RestaurantController {
         }
 
         return ResponseEntity.ok(RestaurantDTO.from(restaurant));
+    }
+
+    @PatchMapping("/owners/restaurants/{restaurantId}/closed")
+    @PreAuthorize("hasAuthority('owner')")
+    public ResponseEntity<RestaurantDTO> close(@PathVariable String restaurantId){
+
+        final CloseRestaurantCommand command = new CloseRestaurantCommand(UUID.fromString(restaurantId));
+
+        return ResponseEntity.ok().body(RestaurantDTO.from(closeRestaurantUseCase.close(command)));
+    }
+
+    @PatchMapping("/owners/restaurants/{restaurantId}/opened")
+    @PreAuthorize("hasAuthority('owner')")
+    public ResponseEntity<RestaurantDTO> open(@PathVariable String restaurantId){
+
+        final OpenRestaurantCommand command = new OpenRestaurantCommand(UUID.fromString(restaurantId));
+
+        return ResponseEntity.ok().body(RestaurantDTO.from(openRestaurantUseCase.open(command)));
     }
 }

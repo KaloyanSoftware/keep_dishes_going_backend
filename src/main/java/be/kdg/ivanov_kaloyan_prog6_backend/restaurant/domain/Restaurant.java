@@ -1,5 +1,7 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 
+import be.kdg.ivanov_kaloyan_prog6_backend.common.events.RestaurantCloseEvent;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.events.RestaurantOpenEvent;
 import be.kdg.ivanov_kaloyan_prog6_backend.common.events.SaveRestaurantEvent;
 import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DomainEvent;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class Restaurant {
     private Integer defaultPrepTime;
     private CuisineType cuisineType;
     private OpeningHours openingHours;
+    private boolean isOpen = true;
     private final List<DomainEvent> eventStore = new ArrayList<>();
     private final List<DomainEvent> uncommittedEvents = new ArrayList<>();
 
@@ -38,15 +41,9 @@ public class Restaurant {
                       OwnerId ownerId,
                       Address address, String email,
                       String pictureURL, Integer defaultPrepTime,
-                      CuisineType cuisineType, OpeningHours openingHours, List<DomainEvent> eventStore) {
-        this.id = id;
-        this.ownerId = ownerId;
-        this.address = address;
-        this.email = email;
-        this.pictureURL = pictureURL;
-        this.defaultPrepTime = defaultPrepTime;
-        this.cuisineType = cuisineType;
-        this.openingHours = openingHours;
+                      CuisineType cuisineType, OpeningHours openingHours, List<DomainEvent> eventStore, boolean isOpen) {
+        this(id, ownerId, address, email, pictureURL, defaultPrepTime, cuisineType, openingHours);
+        this.isOpen = isOpen;
         this.eventStore.addAll(eventStore);
     }
 
@@ -102,6 +99,20 @@ public class Restaurant {
 
     public List<DomainEvent> getUncommitedEvents(){
         return new ArrayList<>(uncommittedEvents);
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void open(){
+        this.isOpen = true;
+        this.uncommittedEvents.add(new RestaurantOpenEvent(this.id.id()));
+    }
+
+    public void close(){
+        this.isOpen = false;
+        this.uncommittedEvents.add(new RestaurantCloseEvent(this.id.id()));
     }
 
     public void commitEvents(){

@@ -18,6 +18,7 @@ public interface RestaurantMapper {
     @Mapping(target = "pictureUrl", source = "pictureURL")
     @Mapping(target = "defaultPrepMinutes", source = "defaultPrepTime")
     @Mapping(target = "cuisineType", source = "cuisineType")
+    @Mapping(target = "isOpen", expression = "java(domain.isOpen())")
     @Mapping(target = "address", expression = "java(toJpaAddress(domain.getAddress()))")
     @Mapping(target = "openingHours", expression = "java(toJpaOpeningHours(domain.getOpeningHours()))")
     @Mapping(target = "events", ignore = true)
@@ -52,7 +53,8 @@ public interface RestaurantMapper {
                 jpa.getDefaultPrepMinutes(),
                 jpa.getCuisineType(),
                 toDomainOpeningHours(jpa.getOpeningHours()),
-                eventStore
+                eventStore,
+                jpa.isOpen()
         );
     }
 
