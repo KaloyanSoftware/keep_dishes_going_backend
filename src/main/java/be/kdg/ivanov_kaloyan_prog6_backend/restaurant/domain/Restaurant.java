@@ -1,15 +1,18 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.RestaurantCloseEvent;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.RestaurantOpenEvent;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.SaveRestaurantEvent;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DomainEvent;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.dto.DeliveryInfoDTO;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.events.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public class Restaurant {
 
+    private static final Logger log = LoggerFactory.getLogger(Restaurant.class);
     private final RestaurantId id;
     private final OwnerId ownerId;
     private Address address;
@@ -21,6 +24,7 @@ public class Restaurant {
     private boolean isOpen = true;
     private final List<DomainEvent> eventStore = new ArrayList<>();
     private final List<DomainEvent> uncommittedEvents = new ArrayList<>();
+
 
     public Restaurant(RestaurantId id,
                       OwnerId ownerId,
@@ -94,7 +98,7 @@ public class Restaurant {
     }
 
     public List<DomainEvent> getDomainEvents() {
-        return eventStore;
+        return new ArrayList<>(Stream.concat(eventStore.stream(), uncommittedEvents.stream()).toList());
     }
 
     public List<DomainEvent> getUncommitedEvents(){
@@ -113,6 +117,35 @@ public class Restaurant {
     public void close(){
         this.isOpen = false;
         this.uncommittedEvents.add(new RestaurantCloseEvent(this.id.id()));
+    }
+
+    public void accept(OrderProjection order, String status){
+        log.error("Order with restaurantId (current object restaurantId) id: {}, accepted!", id.id());
+        log.error("Order with restaurantId (getter restaurantId) id: {}, accepted!", order.getRestaurantId());
+        order.changeStatus(status);
+        this.uncommittedEvents.add(new OrderAcceptedEvent(id.id(), order.getOrderId(),
+                DeliveryInfoDTO.from(address.street(), address.number().toString(),
+                        address.postalCode(), address.city()),
+                DeliveryInfoDTO.from(order.getDeliveryInfo().street(), order.getDeliveryInfo().number(),
+                        order.getDeliveryInfo().postalCode(), order.getDeliveryInfo().city())));
+    }
+
+    public void reject(OrderProjection order, String status){
+        order.changeStatus(status);
+        this.uncommittedEvents.add(new OrderRejectedEvent(order.getOrderId()));
+    }
+
+    public void ready(OrderProjection order, String status){
+        order.changeStatus(status);
+        this.uncommittedEvents.add(new OrderReadyForPickUpEvent(id.id(), order.getOrderId()));
+    }
+
+    public void pickedUp(OrderProjection order, String status){
+        order.changeStatus(status);
+    }
+
+    public void delivered(OrderProjection order, String status){
+        order.changeStatus(status);
     }
 
     public void commitEvents(){

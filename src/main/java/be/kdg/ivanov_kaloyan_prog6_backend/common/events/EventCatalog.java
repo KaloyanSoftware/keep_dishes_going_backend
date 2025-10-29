@@ -9,5 +9,7 @@ public enum EventCatalog {
     DISH_OUT_OF_STOCK,
     DISH_BACK_IN_STOCK,
     ORDER_PLACED,
-    ORDER_REJECTED
+    ORDER_ACCEPTED,
+    ORDER_REJECTED,
+    ORDER_READY
 }

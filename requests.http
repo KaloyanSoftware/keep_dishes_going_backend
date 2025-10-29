@@ -5,7 +5,7 @@
 POST http://localhost:8180/realms/keepdishesgoing/protocol/openid-connect/token HTTP/1.1
 Content-Type: application/x-www-form-urlencoded
 
-client_id=backend-client&client_secret=bB5q7A0iW63XWNrAWXvcaBdyelMS2WB6&username=kaloyan&password=1234&grant_type=password&scope=openid
+client_id=backend-client&client_secret=bB5q7A0iW63XWNrAWXvcaBdyelMS2WB6&username=hasan&password=1234&grant_type=password&scope=openid
 
 //saving the access token
 > {%
@@ -157,6 +157,18 @@ Content-Type: application/json
 }
 
 
+###
+
+### Order status events
+PATCH localhost:8080/api/owner/orders/be21eb61-43e3-42d3-8dd5-63dd23c02dd4
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "status" : "READY"
+
+}
 ###
 
 

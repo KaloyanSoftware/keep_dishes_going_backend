@@ -116,7 +116,7 @@ public class Menu {
         dish.markOutOfStock();
         dishes.put(dishId, dish);
 
-        this.uncommittedEvents.add(new DishOutOfStockEvent(dishId));
+        this.uncommittedEvents.add(new DishOutOfStockEvent(dishId, dish.published()));
         return dish;
     }
 
@@ -137,7 +137,7 @@ public class Menu {
         dish.markInStock();
         dishes.put(dishId, dish);
 
-        this.uncommittedEvents.add(new DishBackInStockEvent(dishId));
+        this.uncommittedEvents.add(new DishBackInStockEvent(dishId, dish.published()));
         return dish;
     }
 

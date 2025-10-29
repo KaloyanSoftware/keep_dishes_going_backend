@@ -1,6 +1,5 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.core;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.dto.RestaurantDTO;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Restaurant;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.exceptions.RestaurantNotFoundException;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.OpenRestaurantCommand;
@@ -9,7 +8,6 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadRestaurantPor
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateRestaurantPort;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service

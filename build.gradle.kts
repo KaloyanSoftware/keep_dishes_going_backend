@@ -27,6 +27,7 @@ dependencies {
     implementation("org.mapstruct:mapstruct:1.6.3")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-amqp")
+    implementation("org.springframework.modulith:spring-modulith-events-amqp")
     testImplementation("io.projectreactor:reactor-test")
     testImplementation("org.springframework.amqp:spring-rabbit-test")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")

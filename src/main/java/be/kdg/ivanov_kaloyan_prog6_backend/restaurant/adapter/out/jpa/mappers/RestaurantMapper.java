@@ -1,5 +1,6 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.mappers;
 
+import be.kdg.ivanov_kaloyan_prog6_backend.common.dto.DeliveryInfoDTO;
 import be.kdg.ivanov_kaloyan_prog6_backend.common.events.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.dto.AddressDTO;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.embeddables.*;
@@ -25,23 +26,19 @@ public interface RestaurantMapper {
     RestaurantJpaEntity toJpa(Restaurant domain);
 
     @AfterMapping
-    default void linkEvents(@MappingTarget RestaurantJpaEntity jpa, Restaurant domain) {
-        if (domain.getDomainEvents() == null || domain.getDomainEvents().isEmpty()) {
-            jpa.setEvents(new ArrayList<>());
-            return;
+    default void mergeEvents(@MappingTarget RestaurantJpaEntity target, Restaurant source) {
+        if (target.getEvents() != null) {
+            target.getEvents().clear();
+            target.getEvents().addAll(toJpaEvents(source.getDomainEvents(), source.getId().id()));
+        } else {
+            target.setEvents(toJpaEvents(source.getDomainEvents(), source.getId().id()));
         }
-
-        List<RestaurantEventJpaEntity> jpaEvents = domain.getDomainEvents().stream()
-                .map(event -> toJpaEvent(event, domain.getId().id()))
-                .collect(Collectors.toList());
-
-        jpa.setEvents(jpaEvents);
     }
 
     @ObjectFactory
     default Restaurant createRestaurant(RestaurantJpaEntity jpa) {
         List<DomainEvent> eventStore = jpa.getEvents() != null
-                ? toDomainEvents(jpa.getEvents())
+                ? toDomainEvents(jpa.getEvents(), jpa.getId())
                 : new ArrayList<>();
 
         return new Restaurant(
@@ -62,47 +59,134 @@ public interface RestaurantMapper {
         return createRestaurant(jpa);
     }
 
-    default RestaurantEventJpaEntity toJpaEvent(DomainEvent domainEvent, UUID restaurantId) {
-        return switch (domainEvent) {
-            case SaveRestaurantEvent event -> new RestaurantEventJpaEntity(
-                    event.id(),
-                    restaurantId,
-                    event.eventPit(),
-                    event.eventCatalog().name(),
-                    toJpaAddressFromDTO(event.address()),
-                    event.email(),
-                    event.pictureURL(),
-                    event.defaultPrepTime(),
-                    event.cuisineType()
-            );
-            default -> throw new IllegalArgumentException(
-                    "Unknown restaurant event type: " + domainEvent.getClass()
-            );
-        };
-    }
-
-    default List<DomainEvent> toDomainEvents(List<RestaurantEventJpaEntity> jpaEvents) {
-        if (jpaEvents == null || jpaEvents.isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        return jpaEvents.stream()
-                .map(this::toDomainEvent)
+    default List<RestaurantEventJpaEntity> toJpaEvents(List<DomainEvent> domainEvents, UUID restaurantId) {
+        if (domainEvents == null || domainEvents.isEmpty()) return new ArrayList<>();
+        return domainEvents.stream()
+                .map(e -> toJpaEvent(e, restaurantId))
                 .collect(Collectors.toList());
     }
 
-    default DomainEvent toDomainEvent(RestaurantEventJpaEntity jpaEvent) {
-        return switch (EventCatalog.valueOf(jpaEvent.getEventType())) {
-            case RESTAURANT_SAVED -> new SaveRestaurantEvent(
-                    toDomainAddress(jpaEvent.getAddress()),
-                    jpaEvent.getRestaurantId(),
-                    jpaEvent.getEmail(),
-                    jpaEvent.getPictureURL(),
-                    jpaEvent.getDefaultPrepTime(),
-                    jpaEvent.getCuisineType()
+    default RestaurantEventJpaEntity toJpaEvent(DomainEvent domainEvent, UUID restaurantId) {
+        return switch (domainEvent) {
+            case SaveRestaurantEvent e -> new RestaurantEventJpaEntity(
+                    e.id(),
+                    restaurantId,
+                    null,
+                    e.eventPit(),
+                    e.eventCatalog().name(),
+                    toJpaAddressFromDTO(e.address()),
+                    e.email(),
+                    e.pictureURL(),
+                    e.defaultPrepTime(),
+                    e.cuisineType()
+            );
+            case OrderAcceptedEvent e -> new RestaurantEventJpaEntity(
+                    e.eventId(),
+                    restaurantId,
+                    e.orderId(),
+                    e.eventPit(),
+                    e.eventCatalog().name(),
+                    e.pickupAddress() != null
+                            ? toJpaAddressFromDeliveryInfoDTO(e.pickupAddress())
+                            : null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            case OrderRejectedEvent e -> new RestaurantEventJpaEntity(
+                    e.id(),
+                    restaurantId,
+                    e.orderId(),
+                    e.eventPit(),
+                    e.eventCatalog().name(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            case OrderReadyForPickUpEvent e -> new RestaurantEventJpaEntity(
+                    e.eventId(),
+                    restaurantId,
+                    e.orderId(),
+                    e.eventPit(),
+                    e.eventCatalog().name(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
             );
 
-            default -> throw new IllegalArgumentException("No restaurant event catalog: " + jpaEvent.getEventType());
+            case RestaurantOpenEvent e -> new RestaurantEventJpaEntity(
+                    e.id(),
+                    restaurantId,
+                    null,
+                    e.eventPit(),
+                    e.eventCatalog().name(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null);
+
+            case RestaurantCloseEvent e -> new RestaurantEventJpaEntity(
+                    e.id(),
+                    restaurantId,
+                    null,
+                    e.eventPit(),
+                    e.eventCatalog().name(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null);
+
+            default -> throw new IllegalArgumentException("Unknown restaurant event type: " + domainEvent.getClass().getSimpleName());
+        };
+    }
+
+    default List<DomainEvent> toDomainEvents(List<RestaurantEventJpaEntity> jpaEvents, UUID restaurantId) {
+        if (jpaEvents == null || jpaEvents.isEmpty()) return new ArrayList<>();
+        return jpaEvents.stream()
+                .map(e -> toDomainEvent(e, restaurantId))
+                .collect(Collectors.toList());
+    }
+
+    default DomainEvent toDomainEvent(RestaurantEventJpaEntity e, UUID restaurantId) {
+        return switch (EventCatalog.valueOf(e.getEventType())) {
+            case RESTAURANT_SAVED -> new SaveRestaurantEvent(
+                    toDomainAddress(e.getAddress()),
+                    restaurantId,
+                    e.getEmail(),
+                    e.getPictureURL(),
+                    e.getDefaultPrepTime(),
+                    e.getCuisineType()
+            );
+            case ORDER_ACCEPTED -> new OrderAcceptedEvent(
+                    restaurantId,
+                    e.getOrderId(),
+                    e.getAddress() != null
+                            ? DeliveryInfoDTO.from(
+                            e.getAddress().getStreet(),
+                            e.getAddress().getNumber().toString(),
+                            e.getAddress().getPostalCode(),
+                            e.getAddress().getCity())
+                            : null,
+                    null
+            );
+            case ORDER_REJECTED -> new OrderRejectedEvent(e.getOrderId());
+            case ORDER_READY -> new OrderReadyForPickUpEvent(
+                    restaurantId,
+                    e.getOrderId()
+            );
+
+            case RESTAURANT_OPENED -> new RestaurantOpenEvent(e.getRestaurantId());
+
+            case RESTAURANT_CLOSED -> new RestaurantCloseEvent(e.getRestaurantId());
+
+            default -> throw new IllegalArgumentException("Unknown restaurant event type: " + e.getEventType());
         };
     }
 
@@ -123,6 +207,16 @@ public interface RestaurantMapper {
                 dto.postalCode(),
                 dto.city(),
                 dto.country()
+        );
+    }
+
+    default AddressEmbeddable toJpaAddressFromDeliveryInfoDTO(DeliveryInfoDTO dto) {
+        return new AddressEmbeddable(
+                dto.street(),
+                Integer.valueOf(dto.number()),
+                dto.postalCode(),
+                dto.city(),
+                null
         );
     }
 

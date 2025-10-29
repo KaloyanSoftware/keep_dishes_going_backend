@@ -54,7 +54,7 @@ public class Order {
 
         final Location deliveryInfo = order.getCustomerInfo().deliveryAddress();
 
-        order.uncommittedEvents.add(new OrderPlacedEvent(order.id.orderId(), order.restaurantId, order.total, eventOrderLines,
+        order.uncommittedEvents.add(new OrderPlacedEvent(order.id.orderId(), order.restaurantId, eventOrderLines,
                 deliveryInfo.number().toString(), deliveryInfo.street(), deliveryInfo.postalCode(), deliveryInfo.city()));
         return order;
     }
@@ -119,12 +119,24 @@ public class Order {
         return uncommittedEvents;
     }
 
-    public void accepted(){
-        this.status = OrderStatus.ACCEPTED;
+    public void accepted(OrderStatus status){
+        this.status = status;
     }
 
-    public void rejected(){
-        this.status = OrderStatus.REJECTED;
+    public void rejected(OrderStatus status){
+        this.status = status;
+    }
+
+    public void ready(OrderStatus status){
+        this.status = status;
+    }
+
+    public void pickedUp(OrderStatus status){
+        this.status = status;
+    }
+
+    public void delivered(OrderStatus status){
+        this.status = status;
     }
 
     public void commitEvents(){

@@ -1,10 +1,16 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in;
 
+import be.kdg.ivanov_kaloyan_prog6_backend.common.config.RabbitMQTopology;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.events.OrderDeliveredEvent;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.events.OrderPickedUpEvent;
 import be.kdg.ivanov_kaloyan_prog6_backend.common.events.OrderPlacedEvent;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DeliveryInfo;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.OrderPlacedProjector;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.ChangeOrderProjectionStatusCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.OrderPlacedProjectionCommand;
-import org.springframework.modulith.events.ApplicationModuleListener;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.ChangeOrderProjectionStatusUseCase;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,19 +18,37 @@ public class OrderProjectionEventListener {
 
     private final OrderPlacedProjector projector;
 
-    public OrderProjectionEventListener(final OrderPlacedProjector projector) {
+    private final ChangeOrderProjectionStatusUseCase changeOrderProjectionStatusUseCase;
+
+    public OrderProjectionEventListener(final OrderPlacedProjector projector,
+                                        final ChangeOrderProjectionStatusUseCase changeOrderProjectionStatusUseCase) {
         this.projector = projector;
+        this.changeOrderProjectionStatusUseCase = changeOrderProjectionStatusUseCase;
     }
 
-    @ApplicationModuleListener
+    @EventListener(OrderPlacedEvent.class)
     public void onOrderPlaced(OrderPlacedEvent event) {
 
-        final DeliveryInfo deliveryInfo = new DeliveryInfo(event.street(), event.number(), event.city(), event.postalCode());
+        final DeliveryInfo deliveryInfo = new DeliveryInfo(event.street(), event.number(), event.postalCode(), event.city());
 
         final OrderPlacedProjectionCommand command = new OrderPlacedProjectionCommand(event.orderId(), event.restaurantId(),
                 event.orderLines(), deliveryInfo);
 
         this.projector.project(command);
+    }
+
+    @RabbitListener(queues = RabbitMQTopology.ORDER_PICKEDUP_QUEUE)
+    public void onOrderPickedUp(OrderPickedUpEvent event){
+        final ChangeOrderProjectionStatusCommand command = new  ChangeOrderProjectionStatusCommand(event.orderId(), "PICKED_UP");
+
+        this.changeOrderProjectionStatusUseCase.changeStatus(command);
+    }
+
+    @RabbitListener(queues = RabbitMQTopology.ORDER_DELIVERED_QUEUE)
+    public void onOrderDelivered(OrderDeliveredEvent event){
+        final ChangeOrderProjectionStatusCommand command = new  ChangeOrderProjectionStatusCommand(event.orderId(), "DELIVERED");
+
+        this.changeOrderProjectionStatusUseCase.changeStatus(command);
     }
 
 }

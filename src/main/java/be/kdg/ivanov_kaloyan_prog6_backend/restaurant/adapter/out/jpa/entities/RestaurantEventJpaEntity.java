@@ -6,44 +6,59 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(schema="restaurant", name="restaurant_events")
+@Table(schema = "restaurant", name = "restaurant_events")
 public class RestaurantEventJpaEntity {
 
     @Id
-    @Column(name = "uuid")
+    @Column(name = "uuid", nullable = false)
     private UUID id;
 
-    @Column(name = "restaurant_id", nullable = false)
+    @Column(name = "restaurant_id")
     private UUID restaurantId;
 
-    @Column(nullable = false)
+    @Column(name = "order_id")
+    private UUID orderId;
+
+    @Column(name = "event_pit", nullable = false)
     private LocalDateTime eventPit;
 
-    @Column(nullable = false, length = 50)
+    @Column(name = "event_type", nullable = false)
     private String eventType;
 
     @Embedded
     private AddressEmbeddable address;
 
-    @Column(name="email", nullable = false)
+    @Column(name = "email")
     private String email;
 
-    @Column(name="pictureURL", nullable = false)
+    @Column(name = "pictureURL")
     private String pictureURL;
 
-    @Column(name = "default_prep_time", nullable = false)
+    @Column(name = "default_prep_time")
     private Integer defaultPrepTime;
 
-    @Column(name = "cuisine_type", nullable = false)
+    @Column(name = "cuisine_type")
     private String cuisineType;
 
-    public RestaurantEventJpaEntity() {}
+    public RestaurantEventJpaEntity() {
+        this.id = UUID.randomUUID();
+    }
 
-    public RestaurantEventJpaEntity(UUID id, UUID restaurantId, LocalDateTime eventPit, String eventType, AddressEmbeddable address,
-                                    String email, String pictureURL,
-                                    Integer defaultPrepTime, String cuisineType) {
+    public RestaurantEventJpaEntity(
+            UUID id,
+            UUID restaurantId,
+            UUID orderId,
+            LocalDateTime eventPit,
+            String eventType,
+            AddressEmbeddable address,
+            String email,
+            String pictureURL,
+            Integer defaultPrepTime,
+            String cuisineType
+    ) {
         this.id = id;
         this.restaurantId = restaurantId;
+        this.orderId = orderId;
         this.eventPit = eventPit;
         this.eventType = eventType;
         this.address = address;
@@ -53,75 +68,34 @@ public class RestaurantEventJpaEntity {
         this.cuisineType = cuisineType;
     }
 
-    public UUID getId() {
-        return id;
-    }
+    public UUID getId() { return id; }
+    public void setId(UUID id) { this.id = id; }
 
-    public void setId(UUID uuid) {
-        this.id = uuid;
-    }
+    public UUID getRestaurantId() { return restaurantId; }
+    public void setRestaurantId(UUID restaurantId) { this.restaurantId = restaurantId; }
 
-    public LocalDateTime getEventPit() {
-        return eventPit;
-    }
+    public UUID getOrderId() { return orderId; }
+    public void setOrderId(UUID orderId) { this.orderId = orderId; }
 
-    public void setEventPit(LocalDateTime eventPit) {
-        this.eventPit = eventPit;
-    }
+    public LocalDateTime getEventPit() { return eventPit; }
+    public void setEventPit(LocalDateTime eventPit) { this.eventPit = eventPit; }
 
-    public String getEventType() {
-        return eventType;
-    }
+    public String getEventType() { return eventType; }
+    public void setEventType(String eventType) { this.eventType = eventType; }
 
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
-    }
+    public AddressEmbeddable getAddress() { return address; }
+    public void setAddress(AddressEmbeddable address) { this.address = address; }
 
-    public UUID getRestaurantId() {
-        return restaurantId;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setRestaurantId(UUID restaurantId) {
-        this.restaurantId = restaurantId;
-    }
+    public String getPictureURL() { return pictureURL; }
+    public void setPictureURL(String pictureURL) { this.pictureURL = pictureURL; }
 
-    public AddressEmbeddable getAddress() {
-        return address;
-    }
+    public Integer getDefaultPrepTime() { return defaultPrepTime; }
+    public void setDefaultPrepTime(Integer defaultPrepTime) { this.defaultPrepTime = defaultPrepTime; }
 
-    public void setAddress(AddressEmbeddable address) {
-        this.address = address;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPictureURL() {
-        return pictureURL;
-    }
-
-    public void setPictureURL(String pictureURL) {
-        this.pictureURL = pictureURL;
-    }
-
-    public Integer getDefaultPrepTime() {
-        return defaultPrepTime;
-    }
-
-    public void setDefaultPrepTime(Integer defaultPrepTime) {
-        this.defaultPrepTime = defaultPrepTime;
-    }
-
-    public String getCuisineType() {
-        return cuisineType;
-    }
-
-    public void setCuisineType(String cuisineType) {
-        this.cuisineType = cuisineType;
-    }
+    public String getCuisineType() { return cuisineType; }
+    public void setCuisineType(String cuisineType) { this.cuisineType = cuisineType; }
 }
+

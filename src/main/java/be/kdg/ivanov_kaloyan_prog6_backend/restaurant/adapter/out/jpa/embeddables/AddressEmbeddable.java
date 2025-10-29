@@ -5,19 +5,19 @@ import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class AddressEmbeddable {
-    @Column(name = "street", nullable = false)
+    @Column(name = "street")
     private String street;
 
-    @Column(name = "house_number", nullable = false)
+    @Column(name = "house_number")
     private Integer number;
 
-    @Column(name = "postal_code", nullable = false)
+    @Column(name = "postal_code")
     private String postalCode;
 
-    @Column(name = "city", nullable = false)
+    @Column(name = "city")
     private String city;
 
-    @Column(name = "country", nullable = false)
+    @Column(name = "country")
     private String country;
 
     protected AddressEmbeddable() {}

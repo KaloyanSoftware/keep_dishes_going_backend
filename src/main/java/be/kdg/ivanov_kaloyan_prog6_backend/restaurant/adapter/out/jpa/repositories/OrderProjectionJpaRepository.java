@@ -2,7 +2,9 @@ package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.repositor
 
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.OrderProjectionJpaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 import java.util.UUID;
 
 public interface OrderProjectionJpaRepository extends JpaRepository<OrderProjectionJpaEntity, UUID> {
+    List<OrderProjectionJpaEntity> findAllByRestaurantIdAndStatusNot(UUID restaurantId, String status);
 }

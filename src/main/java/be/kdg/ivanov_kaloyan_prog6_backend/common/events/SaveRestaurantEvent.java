@@ -2,7 +2,6 @@ package be.kdg.ivanov_kaloyan_prog6_backend.common.events;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.dto.AddressDTO;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.*;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 

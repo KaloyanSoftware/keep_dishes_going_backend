@@ -41,7 +41,8 @@ CREATE TABLE restaurant.menu_events (
                                         dish_type TEXT,
                                         description TEXT,
                                         price FLOAT,
-                                        picture_url TEXT
+                                        picture_url TEXT,
+                                        dish_published BOOLEAN
 );
 
 CREATE TABLE restaurant.menu_event_tags (
@@ -96,18 +97,19 @@ CREATE TABLE restaurant.draft_tag (
 
 CREATE TABLE restaurant.restaurant_events (
                                               uuid UUID NOT NULL PRIMARY KEY,
-                                              restaurant_id UUID NOT NULL REFERENCES restaurant.restaurant(uuid) ON DELETE CASCADE,
-                                              event_pit TIMESTAMP NOT NULL,
-                                              event_type TEXT NOT NULL,
-                                              street TEXT NOT NULL,
-                                              house_number INTEGER NOT NULL,
-                                              postal_code INTEGER NOT NULL,
-                                              city TEXT NOT NULL,
-                                              country TEXT NOT NULL,
-                                              email TEXT NOT NULL,
-                                              picture_url TEXT NOT NULL,
-                                              default_prep_time INTEGER NOT NULL,
-                                              cuisine_type TEXT NOT NULL
+                                              order_id UUID REFERENCES restaurant.order_projection(uuid) on DELETE CASCADE,
+                                              restaurant_id UUID REFERENCES restaurant.restaurant(uuid) ON DELETE CASCADE,
+                                              event_pit TIMESTAMP,
+                                              event_type TEXT,
+                                              street TEXT,
+                                              house_number INTEGER,
+                                              postal_code INTEGER,
+                                              city TEXT,
+                                              country TEXT,
+                                              email TEXT,
+                                              picture_url TEXT,
+                                              default_prep_time INTEGER,
+                                              cuisine_type TEXT
 );
 
 CREATE TABLE restaurant.order_projection (
@@ -183,17 +185,4 @@ CREATE TABLE order_management.order_lines (
                                               PRIMARY KEY (order_id, name)
 );
 
-CREATE TABLE IF NOT EXISTS event_publication (
-                                                 id UUID PRIMARY KEY,
-                                                 listener_id TEXT NOT NULL,
-                                                 event_type TEXT NOT NULL,
-                                                 serialized_event TEXT NOT NULL,
-                                                 publication_date TIMESTAMPTZ NOT NULL,
-                                                 completion_date TIMESTAMPTZ
-);
 
-CREATE INDEX IF NOT EXISTS event_publication_serialized_event_hash_idx
-    ON event_publication USING hash(serialized_event);
-
-CREATE INDEX IF NOT EXISTS event_publication_by_completion_date_idx
-    ON event_publication (completion_date);

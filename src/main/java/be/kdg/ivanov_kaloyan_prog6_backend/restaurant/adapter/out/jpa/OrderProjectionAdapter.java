@@ -7,6 +7,7 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadOrderProjecti
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateOrderProjectionPort;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,4 +34,11 @@ public class OrderProjectionAdapter implements UpdateOrderProjectionPort, LoadOr
     public Optional<OrderProjection> loadBy(UUID id) {
         return this.orderProjectionJpaRepository.findById(id).map(orderProjectionMapper::toDomain);
     }
+
+    @Override
+    public List<OrderProjection> loadAllActiveBy(UUID restaurantId) {
+        return orderProjectionJpaRepository.findAllByRestaurantIdAndStatusNot(restaurantId, "REJECTED")
+                .stream().map(orderProjectionMapper::toDomain).toList();
+    }
+
 }

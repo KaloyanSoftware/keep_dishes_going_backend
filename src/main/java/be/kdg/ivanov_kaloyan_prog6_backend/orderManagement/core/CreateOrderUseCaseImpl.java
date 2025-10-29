@@ -9,10 +9,12 @@ import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.DeleteBasket
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.LoadBasketPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.LoadRestaurantProjectionPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.UpdateOrderPort;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional
 public class CreateOrderUseCaseImpl implements CreateOrderUseCase {
     private final LoadBasketPort loadBasketPort;
 
@@ -46,7 +48,7 @@ public class CreateOrderUseCaseImpl implements CreateOrderUseCase {
 
         projection.checkOrderAvailability();
 
-        final Order order = new Order(basket, customerInfo, command.customerSessionId());
+        final Order order = Order.create(basket, customerInfo, command.customerSessionId());
 
         this.updateOrderPorts.forEach(updateOrderPort -> updateOrderPort.update(order));
 

@@ -62,7 +62,8 @@ public interface MenuMapper {
                     e.tags(),
                     e.description(),
                     e.price(),
-                    e.pictureURL()
+                    e.pictureURL(),
+                    true
             );
 
             case DishUnpublishedEvent e -> new MenuEventJpaEntity(
@@ -70,7 +71,8 @@ public interface MenuMapper {
                     e.eventPit(),
                     e.eventCatalog().name(),
                     e.dishId(),
-                    restaurantId
+                    restaurantId,
+                    false
             );
 
             case DishOutOfStockEvent e -> new MenuEventJpaEntity(
@@ -78,7 +80,8 @@ public interface MenuMapper {
                     e.eventPit(),
                     e.eventCatalog().name(),
                     e.dishId(),
-                    restaurantId
+                    restaurantId,
+                    e.published()
             );
 
             case DishBackInStockEvent e -> new MenuEventJpaEntity(
@@ -86,7 +89,8 @@ public interface MenuMapper {
                     e.eventPit(),
                     e.eventCatalog().name(),
                     e.dishId(),
-                    restaurantId
+                    restaurantId,
+                    e.published()
             );
 
             default -> throw new IllegalArgumentException("Unknown menu event type: " + domainEvent.getClass());
@@ -120,11 +124,11 @@ public interface MenuMapper {
             );
 
             case DISH_OUT_OF_STOCK -> new DishOutOfStockEvent(
-                    e.getDishId()
+                    e.getDishId(), e.isDishPublished()
             );
 
             case DISH_BACK_IN_STOCK -> new DishBackInStockEvent(
-                    e.getDishId()
+                    e.getDishId(), e.isDishPublished()
             );
 
             default -> throw new IllegalArgumentException("No menu event catalog: " + e.getEventType());

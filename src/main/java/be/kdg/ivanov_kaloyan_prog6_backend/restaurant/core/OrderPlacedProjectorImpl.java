@@ -4,10 +4,12 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.OrderProjection;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.OrderPlacedProjector;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.OrderPlacedProjectionCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateOrderProjectionPort;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class OrderPlacedProjectorImpl implements OrderPlacedProjector {
 
     private final UpdateOrderProjectionPort updateOrderProjectionPort;

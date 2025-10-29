@@ -10,6 +10,7 @@ import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.DishStockStat
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.DishStockStatusChangedProjectionCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.DishSavedProjectionCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.DishUnpublishedProjectionCommand;
+import org.springframework.context.event.EventListener;
 import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +31,7 @@ public class DishProjectionListener {
         this.dishStockStatusChangeProjector = dishStockStatusChangeProjector;
     }
 
-    @ApplicationModuleListener
+    @EventListener(DishPublishedEvent.class)
     public void onDishPublished(DishPublishedEvent event) {
 
         final DishSavedProjectionCommand command = new DishSavedProjectionCommand(event.dishId(), event.restaurantId(),event.stockStatus(), event.name(), event.type(),
@@ -39,7 +40,7 @@ public class DishProjectionListener {
         this.saveProjector.project(command);
     }
 
-    @ApplicationModuleListener
+    @EventListener(DishUnpublishedEvent.class)
     public void onDishUnpublished(DishUnpublishedEvent event) {
 
         final DishUnpublishedProjectionCommand command = new DishUnpublishedProjectionCommand(event.dishId());
@@ -47,19 +48,23 @@ public class DishProjectionListener {
         this.deleteProjector.project(command);
     }
 
-    @ApplicationModuleListener
+    @EventListener(DishOutOfStockEvent.class)
     public void onDishOutOfStock(DishOutOfStockEvent event) {
+        if(event.published()){
 
-        final DishStockStatusChangedProjectionCommand command = new DishStockStatusChangedProjectionCommand(event.dishId(), event.stockStatus());
+            final DishStockStatusChangedProjectionCommand command = new DishStockStatusChangedProjectionCommand(event.dishId(), event.stockStatus());
 
-        this.dishStockStatusChangeProjector.project(command);
+            this.dishStockStatusChangeProjector.project(command);
+        }
     }
 
-    @ApplicationModuleListener
+    @EventListener(DishBackInStockEvent.class)
     public void onDishOutOfStock(DishBackInStockEvent event) {
+        if(event.published()){
 
-        final DishStockStatusChangedProjectionCommand command = new DishStockStatusChangedProjectionCommand(event.dishId(), event.stockStatus());
+            final DishStockStatusChangedProjectionCommand command = new DishStockStatusChangedProjectionCommand(event.dishId(), event.stockStatus());
 
-        this.dishStockStatusChangeProjector.project(command);
+            this.dishStockStatusChangeProjector.project(command);
+        }
     }
 }

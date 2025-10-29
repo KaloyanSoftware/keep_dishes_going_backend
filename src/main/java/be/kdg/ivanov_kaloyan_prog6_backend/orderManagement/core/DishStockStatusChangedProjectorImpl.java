@@ -6,9 +6,13 @@ import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.DishStockStat
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.DishStockStatusChangedProjectionCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.LoadDishProjectionPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.out.UpdateDishProjectionPort;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
+@Transactional
 public class DishStockStatusChangedProjectorImpl implements DishStockStatusChangeProjector {
     private final LoadDishProjectionPort loadDishPort;
 
@@ -23,11 +27,12 @@ public class DishStockStatusChangedProjectorImpl implements DishStockStatusChang
     @Override
     public void project(DishStockStatusChangedProjectionCommand command) {
         final DishProjection dishProjection = loadDishPort.loadBy(command.dishId()).orElseThrow(
-                () -> new DishProjectionNotFoundException("Dish projection with id:" + command.dishId() + " not found!")
+                () -> new DishProjectionNotFoundException("Dish projection with id: " + command.dishId() + " not found!")
         );
 
         dishProjection.changeStockStatus(command.stockStatus());
 
         updateDishPort.update(dishProjection);
+
     }
 }

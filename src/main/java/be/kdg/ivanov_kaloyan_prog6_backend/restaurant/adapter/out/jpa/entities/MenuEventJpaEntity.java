@@ -35,6 +35,9 @@ public class MenuEventJpaEntity {
     @Column(name = "event_type", nullable = false)
     private String eventType;
 
+    @Column(name = "dish_published")
+    private boolean dishPublished;
+
     @ElementCollection
     @CollectionTable(
             name = "menu_event_tags",
@@ -67,8 +70,9 @@ public class MenuEventJpaEntity {
                               List<String> tags,
                               String description,
                               BigDecimal price,
-                              String pictureURL) {
-        this(id, eventPit, eventType,dishId, restaurantId);
+                              String pictureURL,
+                              boolean dishPublished) {
+        this(id, eventPit, eventType,dishId, restaurantId, dishPublished);
         this.stockStatus = stockStatus;
         this.name = name;
         this.dishType = dishType;
@@ -79,12 +83,14 @@ public class MenuEventJpaEntity {
         this.pictureURL = pictureURL;
     }
 
-    public MenuEventJpaEntity(UUID id, LocalDateTime eventPit, String eventType, UUID dishId, UUID restaurantId) {
+    public MenuEventJpaEntity(UUID id, LocalDateTime eventPit, String eventType, UUID dishId, UUID restaurantId,
+                              boolean dishPublished) {
         this.id = id;
         this.eventPit = eventPit;
         this.eventType = eventType;
         this.dishId = dishId;
         this.restaurantId = restaurantId;
+        this.dishPublished = dishPublished;
     }
 
     public UUID getId() {
@@ -181,5 +187,13 @@ public class MenuEventJpaEntity {
 
     public void setDishType(String dishType) {
         this.dishType = dishType;
+    }
+
+    public boolean isDishPublished() {
+        return dishPublished;
+    }
+
+    public void setDishPublished(boolean dishPublished) {
+        this.dishPublished = dishPublished;
     }
 }
