@@ -4,8 +4,8 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.OrderProjection;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Restaurant;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.exceptions.OrderProjectionNotFoundException;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.exceptions.RestaurantNotFoundException;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.ChangeOrderProjectionStatusCommand;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.ChangeOrderProjectionStatusUseCase;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.ChangeOrderDeliveryStatusProjector;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.ChangeOrderProjectionDeliveryStatusCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadOrderProjectionPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadRestaurantPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateOrderProjectionPort;
@@ -16,8 +16,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class ChangeOrderProjectionStatusUseCaseImpl implements ChangeOrderProjectionStatusUseCase {
-
+public class ChangeOrderDeliveryStatusProjectorImpl implements ChangeOrderDeliveryStatusProjector {
     private final LoadOrderProjectionPort loadOrderProjectionPort;
 
     private final UpdateOrderProjectionPort updateOrderProjectionPort;
@@ -26,7 +25,7 @@ public class ChangeOrderProjectionStatusUseCaseImpl implements ChangeOrderProjec
 
     private final LoadRestaurantPort loadRestaurantPort;
 
-    public ChangeOrderProjectionStatusUseCaseImpl(final LoadOrderProjectionPort loadOrderProjectionPort,
+    public ChangeOrderDeliveryStatusProjectorImpl(final LoadOrderProjectionPort loadOrderProjectionPort,
                                                   final UpdateOrderProjectionPort updateOrderProjectionPort,
                                                   final LoadRestaurantPort loadRestaurantPort,
                                                   final List<UpdateRestaurantPort> updateRestaurantPorts) {
@@ -37,7 +36,7 @@ public class ChangeOrderProjectionStatusUseCaseImpl implements ChangeOrderProjec
     }
 
     @Override
-    public OrderProjection changeStatus(final ChangeOrderProjectionStatusCommand command) {
+    public void changeDeliveryStatus(final ChangeOrderProjectionDeliveryStatusCommand command) {
         final OrderProjection order = loadOrderProjectionPort.loadBy(command.orderId()).orElseThrow(
                 () -> new OrderProjectionNotFoundException("Order projection with id: " + command.orderId() + " not found!")
         );
@@ -47,16 +46,13 @@ public class ChangeOrderProjectionStatusUseCaseImpl implements ChangeOrderProjec
         );
 
         switch (command.status()){
-           case "ACCEPTED" -> restaurant.accept(order, command.status());
-           case "REJECTED" -> restaurant.reject(order,command.status());
-           case "READY" -> restaurant.ready(order, command.status());
+            case "PICKED_UP" -> restaurant.pickedUp(order, command.eventId(), command.occurredAt(), command.status());
+            case "DELIVERED" -> restaurant.delivered(order, command.eventId(), command.occurredAt(), command.status());
         }
 
         this.updateRestaurantPorts.forEach(updateRestaurantPort -> updateRestaurantPort.update(restaurant));
         restaurant.commitEvents();
 
         this.updateOrderProjectionPort.update(order);
-
-        return order;
     }
 }

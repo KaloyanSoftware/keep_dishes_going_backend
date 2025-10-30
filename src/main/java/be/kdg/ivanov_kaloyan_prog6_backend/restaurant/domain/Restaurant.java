@@ -5,6 +5,7 @@ import be.kdg.ivanov_kaloyan_prog6_backend.common.events.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -140,12 +141,14 @@ public class Restaurant {
         this.uncommittedEvents.add(new OrderReadyForPickUpEvent(id.id(), order.getOrderId()));
     }
 
-    public void pickedUp(OrderProjection order, String status){
+    public void pickedUp(OrderProjection order, UUID eventId, LocalDateTime occurredAt, String status){
         order.changeStatus(status);
+        this.uncommittedEvents.add(new OrderPickedUpEvent(eventId, occurredAt ,id.id(), order.getOrderId()));
     }
 
-    public void delivered(OrderProjection order, String status){
+    public void delivered(OrderProjection order, UUID eventId, LocalDateTime occurredAt, String status){
         order.changeStatus(status);
+        this.uncommittedEvents.add(new OrderDeliveredEvent(eventId, occurredAt ,id.id(), order.getOrderId()));
     }
 
     public void commitEvents(){

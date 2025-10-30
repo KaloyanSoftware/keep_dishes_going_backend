@@ -8,9 +8,6 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQTopology {
 
     public static final String EXCHANGE_NAME = "kdg.events";
-
-    public static final String ORDER_ACCEPTED_QUEUE = "restaurant.order.accepted";
-    public static final String ORDER_READY_QUEUE = "restaurant.order.ready";
     public static final String ORDER_PICKEDUP_QUEUE = "delivery.order.pickedup";
     public static final String ORDER_DELIVERED_QUEUE = "delivery.order.delivered";
     public static final String ORDER_LOCATION_QUEUE = "delivery.order.location";
@@ -21,16 +18,6 @@ public class RabbitMQTopology {
                 .topicExchange(EXCHANGE_NAME)
                 .durable(true)
                 .build();
-    }
-
-    @Bean
-    Queue orderAcceptedQueue() {
-        return QueueBuilder.durable(ORDER_ACCEPTED_QUEUE).build();
-    }
-
-    @Bean
-    Queue orderReadyQueue() {
-        return QueueBuilder.durable(ORDER_READY_QUEUE).build();
     }
 
     @Bean
@@ -46,21 +33,6 @@ public class RabbitMQTopology {
     @Bean
     Queue orderLocationQueue() {
         return QueueBuilder.durable(ORDER_LOCATION_QUEUE).build();
-    }
-
-    // Bindings (restaurant publishes → delivery consumes)
-    @Bean
-    Binding bindOrderAcceptedToExchange(TopicExchange kdgExchange) {
-        return BindingBuilder.bind(orderAcceptedQueue())
-                .to(kdgExchange)
-                .with("restaurant.*.order.accepted.v1");
-    }
-
-    @Bean
-    Binding bindOrderReadyToExchange(TopicExchange kdgExchange) {
-        return BindingBuilder.bind(orderReadyQueue())
-                .to(kdgExchange)
-                .with("restaurant.*.order.ready.v1");
     }
 
     // Bindings (delivery publishes → restaurant consumes)

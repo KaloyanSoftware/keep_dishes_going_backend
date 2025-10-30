@@ -85,7 +85,7 @@ public interface RestaurantMapper {
                     restaurantId,
                     e.orderId(),
                     e.eventPit(),
-                    e.eventCatalog().name(),
+                    "ORDER_ACCEPTED",
                     e.pickupAddress() != null
                             ? toJpaAddressFromDeliveryInfoDTO(e.pickupAddress())
                             : null,
@@ -111,7 +111,7 @@ public interface RestaurantMapper {
                     restaurantId,
                     e.orderId(),
                     e.eventPit(),
-                    e.eventCatalog().name(),
+                    "ORDER_READY",
                     null,
                     null,
                     null,
@@ -143,6 +143,29 @@ public interface RestaurantMapper {
                     null,
                     null);
 
+            case OrderPickedUpEvent e -> new RestaurantEventJpaEntity(
+                    e.eventId(),
+                    restaurantId,
+                    e.orderId(),
+                    e.eventPit(),
+                    "ORDER_PICKED_UP",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null);
+
+            case OrderDeliveredEvent e -> new RestaurantEventJpaEntity(
+                    e.eventId(),
+                    restaurantId,
+                    e.orderId(),
+                    e.eventPit(),
+                    "ORDER_DELIVERED",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null);
             default -> throw new IllegalArgumentException("Unknown restaurant event type: " + domainEvent.getClass().getSimpleName());
         };
     }
@@ -177,6 +200,7 @@ public interface RestaurantMapper {
                     null
             );
             case ORDER_REJECTED -> new OrderRejectedEvent(e.getOrderId());
+
             case ORDER_READY -> new OrderReadyForPickUpEvent(
                     restaurantId,
                     e.getOrderId()
@@ -185,6 +209,10 @@ public interface RestaurantMapper {
             case RESTAURANT_OPENED -> new RestaurantOpenEvent(e.getRestaurantId());
 
             case RESTAURANT_CLOSED -> new RestaurantCloseEvent(e.getRestaurantId());
+
+            case ORDER_PICKED_UP -> new OrderPickedUpEvent(e.getId(), e.getEventPit(), e.getRestaurantId(), e.getOrderId());
+
+            case ORDER_DELIVERED -> new OrderDeliveredEvent(e.getId(), e.getEventPit(), e.getRestaurantId(), e.getOrderId());
 
             default -> throw new IllegalArgumentException("Unknown restaurant event type: " + e.getEventType());
         };

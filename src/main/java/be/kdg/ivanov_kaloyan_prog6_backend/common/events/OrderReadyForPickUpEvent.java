@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Externalized("kdg.events::#{'restaurant.' + #this.restaurantId() + '.order.ready.v1'}")
-public record OrderReadyForPickUpEvent(UUID eventId, LocalDateTime occurredAt, EventCatalog eventCatalog, UUID restaurantId, UUID orderId) implements DomainEvent{
+public record OrderReadyForPickUpEvent(UUID eventId, LocalDateTime occurredAt, UUID restaurantId, UUID orderId) implements DomainEvent{
     public OrderReadyForPickUpEvent(UUID restaurantId, UUID orderId) {
-        this(UUID.randomUUID(), LocalDateTime.now(), EventCatalog.ORDER_READY, restaurantId, orderId);
+        this(UUID.randomUUID(), LocalDateTime.now(), restaurantId, orderId);
     }
 
     @Override

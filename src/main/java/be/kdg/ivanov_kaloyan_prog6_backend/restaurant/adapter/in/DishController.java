@@ -44,7 +44,6 @@ public class DishController {
     }
 
     @PatchMapping("/published")
-    @PreAuthorize("hasAuthority('owner')")
     public ResponseEntity<DishDTO> publish(@RequestBody PublishDishRequest request,
                                            @PathVariable String restaurantId){
         final PublishDishCommand command =  new PublishDishCommand(UUID.fromString(request.id()), UUID.fromString(restaurantId));
@@ -53,7 +52,6 @@ public class DishController {
     }
 
     @PatchMapping("/unpublished")
-    @PreAuthorize("hasAuthority('owner')")
     public ResponseEntity<DishDTO> unpublish(@RequestBody UnpublishDishRequest request,
                                              @PathVariable String restaurantId){
 

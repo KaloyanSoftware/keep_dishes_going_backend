@@ -1,6 +1,5 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DishPublishedEvent;
 import be.kdg.ivanov_kaloyan_prog6_backend.common.events.SaveRestaurantEvent;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in.dto.LocationDTO;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.RestaurantSavedProjector;

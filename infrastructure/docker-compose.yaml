@@ -30,12 +30,14 @@ services:
     volumes:
       - ./rabbitmq/data/:/var/lib/rabbitmq/
       - ./rabbitmq/log/:/var/log/rabbitmq/
-  
+
+
   delivery_service:
     image: registry.gitlab.com/kdg-ti/programming6/material/2025-2026/delivery-service
     environment:
       SPRING_PROFILES_ACTIVE: 'docker'
       SPRING_RABBITMQ_HOST: 'app_rabbitmq'
+      TZ: "Europe/Brussels"
     pull_policy: "always"
     ports:
       - "8095:8095"

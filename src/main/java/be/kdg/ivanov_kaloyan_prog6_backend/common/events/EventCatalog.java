@@ -11,5 +11,7 @@ public enum EventCatalog {
     ORDER_PLACED,
     ORDER_ACCEPTED,
     ORDER_REJECTED,
-    ORDER_READY
+    ORDER_READY,
+    ORDER_PICKED_UP,
+    ORDER_DELIVERED
 }

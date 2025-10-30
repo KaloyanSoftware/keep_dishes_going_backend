@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Externalized("kdg.events::#{'restaurant.' + #this.restaurantId() + '.order.accepted.v1'}")
-public record OrderAcceptedEvent(UUID eventId, LocalDateTime occurredAt, EventCatalog eventCatalog,
+public record OrderAcceptedEvent(UUID eventId, LocalDateTime occurredAt,
                                  DeliveryCoordinatesDTO pickupCoordinates,
                                  DeliveryCoordinatesDTO dropoffCoordinates, UUID restaurantId, UUID orderId,
                                  DeliveryInfoDTO pickupAddress,
@@ -15,7 +15,7 @@ public record OrderAcceptedEvent(UUID eventId, LocalDateTime occurredAt, EventCa
 
     public OrderAcceptedEvent(UUID restaurantId, UUID orderId, DeliveryInfoDTO pickupAddress
             , DeliveryInfoDTO dropoffAddress) {
-        this(UUID.randomUUID(), LocalDateTime.now(), EventCatalog.ORDER_ACCEPTED,
+        this(UUID.randomUUID(), LocalDateTime.now(),
                 //hardcoded coordinates for convenience
                 new DeliveryCoordinatesDTO(51.1869, 4.3738),
                 new DeliveryCoordinatesDTO(51.1873, 4.3748),
