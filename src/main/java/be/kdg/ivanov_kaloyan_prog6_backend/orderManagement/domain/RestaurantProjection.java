@@ -52,6 +52,14 @@ public class RestaurantProjection {
         }
     }
 
+    public void open(){
+        this.isOpen = true;
+    }
+
+    public void close(){
+        this.isOpen = false;
+    }
+
     public Location getLocation() {
         return location;
     }

@@ -33,7 +33,6 @@ public class OpenRestaurantUseCaseImpl implements OpenRestaurantUseCase {
         restaurant.open();
 
         this.updateRestaurantPorts.forEach(port -> port.update(restaurant));
-
         restaurant.commitEvents();
 
         return restaurant;
