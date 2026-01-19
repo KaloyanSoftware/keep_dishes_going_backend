@@ -99,4 +99,11 @@ public class DishController {
                 .map(DishDTO::from).toList());
     }
 
+    @DeleteMapping("{dishId}")
+    public ResponseEntity<Void> deleteDish(@PathVariable String dishId,
+                                           @PathVariable String restaurantId){
+
+
+    }
+
 }

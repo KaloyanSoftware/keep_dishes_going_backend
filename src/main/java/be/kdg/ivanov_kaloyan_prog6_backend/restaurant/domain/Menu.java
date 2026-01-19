@@ -141,6 +141,16 @@ public class Menu {
         return dish;
     }
 
+    public void deleteDish(UUID dishId){
+        final Dish dish = dishes.get(dishId);
+
+        if(dish.published()){
+            throw new IllegalArgumentException("Cannot delete dishes that are on the live menu!");
+        }else{
+            dishes.remove(dishId);
+        }
+    }
+
     public int getPublishedCount() {
         return eventStore.stream()
                 .mapToInt(event -> switch (event) {
