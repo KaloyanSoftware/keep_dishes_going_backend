@@ -171,4 +171,12 @@ Authorization: Bearer {{access_token}}
 }
 ###
 
+### Delete Dish
+//TODO: test HTTP request
+###
+
+### Delete draft
+//TODO: test HTTP request
+###
+
 

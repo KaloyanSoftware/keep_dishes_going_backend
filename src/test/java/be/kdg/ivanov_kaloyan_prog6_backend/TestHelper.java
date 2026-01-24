@@ -5,9 +5,13 @@ import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.repos
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.out.jpa.repositories.RestaurantProjectionJpaRespository;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.DishProjection;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.repositories.*;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Menu;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.*;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Component
@@ -55,8 +59,12 @@ public class TestHelper {
         restaurantProjectionJpaRespository.deleteAll();
     }
 
-    public Menu createMenuWithOneDish(UUID menuId, UUID restaurantId){
-        return null;
+    public Menu createMenuWithDishes(UUID menuId, UUID restaurantId, Map<UUID, Dish> dishes){
+        return new Menu(MenuId.of(menuId), RestaurantId.of(restaurantId), dishes);
+    }
 
+    public Dish createDish(UUID id, UUID menuId, Dish.State state, Dish.StockStatus stockStatus, String name, DishType type,
+                           List<FoodTag> tags, String description, BigDecimal price, String pictureURL){
+        return new Dish(DishId.of(id), MenuId.of(menuId), state, stockStatus, name, type, tags, description, price, pictureURL);
     }
 }

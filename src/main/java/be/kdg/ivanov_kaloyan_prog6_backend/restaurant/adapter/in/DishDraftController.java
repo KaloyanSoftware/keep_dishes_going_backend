@@ -4,8 +4,10 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.dto.DishDraftDT
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.request.CreateDishDraftRequest;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.FoodTag;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.CreateDishDraftCommand;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.DeleteDraftCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.GetDishDraftsForRestaurantCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.CreateDishDraftUseCase;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.DeleteDraftUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.GetDishDraftsByRestaurantUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +24,14 @@ public class DishDraftController {
 
     private final GetDishDraftsByRestaurantUseCase getDishDraftsByRestaurantUseCase;
 
+    private final DeleteDraftUseCase deleteDraftUseCase;
+
     public DishDraftController(final CreateDishDraftUseCase createDishDraftUseCase,
-                               final GetDishDraftsByRestaurantUseCase getDishDraftsByRestaurantUseCase) {
+                               final GetDishDraftsByRestaurantUseCase getDishDraftsByRestaurantUseCase,
+                               final DeleteDraftUseCase deleteDraftUseCase) {
         this.createDishDraftUseCase = createDishDraftUseCase;
         this.getDishDraftsByRestaurantUseCase = getDishDraftsByRestaurantUseCase;
+        this.deleteDraftUseCase = deleteDraftUseCase;
     }
 
     @PostMapping("/drafts")
@@ -50,5 +56,14 @@ public class DishDraftController {
                 .stream().map(DishDraftDTO::from).toList();
 
         return ResponseEntity.ok().body(drafts);
+    }
+
+    @DeleteMapping("/drafts/{id}")
+    public ResponseEntity<Void> deleteDraft(@PathVariable String id){
+        final DeleteDraftCommand command = new DeleteDraftCommand(id);
+
+        this.deleteDraftUseCase.deleteDraft(command);
+
+        return ResponseEntity.noContent().build();
     }
 }
