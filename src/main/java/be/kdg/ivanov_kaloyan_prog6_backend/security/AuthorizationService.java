@@ -1,6 +1,8 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.security;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.repositories.RestaurantJpaRepository;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.IsOwnerOfCommand;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.IsOwnerOfUseCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -11,11 +13,12 @@ import java.util.UUID;
 @Service
 public class AuthorizationService {
     private static final Logger log = LoggerFactory.getLogger(AuthorizationService.class);
-    private final RestaurantJpaRepository restaurantRepository;
+
+    private final IsOwnerOfUseCase isOwnerOfUseCase;
 
 
-    public AuthorizationService(RestaurantJpaRepository restaurantRepository) {
-        this.restaurantRepository = restaurantRepository;
+    public AuthorizationService(final IsOwnerOfUseCase isOwnerOfUseCase) {
+        this.isOwnerOfUseCase = isOwnerOfUseCase;
     }
 
     public boolean isOwnerOfRestaurant(Authentication auth, UUID restaurantId) {
@@ -32,8 +35,8 @@ public class AuthorizationService {
 
             return false;
         }else{
-            UUID ownerUUID = UUID.fromString(ownerId);
-            return restaurantRepository.existsByIdAndOwnerId(restaurantId, ownerUUID);
+            final IsOwnerOfCommand command = new IsOwnerOfCommand(UUID.fromString(ownerId), restaurantId);
+            return isOwnerOfUseCase.isOwnerOf(command);
         }
     }
 }

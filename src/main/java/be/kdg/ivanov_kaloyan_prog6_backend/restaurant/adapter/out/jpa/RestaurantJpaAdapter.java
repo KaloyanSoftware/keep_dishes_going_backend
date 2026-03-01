@@ -47,4 +47,9 @@ public class RestaurantJpaAdapter implements UpdateRestaurantPort, LoadRestauran
     public Optional<Restaurant> loadByOwner(UUID ownerId) {
         return this.restaurants.findByOwnerId(ownerId).map(mapper::toDomain);
     }
+
+    @Override
+    public boolean existsByIdAndOwnerId(UUID ownerId, UUID restaurantId) {
+        return restaurants.existsByIdAndOwnerId(restaurantId, ownerId);
+    }
 }

@@ -32,6 +32,13 @@ public class Menu {
         return m;
     }
 
+    public Menu(MenuId menuId, RestaurantId restaurantId, Map<UUID, Dish> dishes){
+        this.id = menuId;
+        this.restaurantId = restaurantId;
+        this.dishes.putAll(dishes);
+    }
+
+
     public Menu(MenuId menuId, RestaurantId restaurantId) {
         this.id = menuId;
         this.restaurantId = restaurantId;
@@ -139,6 +146,20 @@ public class Menu {
 
         this.uncommittedEvents.add(new DishBackInStockEvent(dishId, dish.published()));
         return dish;
+    }
+
+    public void deleteDish(UUID dishId){
+        final Dish dish = dishes.get(dishId);
+
+        if(dish == null){
+            throw new DishNotFoundException("Dish with id: " + dishId + " not found!");
+        }
+
+        if(dish.published()){
+            throw new IllegalArgumentException("Cannot delete dishes that are on the live menu!");
+        }else{
+            dishes.remove(dishId);
+        }
     }
 
     public int getPublishedCount() {

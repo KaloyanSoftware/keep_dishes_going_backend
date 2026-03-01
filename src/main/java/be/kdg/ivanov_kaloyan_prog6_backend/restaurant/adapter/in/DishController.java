@@ -27,6 +27,8 @@ public class DishController {
 
     private final GetDishesForRestaurantUseCase getDishesForRestaurantUseCase;
 
+    private final DeleteDishUseCase deleteDishUseCase;
+
 
 
     public DishController(final PublishDishUseCase publishDishUseCase,
@@ -34,13 +36,15 @@ public class DishController {
                           final UnpublishDishUseCase unpublishDishUseCase,
                           final MarkDishOutOfStockUseCase markDishOutOfStockUseCase,
                           final MarkDishBackInStockUseCase markDishBackInStockUseCase,
-                          final GetDishesForRestaurantUseCase getDishesForRestaurantUseCase) {
+                          final GetDishesForRestaurantUseCase getDishesForRestaurantUseCase,
+                          final DeleteDishUseCase deleteDishUseCase) {
         this.publishDishUseCase = publishDishUseCase;
         this.publishDishDraftUseCase = publishDishDraftUseCase;
         this.unpublishDishUseCase = unpublishDishUseCase;
         this.markDishOutOfStockUseCase = markDishOutOfStockUseCase;
         this.markDishBackInStockUseCase = markDishBackInStockUseCase;
         this.getDishesForRestaurantUseCase = getDishesForRestaurantUseCase;
+        this.deleteDishUseCase = deleteDishUseCase;
     }
 
     @PatchMapping("/published")
@@ -60,8 +64,10 @@ public class DishController {
         return ResponseEntity.ok().body(DishDTO.from(this.unpublishDishUseCase.unpublish(command)));
     }
 
-    @PatchMapping("/outOfStock")
-    @PreAuthorize("hasAuthority('owner')")
+    @PreAuthorize("""
+    hasRole('owner') and @authorizationService.isOwnerOfRestaurant(authentication, #restaurantId)
+    """)
+    @DeleteMapping("{dishId}")
     public ResponseEntity<DishDTO> markOutOfStock(@RequestBody MarkDishOutOfStockRequest request,
                                                @PathVariable String restaurantId){
         final MarkDishOutOfStockCommand command =  new MarkDishOutOfStockCommand(UUID.fromString(request.dishId()),
@@ -97,6 +103,18 @@ public class DishController {
 
         return ResponseEntity.ok().body(this.getDishesForRestaurantUseCase.getDishes(command).stream()
                 .map(DishDTO::from).toList());
+    }
+
+    @DeleteMapping("{dishId}")
+    @PreAuthorize("hasAuthority('owner')")
+    public ResponseEntity<Void> deleteDish(@PathVariable String dishId,
+                                           @PathVariable String restaurantId){
+
+        final DeleteDishCommand command = new DeleteDishCommand(restaurantId, dishId);
+
+        this.deleteDishUseCase.deleteDish(command);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

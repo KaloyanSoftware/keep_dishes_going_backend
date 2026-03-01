@@ -11,4 +11,6 @@ public interface LoadRestaurantPort {
     Optional<Restaurant> loadBy(UUID id);
 
     Optional<Restaurant> loadByOwner(UUID ownerId);
+
+    boolean existsByIdAndOwnerId(UUID ownerId, UUID restaurantId);
 }
