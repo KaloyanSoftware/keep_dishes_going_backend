@@ -173,10 +173,29 @@ Authorization: Bearer {{access_token}}
 
 ### Delete Dish
 //TODO: test HTTP request
+PATCH localhost:8080/api/restaurant/{restaurantId}/menu/dishes/{dishId}
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "status" : "READY"
+
+}
 ###
 
 ### Delete draft
 //TODO: test HTTP request
+PATCH localhost:8080/api/owner/orders/be21eb61-43e3-42d3-8dd5-63dd23c02dd4
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "status" : "READY"
+
+}
+
 ###
 
 
