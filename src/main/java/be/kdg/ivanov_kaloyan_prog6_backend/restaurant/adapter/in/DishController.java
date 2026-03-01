@@ -64,10 +64,8 @@ public class DishController {
         return ResponseEntity.ok().body(DishDTO.from(this.unpublishDishUseCase.unpublish(command)));
     }
 
-    @PreAuthorize("""
-    hasRole('owner') and @authorizationService.isOwnerOfRestaurant(authentication, #restaurantId)
-    """)
-    @DeleteMapping("{dishId}")
+    @PreAuthorize("hasRole('owner')")
+    @PatchMapping("{dishId}")
     public ResponseEntity<DishDTO> markOutOfStock(@RequestBody MarkDishOutOfStockRequest request,
                                                @PathVariable String restaurantId){
         final MarkDishOutOfStockCommand command =  new MarkDishOutOfStockCommand(UUID.fromString(request.dishId()),
