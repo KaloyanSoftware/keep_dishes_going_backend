@@ -15,7 +15,8 @@ public class MenuJpaEntity {
     @Column(name = "restaurant_id", nullable = false)
     private UUID restaurantId;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+            orphanRemoval = true)
     @JoinColumn(name = "menu_id", referencedColumnName = "uuid")
     private List<DishJpaEntity> dishes;
 
