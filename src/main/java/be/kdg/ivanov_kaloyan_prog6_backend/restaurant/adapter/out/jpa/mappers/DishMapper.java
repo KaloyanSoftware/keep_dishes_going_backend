@@ -31,7 +31,7 @@ public interface DishMapper {
     }
 
     @Mapping(target = "id", expression = "java(domain.getId().id())")
-    @Mapping(target = "menuId", expression = "java(domain.getMenuId().id())")
+    @Mapping(target = "menu", ignore = true)
     @Mapping(target = "state", source = "state")
     @Mapping(target = "stockStatus", source = "stockStatus")
     @Mapping(target = "name", source = "name")

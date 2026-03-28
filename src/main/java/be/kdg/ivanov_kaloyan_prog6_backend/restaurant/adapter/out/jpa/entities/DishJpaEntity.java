@@ -15,8 +15,9 @@ public class DishJpaEntity {
     @Column(name = "uuid", nullable = false)
     private UUID id;
 
-    @Column(name = "menu_id", nullable = false)
-    private UUID menuId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "menu_id", nullable = false)
+    private MenuJpaEntity menu;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
@@ -53,12 +54,11 @@ public class DishJpaEntity {
     @Column(name = "tag", nullable = false)
     private List<FoodTag> tags;
 
-    public DishJpaEntity(UUID id, UUID menuId, Dish.State state,
+    public DishJpaEntity(UUID id, Dish.State state,
                          Dish.StockStatus stockStatus, String name,
                          DishType type, String description, Double price,
                          String pictureUrl, List<FoodTag> tags) {
         setId(id);
-        setMenuId(menuId);
         setState(state);
         setStockStatus(stockStatus);
         setName(name);
@@ -82,11 +82,15 @@ public class DishJpaEntity {
     }
 
     public UUID getMenuId() {
-        return menuId;
+        return menu != null ? menu.getId() : null;
     }
 
-    public void setMenuId(UUID menuId) {
-        this.menuId = menuId;
+    public MenuJpaEntity getMenu() {
+        return menu;
+    }
+
+    public void setMenu(MenuJpaEntity menu) {
+        this.menu = menu;
     }
 
     public Dish.State getState() {
@@ -153,4 +157,3 @@ public class DishJpaEntity {
         this.tags = tags;
     }
 }
-
