@@ -1,6 +1,7 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,10 +16,9 @@ public class MenuJpaEntity {
     @Column(name = "restaurant_id", nullable = false)
     private UUID restaurantId;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
-            orphanRemoval = true)
-    @JoinColumn(name = "menu_id", referencedColumnName = "uuid")
-    private List<DishJpaEntity> dishes;
+
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DishJpaEntity> dishes = new ArrayList<>();
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
     @JoinColumn(name = "menu_id", referencedColumnName = "uuid")
@@ -48,7 +48,33 @@ public class MenuJpaEntity {
     }
 
     public void setDishes(List<DishJpaEntity> dishes) {
-        this.dishes = dishes;
+        this.dishes.clear();
+
+        if (dishes == null) {
+            return;
+        }
+
+        for (DishJpaEntity dish : dishes) {
+            addDish(dish);
+        }
+    }
+
+    public void addDish(DishJpaEntity dish) {
+        if (dish == null) {
+            return;
+        }
+
+        this.dishes.add(dish);
+        dish.setMenu(this);
+    }
+
+    public void removeDish(DishJpaEntity dish) {
+        if (dish == null) {
+            return;
+        }
+
+        this.dishes.remove(dish);
+        dish.setMenu(null);
     }
 
     public List<MenuEventJpaEntity> getEvents() {
