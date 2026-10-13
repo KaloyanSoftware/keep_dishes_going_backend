@@ -1,6 +1,4 @@
-package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.dto;
-
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Address;
+package be.kdg.ivanov_kaloyan_prog6_backend.restaurant;
 
 public record AddressDTO(String street,
                          Integer number,

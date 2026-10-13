@@ -1,6 +1,6 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.dto;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.common.dto.DeliveryInfoDTO;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.DeliveryInfoDTO;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.OrderProjection;
 import java.util.Map;
 import java.util.UUID;

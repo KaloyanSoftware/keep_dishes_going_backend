@@ -1,4 +1,4 @@
-package be.kdg.ivanov_kaloyan_prog6_backend.common.events;
+package be.kdg.ivanov_kaloyan_prog6_backend.common;
 
 public enum EventCatalog {
     RESTAURANT_SAVED,

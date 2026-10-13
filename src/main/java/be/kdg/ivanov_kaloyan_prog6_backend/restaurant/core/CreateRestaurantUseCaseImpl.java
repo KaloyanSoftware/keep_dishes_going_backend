@@ -4,6 +4,7 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.CreateRestaurantCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.CreateRestaurantUseCase;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadOwnerPort;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveMenuPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateMenuPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateRestaurantPort;
 import jakarta.transaction.Transactional;
@@ -17,15 +18,15 @@ public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
 
     private final LoadOwnerPort loadOwnerPort;
 
-    private final UpdateMenuPort updateMenuPort;
+    private final SaveMenuPort saveMenuPort;
 
     private final List<UpdateRestaurantPort> updateRestaurantPorts;
 
     public CreateRestaurantUseCaseImpl(final LoadOwnerPort loadOwnerPort,
-                                       final @Qualifier("jpa") UpdateMenuPort updateMenuPort,
+                                       final SaveMenuPort saveMenuPort,
                                        final List<UpdateRestaurantPort> updateRestaurantPorts) {
         this.loadOwnerPort = loadOwnerPort;
-        this.updateMenuPort = updateMenuPort;
+        this.saveMenuPort = saveMenuPort;
         this.updateRestaurantPorts = updateRestaurantPorts;
     }
 
@@ -45,7 +46,7 @@ public class CreateRestaurantUseCaseImpl implements CreateRestaurantUseCase {
 
         restaurant.commitEvents();
 
-        updateMenuPort.update(menu);
+        saveMenuPort.saveMenu(menu);
 
         return restaurant;
     }

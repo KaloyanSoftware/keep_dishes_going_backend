@@ -1,4 +1,4 @@
-package be.kdg.ivanov_kaloyan_prog6_backend.common.dto;
+package be.kdg.ivanov_kaloyan_prog6_backend.common;
 
 public record DeliveryInfoDTO(String street, String number, String postalCode, String city) {
 

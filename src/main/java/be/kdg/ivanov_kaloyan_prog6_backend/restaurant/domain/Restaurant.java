@@ -1,7 +1,8 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.common.dto.DeliveryInfoDTO;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.*;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.*;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.DeliveryInfoDTO;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.Address;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +61,7 @@ public class Restaurant {
                 OwnerId.of(ownerId), address, email, pictureURL, defaultPrepTime,
                 cuisineType, openingHours);
 
-        restaurant.getUncommitedEvents().add(new SaveRestaurantEvent(address, restaurant.id.id() ,email,
+        restaurant.uncommittedEvents.add(new SaveRestaurantEvent(address, restaurant.id.id() ,email,
                 pictureURL, defaultPrepTime, cuisineType.toString()));
 
         return restaurant;

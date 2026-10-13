@@ -1,6 +1,6 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Address;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.Address;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.CuisineType;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.OpeningHours;
 import org.springframework.util.Assert;

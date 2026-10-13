@@ -7,6 +7,7 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.mappers.Me
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.repositories.MenuJpaRepository;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.Menu;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.LoadMenuPort;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.SaveMenuPort;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.out.UpdateMenuPort;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Repository
 @Qualifier("jpa")
-public class MenuJpaAdapter implements LoadMenuPort, UpdateMenuPort {
+public class MenuJpaAdapter implements LoadMenuPort, UpdateMenuPort, SaveMenuPort {
 
     private final MenuJpaRepository menus;
     private final MenuMapper menuMapper;
@@ -90,5 +91,11 @@ public class MenuJpaAdapter implements LoadMenuPort, UpdateMenuPort {
         target.setPrice(source.getPrice());
         target.setPictureUrl(source.getPictureUrl());
         target.setTags(source.getTags() == null ? null : new ArrayList<>(source.getTags()));
+    }
+
+    @Override
+    public void saveMenu(Menu menu) {
+        final MenuJpaEntity jpaEntity = menuMapper.toJpa(menu, dishMapper);
+        menus.save(jpaEntity);
     }
 }

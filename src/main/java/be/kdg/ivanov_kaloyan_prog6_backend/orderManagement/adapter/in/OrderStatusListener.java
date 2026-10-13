@@ -1,6 +1,6 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.*;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain.Order;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.ChangeOrderStatusCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.useCases.ChangeOrderStatusUseCase;

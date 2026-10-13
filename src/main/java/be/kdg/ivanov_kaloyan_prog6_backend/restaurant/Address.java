@@ -1,4 +1,4 @@
-package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
+package be.kdg.ivanov_kaloyan_prog6_backend.restaurant;
 
 public record Address(
         String street,

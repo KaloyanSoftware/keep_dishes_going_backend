@@ -1,9 +1,9 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DishBackInStockEvent;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DishOutOfStockEvent;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DishPublishedEvent;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DishUnpublishedEvent;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.DishBackInStockEvent;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.DishOutOfStockEvent;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.DishPublishedEvent;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.DishUnpublishedEvent;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.DishDeleteProjector;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.DishSavedProjector;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.DishStockStatusChangeProjector;
@@ -11,7 +11,6 @@ import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.Dish
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.DishSavedProjectionCommand;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.DishUnpublishedProjectionCommand;
 import org.springframework.context.event.EventListener;
-import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Component;
 
 @Component

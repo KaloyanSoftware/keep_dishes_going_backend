@@ -1,5 +1,6 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.dto;
 
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.AddressDTO;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.*;
 
 public record RestaurantDTO(String id, String ownerId, AddressDTO address, String email, String pictureURL,

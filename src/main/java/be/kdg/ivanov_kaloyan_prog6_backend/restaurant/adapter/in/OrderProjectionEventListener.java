@@ -1,9 +1,9 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.common.config.RabbitMQTopology;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.OrderDeliveredEvent;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.OrderPickedUpEvent;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.OrderPlacedEvent;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.OrderDeliveredEvent;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.OrderPickedUpEvent;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.OrderPlacedEvent;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.DeliveryInfo;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.ChangeOrderDeliveryStatusProjector;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.OrderPlacedProjector;

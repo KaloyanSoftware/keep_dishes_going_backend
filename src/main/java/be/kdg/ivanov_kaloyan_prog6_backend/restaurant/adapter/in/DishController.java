@@ -4,6 +4,8 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.dto.DishDTO;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.request.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.useCases.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +17,7 @@ import java.util.UUID;
 @RequestMapping("/api/restaurant/{restaurantId}/menu/dishes")
 public class DishController {
 
+    private static final Logger log = LoggerFactory.getLogger(DishController.class);
     private final PublishDishUseCase publishDishUseCase;
 
     private final PublishDishDraftUseCase publishDishDraftUseCase;
@@ -28,6 +31,8 @@ public class DishController {
     private final GetDishesForRestaurantUseCase getDishesForRestaurantUseCase;
 
     private final DeleteDishUseCase deleteDishUseCase;
+
+
 
 
 
@@ -52,7 +57,8 @@ public class DishController {
                                            @PathVariable String restaurantId){
         final PublishDishCommand command =  new PublishDishCommand(UUID.fromString(request.id()), UUID.fromString(restaurantId));
 
-        return ResponseEntity.ok().body(DishDTO.from(this.publishDishUseCase.publish(command)));
+        return
+                ResponseEntity.ok().body(DishDTO.from(this.publishDishUseCase.publish(command)));
     }
 
     @PatchMapping("/unpublished")
@@ -64,10 +70,11 @@ public class DishController {
         return ResponseEntity.ok().body(DishDTO.from(this.unpublishDishUseCase.unpublish(command)));
     }
 
-    @PreAuthorize("hasRole('owner')")
+    @PreAuthorize("hasAuthority('owner')")
     @PatchMapping("{dishId}")
     public ResponseEntity<DishDTO> markOutOfStock(@RequestBody MarkDishOutOfStockRequest request,
                                                @PathVariable String restaurantId){
+
         final MarkDishOutOfStockCommand command =  new MarkDishOutOfStockCommand(UUID.fromString(request.dishId()),
                 UUID.fromString(restaurantId));
 

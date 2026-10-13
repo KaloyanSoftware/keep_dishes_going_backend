@@ -2,7 +2,6 @@ package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities;
 
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.embeddables.DeliveryInfoEmbeddable;
 import jakarta.persistence.*;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;

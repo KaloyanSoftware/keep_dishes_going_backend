@@ -1,6 +1,6 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.*;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.exceptions.*;
 import java.util.*;
 import java.util.stream.Stream;

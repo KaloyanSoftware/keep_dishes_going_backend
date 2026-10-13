@@ -1,8 +1,8 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.RestaurantCloseEvent;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.RestaurantOpenEvent;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.SaveRestaurantEvent;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.RestaurantCloseEvent;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.RestaurantOpenEvent;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.SaveRestaurantEvent;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.adapter.in.dto.LocationDTO;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.RestaurantSavedProjector;
 import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.RestaurantStatusChangeProjector;
@@ -11,6 +11,7 @@ import be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.port.in.commands.Rest
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
+import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -27,7 +28,7 @@ public class RestaurantProjectionListener {
         this.restaurantStatusChangeProjector = restaurantStatusChangeProjector;
     }
 
-    @EventListener(SaveRestaurantEvent.class)
+    @ApplicationModuleListener
     public void restaurantCreated(SaveRestaurantEvent event) {
         log.error("Save restaurant with id: {} event received!", event.restaurantId());
 
@@ -40,7 +41,7 @@ public class RestaurantProjectionListener {
         this.projector.project(command);
     }
 
-    @EventListener(RestaurantOpenEvent.class)
+    @ApplicationModuleListener
     public void onRestaurantOpen(RestaurantOpenEvent event) {
         log.error("Open restaurant with id: {} event received!", event.restaurantId());
 
@@ -49,7 +50,7 @@ public class RestaurantProjectionListener {
         this.restaurantStatusChangeProjector.project(command);
     }
 
-    @EventListener(RestaurantCloseEvent.class)
+    @ApplicationModuleListener
     public void onRestaurantClose(RestaurantCloseEvent event) {
         log.error("Close restaurant with id: {} event received!", event.restaurantId());
 

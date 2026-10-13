@@ -1,7 +1,5 @@
-package be.kdg.ivanov_kaloyan_prog6_backend.common.events;
+package be.kdg.ivanov_kaloyan_prog6_backend.common;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.common.dto.DeliveryCoordinatesDTO;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.dto.DeliveryInfoDTO;
 import org.springframework.modulith.events.Externalized;
 import java.time.LocalDateTime;
 import java.util.UUID;

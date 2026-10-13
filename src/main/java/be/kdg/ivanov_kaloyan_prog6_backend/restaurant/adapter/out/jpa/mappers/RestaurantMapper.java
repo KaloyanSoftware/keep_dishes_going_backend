@@ -1,8 +1,9 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.mappers;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.common.dto.DeliveryInfoDTO;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.*;
-import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.in.dto.AddressDTO;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.*;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.DeliveryInfoDTO;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.Address;
+import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.AddressDTO;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.embeddables.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.*;

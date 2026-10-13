@@ -1,6 +1,6 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.mappers;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.*;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.*;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.MenuEventJpaEntity;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.adapter.out.jpa.entities.MenuJpaEntity;
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.domain.*;

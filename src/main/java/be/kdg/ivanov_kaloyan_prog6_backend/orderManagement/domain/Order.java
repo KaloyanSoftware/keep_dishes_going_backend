@@ -1,7 +1,7 @@
 package be.kdg.ivanov_kaloyan_prog6_backend.orderManagement.domain;
 
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.DomainEvent;
-import be.kdg.ivanov_kaloyan_prog6_backend.common.events.OrderPlacedEvent;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.DomainEvent;
+import be.kdg.ivanov_kaloyan_prog6_backend.common.OrderPlacedEvent;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
