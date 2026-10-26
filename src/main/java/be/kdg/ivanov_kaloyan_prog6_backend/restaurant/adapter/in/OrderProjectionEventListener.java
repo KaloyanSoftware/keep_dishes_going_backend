@@ -11,6 +11,7 @@ import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.ChangeOrd
 import be.kdg.ivanov_kaloyan_prog6_backend.restaurant.port.in.commands.OrderPlacedProjectionCommand;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.event.EventListener;
+import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -26,7 +27,7 @@ public class OrderProjectionEventListener {
         this.changeOrderDeliveryStatusProjector = changeOrderDeliveryStatusProjector;
     }
 
-    @EventListener(OrderPlacedEvent.class)
+    @ApplicationModuleListener
     public void onOrderPlaced(OrderPlacedEvent event) {
 
         final DeliveryInfo deliveryInfo = new DeliveryInfo(event.street(), event.number(), event.postalCode(), event.city());
